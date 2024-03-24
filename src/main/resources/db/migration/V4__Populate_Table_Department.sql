@@ -1,4 +1,6 @@
-INSERT INTO department (description) VALUES
+INSERT INTO department
+    (description)
+VALUES
     ('Administrativo'),
     ('Financeiro'),
     ('Recursos Humanos'),

@@ -1,4 +1,6 @@
-INSERT INTO job (description, experience_level, base_salary, dangerousness, unhealthiness, department_id) VALUES
+INSERT INTO job
+    (description, experience_level, base_salary, dangerousness, unhealthiness, department_id)
+VALUES
     -- Administrativo
     ('Gerente Administrativo', 'ENTRY_LEVEL', 2100.00, 0, 0, 1),
     ('Gerente Administrativo', 'JUNIOR', 2600.00, 0, 0, 1),
