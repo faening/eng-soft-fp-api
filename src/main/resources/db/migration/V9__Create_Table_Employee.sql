@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS employee (
+    id_employee INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(120) NOT NULL,
+    rg VARCHAR(11) NOT NULL,
+    cpf VARCHAR(11) NOT NULL,
+    birth_date DATE NOT NULL,
+    gender ENUM('MALE', 'FEMALE', 'OTHER'),
+    phone VARCHAR(11),
+    email VARCHAR(80),
+    admission_date DATE NOT NULL,
+    department_id INT NOT NULL,
+    job_id INT NOT NULL,
+    work_shift_id INT NOT NULL,
+    salary DOUBLE NOT NULL,
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_employee),
+    FOREIGN KEY (department_id) REFERENCES department(id_department),
+    FOREIGN KEY (job_id) REFERENCES job(id_job),
+    FOREIGN KEY (work_shift_id) REFERENCES work_shift(id_work_shift)
+);
