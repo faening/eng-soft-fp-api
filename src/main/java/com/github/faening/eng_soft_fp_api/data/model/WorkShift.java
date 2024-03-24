@@ -1,6 +1,5 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
-import com.github.faening.eng_soft_fp_api.domain.model.Status;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -34,12 +33,10 @@ public record WorkShift(
     Date endOfWorkday,
 
     @Column(name = "night_shift_allowance")
-    @Enumerated(EnumType.ORDINAL)
-    Status nightShiftAllowance,
+    Boolean nightShiftAllowance,
 
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    Status status,
+    @Column(name = "active", nullable = false)
+    Boolean active,
 
     @Embedded
     EntityMetadata entityMetadata
