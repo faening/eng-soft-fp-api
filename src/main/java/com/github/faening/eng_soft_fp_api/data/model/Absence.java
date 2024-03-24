@@ -1,0 +1,43 @@
+package com.github.faening.eng_soft_fp_api.data.model;
+
+import com.github.faening.eng_soft_fp_api.domain.model.AbsenceType;
+import com.github.faening.eng_soft_fp_api.domain.model.ApprovalStatus;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.Date;
+
+@Entity
+@Table(name = "absence")
+public record Absence(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_absence")
+    Integer id,
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
+    Employee employee,
+
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    AbsenceType type,
+
+    @Column(name = "start_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    Date startDate,
+
+    @Column(name = "end_date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    Date end_date,
+
+    @Column(name = "observation")
+    String observation,
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    ApprovalStatus status,
+
+    @Embedded
+    EntityMetadata entityMetadata
+) implements Serializable { }
