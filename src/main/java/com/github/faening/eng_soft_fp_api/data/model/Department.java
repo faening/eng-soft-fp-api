@@ -13,7 +13,7 @@ public record Department(
     @Column(name = "id_department")
     Integer id,
 
-    @Column(name = "description", length = 40, nullable = false)
+    @Column(name = "description", length = 80, nullable = false)
     String description,
 
     @Column(name = "status", nullable = false)
