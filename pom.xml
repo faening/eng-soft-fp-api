@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>com.github.faening</groupId>
+	<artifactId>eng_soft_fp_api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>eng_soft_fp_api</name>
+	<description>O projeto "Folha de Pagamento API" é uma aplicação desenvolvida como parte da matéria de ES: Análise e Desenvolvimento de Software (EGS19502) da FAG. Esta API Rest é projetada para gerenciar e calcular folhas de pagamento de funcionários de uma empresa fictícia. A aplicação permite aos usuários realizar operações CRUD (Criar, Ler, Atualizar, Deletar) para manipular informações sobre funcionários, salários, benefícios e outros detalhes relacionados à folha de pagamento.</description>
+
+	<developers>
+		<developer>
+			<name>Arthur Cesar de Morais</name>
+			<email>acmorais1@minha.fag.edu.br</email>
+			<url>https://github.com/faening</url>
+		</developer>
+
+		<developer>
+			<name>Rafael de Oliveira</name>
+			<email>rafa.ro800@gmail.com</email>
+			<url>https://github.com/RafaelSW800</url>
+		</developer>
+
+		<developer>
+			<name>Willyam Wilson Walker</name>
+			<email>wwwalker@minha.fag.edu.br</email>
+			<url>https://github.com/Walker10TECH</url>
+		</developer>
+	</developers>
+
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+
+	<dependencies>
+		<!-- Spring Boot dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Other dependencies -->
+
+
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Development dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
