@@ -38,5 +38,8 @@ public record Job(
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.ORDINAL)
-    Status status
+    Status status,
+
+    @Embedded
+    EntityMetadata entityMetadata
 ) implements Serializable { }
