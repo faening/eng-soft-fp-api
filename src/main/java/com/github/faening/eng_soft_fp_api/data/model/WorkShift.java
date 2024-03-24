@@ -11,7 +11,7 @@ import java.util.Date;
 public record WorkShift(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_work_shifts")
+    @Column(name = "id_work_shift")
     Integer id,
 
     @Column(name = "description", length = 80, nullable = false)
