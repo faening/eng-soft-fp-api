@@ -1,7 +1,6 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
 import com.github.faening.eng_soft_fp_api.domain.model.ExperienceLevel;
-import com.github.faening.eng_soft_fp_api.domain.model.Status;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -25,20 +24,17 @@ public record Job(
     Double baseSalary,
 
     @Column(name = "dangerousness", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    Status dangerousness,
+    Boolean dangerousness,
 
     @Column(name = "unhealthiness", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    Status unhealthiness,
+    Boolean unhealthiness,
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
     Department department,
 
-    @Column(name = "status", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    Status status,
+    @Column(name = "active", nullable = false)
+    Boolean active,
 
     @Embedded
     EntityMetadata entityMetadata

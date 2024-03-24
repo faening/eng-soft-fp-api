@@ -149,11 +149,11 @@ VALUES
     ('Técnido em Manutenção de Máquinas Industriais', 'EXPERT', 3200.00, 1, 0, 9),
 
     -- Qualidade
-    ('Analista de Qualidade', 'ENTRY_LEVEL', 1400.00, 0, 0, 10),
-    ('Analista de Qualidade', 'JUNIOR', 1700.00, 0, 0, 10),
-    ('Analista de Qualidade', 'MID_LEVEL', 2100.00, 0, 0, 10),
-    ('Analista de Qualidade', 'SENIOR', 2600.00, 0, 0, 10),
-    ('Analista de Qualidade', 'EXPERT', 3200.00, 0, 0, 10),
+    ('Analista de Qualidade', 'ENTRY_LEVEL', 1400.00, 0, 1, 10),
+    ('Analista de Qualidade', 'JUNIOR', 1700.00, 0, 1, 10),
+    ('Analista de Qualidade', 'MID_LEVEL', 2100.00, 0, 1, 10),
+    ('Analista de Qualidade', 'SENIOR', 2600.00, 0, 1, 10),
+    ('Analista de Qualidade', 'EXPERT', 3200.00, 0, 1, 10),
 
     -- Jurídico
     ('Advogado', 'ENTRY_LEVEL', 2100.00, 0, 0, 11),
