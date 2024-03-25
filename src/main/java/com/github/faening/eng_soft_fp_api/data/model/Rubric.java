@@ -1,6 +1,6 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
-import com.github.faening.eng_soft_fp_api.domain.model.RubricType;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.RubricType;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
-import com.github.faening.eng_soft_fp_api.domain.model.BrazilianState;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.BrazilianState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;

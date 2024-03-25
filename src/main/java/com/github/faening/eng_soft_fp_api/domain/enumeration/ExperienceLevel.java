@@ -1,4 +1,4 @@
-package com.github.faening.eng_soft_fp_api.domain.model;
+package com.github.faening.eng_soft_fp_api.domain.enumeration;
 
 public enum ExperienceLevel {
     ENTRY_LEVEL("Em Experiência"),

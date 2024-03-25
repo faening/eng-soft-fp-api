@@ -1,7 +1,7 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
-import com.github.faening.eng_soft_fp_api.domain.model.AbsenceType;
-import com.github.faening.eng_soft_fp_api.domain.model.ApprovalStatus;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.AbsenceType;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.ApprovalStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
