@@ -1,0 +1,65 @@
+#file: noinspection SpellCheckingInspection
+
+absenceType:
+  sick_leave: Atestado Médico
+  vacation: Férias
+  day_off: Folga
+  maternity_leave: Licença Maternidade
+  paternity_leave: Licença Paternidade
+  absence_without_justification: Falta sem Justificativa
+
+approvalStatus:
+  pending: Pendente
+  approved: Aprovado
+  denied: Negado
+
+benefitVoucherType:
+  food: Alimentação
+  transport: Transporte
+
+brazilianState:
+  AC: Acre
+  AL: Alagoas
+  AP: Amapá
+  AM: Amazonas
+  BA: Bahia
+  CE: Ceará
+  DF: Distrito Federal
+  ES: Espírito Santo
+  GO: Goiás
+  MA: Maranhão
+  MT: Mato Grosso
+  MS: Mato Grosso do Sul
+  MG: Minas Gerais
+  PA: Pará
+  PB: Paraíba
+  PR: Paraná
+  PE: Pernambuco
+  PI: Piauí
+  RJ: Rio de Janeiro
+  RN: Rio Grande do Norte
+  RS: Rio Grande do Sul
+  RO: Rondônia
+  RR: Roraima
+  SC: Santa Catarina
+  SP: São Paulo
+  SE: Sergipe
+  TO: Tocantins
+
+experienceLevel:
+  trainee: Trainee,
+  entryLevel: Experiência
+  junior: Júnior
+  midLevel: Pleno
+  senior: Sênior
+  expert: Especialista
+
+gender:
+  male: Masculino
+  female: Feminino
+  other: Outro
+
+rubricType:
+  income: Rendimento
+  deduction: Desconto
+  neutral: Neutro

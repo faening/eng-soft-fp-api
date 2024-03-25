@@ -1,17 +1,29 @@
 package com.github.faening.eng_soft_fp_api.domain.enumeration;
 
-public enum ApprovalStatus  {
-    PENDING("Pendente"),
-    APPROVED("Aprovado"),
-    REJECTED("Rejeitado");
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
-    private final String description;
+import java.util.Locale;
 
-    ApprovalStatus(String description) {
-        this.description = description;
+@SuppressWarnings("unused")
+public enum ApprovalStatus {
+    PENDING("approvalStatus.pending"),
+    APPROVED("approvalStatus.approved"),
+    DENIED("approvalStatus.denied");
+
+    private final String code;
+    private static MessageSource messageSource;
+
+    ApprovalStatus(String code) {
+        this.code = code;
     }
 
     public String getDescription() {
-        return description;
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(code, null, locale);
+    }
+
+    public static void setMessageSource(MessageSource messageSource) {
+        ApprovalStatus.messageSource = messageSource;
     }
 }

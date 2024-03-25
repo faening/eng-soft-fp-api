@@ -1,41 +1,53 @@
 package com.github.faening.eng_soft_fp_api.domain.enumeration;
 
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+
+import java.util.Locale;
+
+@SuppressWarnings("unused")
 public enum BrazilianState {
-    AC("Acre"),
-    AL("Alagoas"),
-    AP("Amapá"),
-    AM("Amazonas"),
-    BA("Bahia"),
-    CE("Ceará"),
-    DF("Distrito Federal"),
-    ES("Espírito Santo"),
-    GO("Goiás"),
-    MA("Maranhão"),
-    MT("Mato Grosso"),
-    MS("Mato Grosso do Sul"),
-    MG("Minas Gerais"),
-    PA("Pará"),
-    PB("Paraíba"),
-    PR("Paraná"),
-    PE("Pernambuco"),
-    PI("Piauí"),
-    RJ("Rio de Janeiro"),
-    RN("Rio Grande do Norte"),
-    RS("Rio Grande do Sul"),
-    RO("Rondônia"),
-    RR("Roraima"),
-    SC("Santa Catarina"),
-    SP("São Paulo"),
-    SE("Sergipe"),
-    TO("Tocantins");
+    AC("brazilianState.ac"),
+    AL("brazilianState.al"),
+    AP("brazilianState.ap"),
+    AM("brazilianState.am"),
+    BA("brazilianState.ba"),
+    CE("brazilianState.ce"),
+    DF("brazilianState.df"),
+    ES("brazilianState.es"),
+    GO("brazilianState.go"),
+    MA("brazilianState.ma"),
+    MT("brazilianState.mt"),
+    MS("brazilianState.ms"),
+    MG("brazilianState.mg"),
+    PA("brazilianState.pa"),
+    PB("brazilianState.pb"),
+    PR("brazilianState.pr"),
+    PE("brazilianState.pe"),
+    PI("brazilianState.pi"),
+    RJ("brazilianState.rj"),
+    RN("brazilianState.rn"),
+    RS("brazilianState.rs"),
+    RO("brazilianState.ro"),
+    RR("brazilianState.rr"),
+    SC("brazilianState.sc"),
+    SP("brazilianState.sp"),
+    SE("brazilianState.se"),
+    TO("brazilianState.to");
 
-    private final String stateFullName;
+    private final String code;
+    private static MessageSource messageSource;
 
-    BrazilianState(String stateFullName) {
-        this.stateFullName = stateFullName;
+    BrazilianState(String code) {
+        this.code = code;
     }
 
-    public String getStateFullName() {
-        return stateFullName;
+    public String getDescription() {
+        Locale locale = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(code, null, locale);
+    }
+
+    public static void setMessageSource(MessageSource messageSource) {
+        BrazilianState.messageSource = messageSource;
     }
 }
