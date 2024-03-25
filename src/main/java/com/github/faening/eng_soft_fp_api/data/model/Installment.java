@@ -12,6 +12,10 @@ public record Installment(
         @Column(name = "id_installment")
         Integer id,
 
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "financial_event_id", referencedColumnName = "id_financial_event", nullable = false)
+        FinancialEvent financialEvent,
+
         @Column(name = "number", nullable = false)
         Integer number,
 
