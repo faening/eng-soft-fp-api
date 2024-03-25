@@ -30,12 +30,12 @@ public record FinancialEvent(
     @Temporal(TemporalType.DATE)
     Date releaseDate,
 
-    @OneToMany(mappedBy = "financialEvent", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Installment> installments,
-
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
     ApprovalStatus status,
+
+    @OneToMany(mappedBy = "financialEvent", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Installment> installments,
 
     @Embedded
     EntityMetadata entityMetadata

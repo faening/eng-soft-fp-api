@@ -16,17 +16,17 @@ public record Job(
     @Column(name = "description", length = 100, nullable = false)
     String description,
 
-    @Column(name = "experience_level", nullable = false)
+    @Column(name = "experience_level", nullable = false, columnDefinition = "DEFAULT 'ENTRY_LEVEL'")
     @Enumerated(EnumType.STRING)
     ExperienceLevel experienceLevel,
 
-    @Column(name = "base_salary", nullable = false)
+    @Column(name = "base_salary", nullable = false, columnDefinition = "DEFAULT 1400.0")
     Double baseSalary,
 
-    @Column(name = "dangerousness", nullable = false)
+    @Column(name = "dangerousness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean dangerousness,
 
-    @Column(name = "unhealthiness", nullable = false)
+    @Column(name = "unhealthiness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean unhealthiness,
 
     @ManyToOne

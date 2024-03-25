@@ -15,7 +15,7 @@ public record Department(
     @Column(name = "description", length = 80, nullable = false)
     String description,
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     Boolean active,
 
     @Embedded

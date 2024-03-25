@@ -15,7 +15,7 @@ public record EmployeeDependent(
     @Embedded
     Person person,
 
-    @Column(name = "special_needs", nullable = false)
+    @Column(name = "special_needs", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean specialNeeds,
 
     @ManyToOne(fetch = FetchType.LAZY)

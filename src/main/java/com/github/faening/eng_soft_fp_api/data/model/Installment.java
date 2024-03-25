@@ -19,10 +19,10 @@ public record Installment(
         @Column(name = "number", nullable = false)
         Integer number,
 
-        @Column(name = "value", nullable = false)
-        Double value,
+        @Column(name = "installment_value", nullable = false)
+        Double installmentValue,
 
-        @Column(name = "paid", nullable = false)
+        @Column(name = "paid", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
         Boolean paid,
 
         @Embedded

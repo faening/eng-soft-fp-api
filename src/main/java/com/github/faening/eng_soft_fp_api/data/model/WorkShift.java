@@ -32,10 +32,10 @@ public record WorkShift(
     @Temporal(TemporalType.TIME)
     Date endOfWorkday,
 
-    @Column(name = "night_shift_allowance")
+    @Column(name = "night_shift_allowance", columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean nightShiftAllowance,
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     Boolean active,
 
     @Embedded

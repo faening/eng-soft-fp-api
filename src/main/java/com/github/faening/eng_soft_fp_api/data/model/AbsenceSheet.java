@@ -34,7 +34,7 @@ public record AbsenceSheet(
     @Column(name = "observation")
     String observation,
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
     ApprovalStatus status,
 

@@ -25,7 +25,7 @@ public record Company(
     @Column(name = "ie", length = 10, nullable = false)
     String ie,
 
-    @Column(name = "opening_date")
+    @Column(name = "opening_date", nullable = false, columnDefinition = "DEFAULT '2014-01-01'")
     @Temporal(TemporalType.DATE)
     Date openingDate,
 

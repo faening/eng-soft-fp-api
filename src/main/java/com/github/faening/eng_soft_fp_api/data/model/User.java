@@ -25,7 +25,7 @@ public record User(
     @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
     Department department,
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     Boolean active,
 
     @Embedded

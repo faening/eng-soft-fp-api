@@ -48,7 +48,7 @@ public record Employee(
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     List<EmployeeDependent> dependents,
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     Boolean active,
 
     @Embedded

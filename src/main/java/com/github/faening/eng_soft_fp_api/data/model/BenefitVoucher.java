@@ -37,7 +37,7 @@ public record BenefitVoucher(
     @Enumerated(EnumType.STRING)
     ApprovalStatus status,
 
-    @Column(name = "payroll_deductible", nullable = false, columnDefinition = "DEFAULT FALSE")
+    @Column(name = "payroll_deductible", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean payrollDeductible,
 
     @Embedded

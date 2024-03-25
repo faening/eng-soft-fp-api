@@ -20,7 +20,7 @@ public record Rubric(
     @Enumerated(EnumType.STRING)
     RubricType type,
 
-    @Column(name = "active", nullable = false)
+    @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     Boolean active,
 
     @Embedded
