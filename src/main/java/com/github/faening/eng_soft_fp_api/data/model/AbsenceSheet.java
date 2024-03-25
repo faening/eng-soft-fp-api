@@ -8,11 +8,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "absence")
-public record Absence(
+@Table(name = "absence_sheet")
+public record AbsenceSheet(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_absence")
+    @Column(name = "id_absence_sheet")
     Integer id,
 
     @ManyToOne

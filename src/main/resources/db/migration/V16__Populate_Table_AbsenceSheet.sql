@@ -1,4 +1,4 @@
-INSERT INTO absence
+INSERT INTO absence_sheet
     (employee_id, type, start_date, end_date, observation, status)
 VALUES
     -- Atestado Médico
