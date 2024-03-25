@@ -17,7 +17,7 @@ public record Rubric(
     String description,
 
     @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     RubricType type,
 
     @Column(name = "active", nullable = false)

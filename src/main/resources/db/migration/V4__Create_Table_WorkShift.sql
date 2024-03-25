@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS work_shift (
     start_of_break TIME NOT NULL,
     end_of_break TIME NOT NULL,
     end_of_workday TIME NOT NULL,
-    night_shift_allowance TINYINT(1) NOT NULL DEFAULT 0,
-    active TINYINT(1) NOT NULL DEFAULT 1,
+    night_shift_allowance BOOLEAN NOT NULL DEFAULT FALSE,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id_work_shift)

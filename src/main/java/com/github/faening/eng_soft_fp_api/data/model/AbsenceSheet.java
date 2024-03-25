@@ -29,7 +29,7 @@ public record AbsenceSheet(
 
     @Column(name = "end_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    Date end_date,
+    Date endDate,
 
     @Column(name = "observation")
     String observation,
