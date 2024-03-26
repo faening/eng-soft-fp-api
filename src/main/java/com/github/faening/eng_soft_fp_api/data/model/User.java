@@ -21,10 +21,6 @@ public record User(
     @Column(name = "password", nullable = false)
     String password,
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
-    Department department,
-
     @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     Boolean active,
 

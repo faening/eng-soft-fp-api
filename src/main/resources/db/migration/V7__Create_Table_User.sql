@@ -3,10 +3,8 @@ CREATE TABLE IF NOT EXISTS user (
     name VARCHAR(80) NOT NULL,
     email VARCHAR(80) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    department_id INT NOT NULL,
     active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_user),
-    FOREIGN KEY (department_id) REFERENCES department(id_department)
+    PRIMARY KEY (id_user)
 );
