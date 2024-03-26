@@ -34,7 +34,7 @@ public record FinancialEvent(
     @Enumerated(EnumType.STRING)
     ApprovalStatus status,
 
-    @OneToMany(mappedBy = "financialEvent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "financialEvent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<Installment> installments,
 
     @Embedded

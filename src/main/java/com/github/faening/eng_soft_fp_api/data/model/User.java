@@ -21,7 +21,7 @@ public record User(
     @Column(name = "password", nullable = false)
     String password,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
     Department department,
 

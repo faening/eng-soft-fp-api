@@ -13,19 +13,19 @@ public record PayrollItem(
     @Column(name = "id_payroll_item")
     Integer id,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payroll_id", referencedColumnName = "id_payroll", nullable = false)
     Payroll payroll,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rubric_id", referencedColumnName = "id_rubric", nullable = false)
     Rubric rubric,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tax_or_value_id", referencedColumnName = "id_tax_or_value")
     TaxOrValue taxOrValue,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "financial_event_id", referencedColumnName = "id_financial_event")
     FinancialEvent  financialEvent,
 

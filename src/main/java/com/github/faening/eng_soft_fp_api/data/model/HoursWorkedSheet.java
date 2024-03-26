@@ -13,7 +13,7 @@ public record HoursWorkedSheet(
     @Column(name = "id_hours_worked_sheet")
     Integer id,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
     Employee employee,
 

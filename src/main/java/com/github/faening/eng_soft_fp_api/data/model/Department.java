@@ -18,6 +18,10 @@ public record Department(
     @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     Boolean active,
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id", referencedColumnName = "id_employee")
+    Employee manager,
+
     @Embedded
     EntityMetadata entityMetadata
 ) implements Serializable { }

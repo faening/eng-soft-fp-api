@@ -15,7 +15,7 @@ public record AbsenceSheet(
     @Column(name = "id_absence_sheet")
     Integer id,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
     Employee employee,
 

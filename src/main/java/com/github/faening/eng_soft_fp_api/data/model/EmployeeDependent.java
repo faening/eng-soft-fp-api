@@ -12,15 +12,15 @@ public record EmployeeDependent(
     @Column(name = "id_employee_dependent")
     Integer id,
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
+    Employee employee,
+
     @Embedded
     Person person,
 
     @Column(name = "special_needs", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean specialNeeds,
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
-    Employee employee,
 
     @Embedded
     EntityMetadata entityMetadata

@@ -16,11 +16,11 @@ public record Payroll(
     @Column(name = "id_payroll")
     Integer id,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "id_company", nullable = false)
     Company company,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
     Employee employee,
 
@@ -61,7 +61,7 @@ public record Payroll(
     @Column(name = "total_liquid", nullable = false, precision = 10, scale = 2)
     BigDecimal totalLiquid,
 
-    @OneToMany(mappedBy = "payroll", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "payroll", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<PayrollItem> items,
 
     @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")

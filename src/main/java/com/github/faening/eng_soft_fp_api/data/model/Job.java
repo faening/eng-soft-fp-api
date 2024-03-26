@@ -30,7 +30,7 @@ public record Job(
     @Column(name = "unhealthiness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean unhealthiness,
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
     Department department,
 
