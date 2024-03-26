@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS benefit_voucher (
     benefit_type ENUM('FOOD', 'TRANSPORT') NOT NULL,
     status ENUM('PENDING', 'APPROVED', 'DENIED') NOT NULL DEFAULT 'PENDING',
     payroll_deductible BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id_benefit_voucher),
     FOREIGN KEY (employee_id) REFERENCES employee(id_employee)
 );
