@@ -3,6 +3,7 @@ package com.github.faening.eng_soft_fp_api.data.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -42,8 +43,8 @@ public record Employee(
     @JoinColumn(name = "work_shift_id", referencedColumnName = "id_work_shift", nullable = false)
     WorkShift workShift,
 
-    @Column(name = "salary", nullable = false)
-    Double salary,
+    @Column(name = "salary", nullable = false, precision = 10, scale = 2)
+    BigDecimal salary,
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     List<EmployeeDependent> dependents,

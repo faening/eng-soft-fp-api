@@ -4,6 +4,7 @@ import com.github.faening.eng_soft_fp_api.domain.enumeration.ExperienceLevel;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "job")
@@ -20,8 +21,8 @@ public record Job(
     @Enumerated(EnumType.STRING)
     ExperienceLevel experienceLevel,
 
-    @Column(name = "base_salary", nullable = false, columnDefinition = "DEFAULT 1400.0")
-    Double baseSalary,
+    @Column(name = "base_salary", nullable = false, precision = 10, scale = 2)
+    BigDecimal baseSalary,
 
     @Column(name = "dangerousness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean dangerousness,
