@@ -56,7 +56,7 @@ VALUES
 
         -- Período 2
     ('Marcela Cecília Monteiro', '247450686', '23779703629', '1989-01-17', 'FEMALE', '95983173503', 'marcela_cecilia_monteiro@domain.com', '2018-07-10', 9, 75, 2, 4100.00), -- Supervisor
-    ('Pedro Silvio Carvalho', '396264827', '11736049364', '1988-11-03', 'MALE', '83988865521', 'pedro_silvio_carvalho@domain.com', '2020-04-10', 9, 73, 2, 3800.00),         -- Técnico
+    ('Cassio Raimundo de Paula', '403651785', '13653006333', '1988-11-03', 'MALE', '67999992307', 'cassio_raimundo_paula@domain.com', '2020-02-10', 9, 73, 2, 3900.00),      -- Técnico
     ('Ruan Yuri Julio Pires', '195003500', '94016488320', '1992-05-23', 'MALE', '27985342006', 'ruan_yuri_julio_pires@domain.com', '2019-12-01', 9, 69, 2, 3125.00),         -- Operador
     ('Luiza Allana da Silva', '339234003', '25884991983', '1983-01-28', 'FEMALE', '91994366998', 'luiza_allana_silva@domain.com', '2017-07-10', 9, 70, 2, 3650.00),          -- Operador
     ('Isaac Samuel da Paz', '122097713', '56397035808', '1993-07-26', 'MALE', '86998095001', 'isaac_samuel_paz@domain.com', '2021-06-15', 9, 66, 2, 2750.00),                -- Produção
