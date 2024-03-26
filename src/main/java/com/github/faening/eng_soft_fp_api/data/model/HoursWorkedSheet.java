@@ -19,27 +19,27 @@ public record HoursWorkedSheet(
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.DATE)
-    Date releaseDate,
+    Date date,
 
-    @Column(name = "normal_hours")
+    @Column(name = "regular_hours")
     @Temporal(TemporalType.TIME)
-    Date normalHours,
+    Date regularHours,
 
     @Column(name = "negative_hours")
     @Temporal(TemporalType.TIME)
     Date negativeHours,
 
-    @Column(name = "extra_hours_50")
+    @Column(name = "overtime50")
     @Temporal(TemporalType.TIME)
-    Date extraHours50,
+    Date overtime50,
 
-    @Column(name = "extra_hours_100")
+    @Column(name = "overtime100")
     @Temporal(TemporalType.TIME)
-    Date extraHours100,
+    Date overtime100,
 
-    @Column(name = "hours_bank")
+    @Column(name = "time_bank")
     @Temporal(TemporalType.TIME)
-    Date hoursBank,
+    Date timeBank,
 
     @Embedded
     EntityMetadata entityMetadata
