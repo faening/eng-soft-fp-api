@@ -80,3 +80,23 @@ taxOrValueType:
   fgts: FGTS (Fundo de Garantia do Tempo de Serviço)
   transportDiscount: Desconto de Vale Transporte
   mealDiscount: Desconto de Vale Alimentação
+
+month:
+  january: Janeiro
+  february: Fevereiro
+  march: Março
+  april: Abril
+  may: Maio
+  june: Junho
+  july: Julho
+  august: Agosto
+  september: Setembro
+  october: Outubro
+  november: Novembro
+  december: Dezembro
+
+payrollStatus:
+  pending: Pendente
+  released: Lançada
+  approved: Aprovada
+  paid: Paga
