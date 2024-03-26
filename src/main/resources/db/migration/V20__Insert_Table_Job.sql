@@ -3,13 +3,13 @@ INSERT INTO job
 VALUES
     -- Administrativo
     ('Assistente Administrativo', 'TRAINEE', 1100.00, 0, 0, 1),
-    ('Assistente Administrativo', 'ENTRY_LEVEL', 1500.00, 0, 0, 1), -- 400
-    ('Assistente Administrativo', 'JUNIOR', 2000.00, 0, 0, 1),      -- 500
-    ('Assistente Administrativo', 'MID_LEVEL', 2600.00, 0, 0, 1),   -- 600
-    ('Assistente Administrativo', 'SENIOR', 3300.00, 0, 0, 1),      -- 700
-    ('Assistente Administrativo', 'EXPERT', 4100.00, 0, 0, 1),      -- 800
+    ('Assistente Administrativo', 'ENTRY_LEVEL', 1500.00, 0, 0, 1),
+    ('Assistente Administrativo', 'JUNIOR', 2000.00, 0, 0, 1),
+    ('Assistente Administrativo', 'MID_LEVEL', 2600.00, 0, 0, 1),
+    ('Assistente Administrativo', 'SENIOR', 3300.00, 0, 0, 1),
+    ('Assistente Administrativo', 'EXPERT', 4100.00, 0, 0, 1),
 
-    ('Chief Executive Officer (CEO)', 'EXPERT', 6100.00, 0, 0, 1),  -- 1200
+    ('Chief Executive Officer (CEO)', 'EXPERT', 6100.00, 0, 0, 1),
 
     -- Financeiro
     ('Analista Financeiro', 'TRAINEE', 1100.00, 0, 0, 2),
