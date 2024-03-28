@@ -1,0 +1,1 @@
+-- Analisar possíveis eventos financeiros que podem ser gerados.
