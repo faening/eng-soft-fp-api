@@ -19,23 +19,23 @@ public record TaxOrValue(
     @Enumerated(EnumType.STRING)
     TaxOrValueType type,
 
-    @Column(name = "name", length = 40, nullable = false)
-    String name,
+    @Column(name = "range_id")
+    Integer range,
 
-    @Column(name = "tax_percentage", nullable = false, precision = 5, scale = 2)
+    @Column(name = "range_minimum_wage", precision = 10, scale = 2)
+    BigDecimal rangeMinimumWage,
+
+    @Column(name = "range_maximum_wage", precision = 10, scale = 2)
+    BigDecimal rangeMaximumWage,
+
+    @Column(name = "fixed_value", precision = 10, scale = 2)
+    BigDecimal fixedValue,
+
+    @Column(name = "tax_percentage", precision = 5, scale = 2)
     BigDecimal taxPercentage,
 
-    @Column(name = "minimum_wage", nullable = false, precision = 10, scale = 2)
-    BigDecimal minimumWage,
-
-    @Column(name = "maximum_wage", nullable = false, precision = 10, scale = 2)
-    BigDecimal maximumWage,
-
-    @Column(name = "start_date")
-    Date startDate,
-
-    @Column(name = "end_date")
-    Date endDate,
+    @Column(name = "description", length = 160, nullable = false)
+    String description,
 
     @Embedded
     EntityMetadata entityMetadata
