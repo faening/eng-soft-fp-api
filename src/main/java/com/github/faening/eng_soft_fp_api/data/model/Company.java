@@ -3,7 +3,7 @@ package com.github.faening.eng_soft_fp_api.data.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "company")
@@ -26,8 +26,7 @@ public record Company(
     String ie,
 
     @Column(name = "opening_date", nullable = false, columnDefinition = "DEFAULT '2014-01-01'")
-    @Temporal(TemporalType.DATE)
-    Date openingDate,
+    LocalDate openingDate,
 
     @Column(name = "phone", length = 10)
     String phone,

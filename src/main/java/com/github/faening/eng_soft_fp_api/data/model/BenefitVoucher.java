@@ -5,7 +5,7 @@ import com.github.faening.eng_soft_fp_api.domain.enumeration.BenefitVoucherType;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "benefit_voucher")
@@ -23,8 +23,7 @@ public record BenefitVoucher(
     Double paidValue,
 
     @Column(name = "release_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    Date releaseDate,
+    LocalDate releaseDate,
 
     @Column(name = "description", length = 120, nullable = false)
     String description,

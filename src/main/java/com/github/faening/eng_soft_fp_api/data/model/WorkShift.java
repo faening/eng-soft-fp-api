@@ -3,7 +3,7 @@ package com.github.faening.eng_soft_fp_api.data.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "work_shift")
@@ -17,20 +17,16 @@ public record WorkShift(
     String description,
 
     @Column(name = "start_of_workday", nullable = false)
-    @Temporal(TemporalType.TIME)
-    Date startOfWorkday,
+    LocalTime startOfWorkday,
 
     @Column(name = "start_of_break", nullable = false)
-    @Temporal(TemporalType.TIME)
-    Date startOfBreak,
+    LocalTime startOfBreak,
 
     @Column(name = "end_of_break", nullable = false)
-    @Temporal(TemporalType.TIME)
-    Date endOfBreak,
+    LocalTime endOfBreak,
 
     @Column(name = "end_of_workday", nullable = false)
-    @Temporal(TemporalType.TIME)
-    Date endOfWorkday,
+    LocalTime endOfWorkday,
 
     @Column(name = "night_shift_allowance", columnDefinition = "BOOLEAN DEFAULT FALSE")
     Boolean nightShiftAllowance,

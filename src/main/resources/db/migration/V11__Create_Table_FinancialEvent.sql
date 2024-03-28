@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS financial_event (
     id_financial_event INT NOT NULL,
     employee_id INT NOT NULL,
     rubric_id INT NOT NULL,
-    value DOUBLE NOT NULL,
+    value DECIMAL(10,2) NOT NULL,
     release_date DATE NOT NULL,
     status ENUM('PENDING', 'APPROVED', 'DENIED') NOT NULL DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -5,7 +5,7 @@ import com.github.faening.eng_soft_fp_api.domain.enumeration.ApprovalStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "absence_sheet")
@@ -24,12 +24,10 @@ public record AbsenceSheet(
     AbsenceType type,
 
     @Column(name = "start_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    Date startDate,
+    LocalDateTime startDate,
 
     @Column(name = "end_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    Date endDate,
+    LocalDateTime endDate,
 
     @Column(name = "observation")
     String observation,

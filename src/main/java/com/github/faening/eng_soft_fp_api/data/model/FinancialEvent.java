@@ -4,7 +4,8 @@ import com.github.faening.eng_soft_fp_api.domain.enumeration.ApprovalStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -23,12 +24,11 @@ public record FinancialEvent(
     @JoinColumn(name = "rubric_id", referencedColumnName = "id_rubric", nullable = false)
     Rubric rubric,
 
-    @Column(name = "value", nullable = false)
-    Double value,
+    @Column(name = "value", nullable = false, precision = 10, scale = 2)
+    BigDecimal value,
 
     @Column(name = "release_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    Date releaseDate,
+    LocalDate releaseDate,
 
     @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)

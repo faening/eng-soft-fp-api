@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -28,8 +28,7 @@ public record Employee(
     String email,
 
     @Column(name = "admission_date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    Date admissionDate,
+    LocalDate admissionDate,
 
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)

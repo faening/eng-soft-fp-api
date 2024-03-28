@@ -3,7 +3,8 @@ package com.github.faening.eng_soft_fp_api.data.model;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "hours_worked_sheet")
@@ -18,28 +19,22 @@ public record HoursWorkedSheet(
     Employee employee,
 
     @Column(name = "date", nullable = false)
-    @Temporal(TemporalType.DATE)
-    Date date,
+    LocalDate date,
 
     @Column(name = "regular_hours")
-    @Temporal(TemporalType.TIME)
-    Date regularHours,
+    LocalTime regularHours,
 
     @Column(name = "negative_hours")
-    @Temporal(TemporalType.TIME)
-    Date negativeHours,
+    LocalTime negativeHours,
 
     @Column(name = "overtime50")
-    @Temporal(TemporalType.TIME)
-    Date overtime50,
+    LocalTime overtime50,
 
     @Column(name = "overtime100")
-    @Temporal(TemporalType.TIME)
-    Date overtime100,
+    LocalTime overtime100,
 
     @Column(name = "time_bank")
-    @Temporal(TemporalType.TIME)
-    Date timeBank,
+    LocalTime timeBank,
 
     @Embedded
     EntityMetadata entityMetadata
