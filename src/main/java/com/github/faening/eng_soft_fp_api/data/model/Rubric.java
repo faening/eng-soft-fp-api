@@ -13,7 +13,17 @@ public record Rubric(
     @Column(name = "id_rubric")
     Integer id,
 
-    @Column(name = "description", length = 120, nullable = false)
+    @Column(name = "code", nullable = false, unique = true)
+    Integer code,
+
+    @Column(name = "name", length = 180, nullable = false)
+    String name,
+
+    @Column(name = "kind", length = 180, nullable = false)
+    String kind,
+
+    @Lob
+    @Column(name = "description", nullable = false)
     String description,
 
     @Column(name = "type", nullable = false)
