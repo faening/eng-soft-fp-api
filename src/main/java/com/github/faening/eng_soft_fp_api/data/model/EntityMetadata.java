@@ -8,13 +8,37 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@SuppressWarnings("unused")
 @Embeddable
-public record EntityMetadata(
+public class EntityMetadata implements Serializable {
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
-    LocalDateTime createdAt,
+    LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-    LocalDateTime updatedAt
-) implements Serializable  { }
+    LocalDateTime updatedAt;
+
+    public EntityMetadata() { }
+
+    public EntityMetadata(LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+}
