@@ -1,35 +1,36 @@
-package com.github.faening.eng_soft_fp_api.domain.model;
+package com.github.faening.eng_soft_fp_api.domain.model.company;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
-public class CompanyVO {
-    Integer id;
-    String corporateName;
-    String tradeName;
-    String cnpj;
-    String ie;
-    LocalDate openingDate;
-    String phone;
-    String email;
+public class CompanyResponseDTO implements Serializable {
+    private Integer id;
+    private String corporateName;
+    private String tradeName;
+    private String cnpj;
+    private String ie;
+    private LocalDate openingDate;
+    private String phone;
+    private String email;
 
     // Address
-    String addressStreet;
-    String addressNumber;
-    String addressComplement;
-    String addressCity;
-    String addressUF;
-    String addressZipCode;
+    private String addressStreet;
+    private String addressNumber;
+    private String addressComplement;
+    private String addressCity;
+    private String addressUF;
+    private String addressZipCode;
 
     // EntityMetadata
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public CompanyVO() {
+    public CompanyResponseDTO() {
     }
 
-    public CompanyVO(
+    public CompanyResponseDTO(
         Integer id,
         String corporateName,
         String tradeName,
@@ -65,7 +66,7 @@ public class CompanyVO {
         this.updatedAt = updatedAt;
     }
 
-    public CompanyVO(
+    public CompanyResponseDTO(
         String corporateName,
         String tradeName,
         String cnpj,
