@@ -11,7 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class CompanyService {
@@ -72,15 +72,29 @@ public class CompanyService {
             });
     }
 
+    private Company searchCompanyById(Integer id) {
+        return companyRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Nenhuma empresa encontrada com o ID informado: " + id)
+        );
+    }
+
     public CompanyResponseDTO getCompanyById(Integer id) {
-        Optional<Company> companyOptional = companyRepository.findById(id);
-        return companyOptional.map(company -> modelMapper.map(company, CompanyResponseDTO.class)).orElse(null);
+        Company company = searchCompanyById(id);                    // Busca a empresa no banco de dados
+        return modelMapper.map(company, CompanyResponseDTO.class);  // Converte a empresa para o CompanyResponseDTO e retorna
     }
 
     public CompanyResponseDTO updateCompany(Integer id, CompanyRequestDTO companyRequestDTO) {
-        Company company = companyRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Empresa não encontrada"));
-        modelMapper.map(companyRequestDTO, company);
-        companyRepository.save(company);
-        return modelMapper.map(company, CompanyResponseDTO.class);
+        validateCompanyRequestDTO(companyRequestDTO);               // Valida se os campos do CompanyRequestDTO são válidos
+        Company company = searchCompanyById(id);                    // Busca a empresa no banco de dados
+        modelMapper.map(companyRequestDTO, company);                // Atualiza os campos da empresa com os valores novos do CompanyRequestDTO
+        companyRepository.save(company);                            // Salva a empresa no banco de dados
+        return modelMapper.map(company, CompanyResponseDTO.class);  // Converte a empresa para o CompanyResponseDTO e retorna
+    }
+
+    private void validateCompanyRequestDTO(CompanyRequestDTO companyRequestDTO) {
+        List<String> unknownFields = companyRequestDTO.getUnknownFields();
+        if (!unknownFields.isEmpty()) {
+            throw new IllegalArgumentException("Os seguintes campos não são permitidos: " + String.join(", ", unknownFields));
+        }
     }
 }

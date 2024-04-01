@@ -18,22 +18,12 @@ public class CompanyRequestDTO implements Serializable {
     private String addressCity;
     private String addressUF;
     private String addressZipCode;
+    private final List<String> unknownFields = new ArrayList<>(); // Armazena campos desconhecidos enviados no corpo da requisição.
 
-    /**
-     * A lista `unknownFields` é utilizada para armazenar os campos desconhecidos que são enviados no corpo da requisição.
-     * Esses campos são ignorados e não são utilizados para atualizar a empresa. Caso algum campo desconhecido seja enviado, uma exceção é lançada.
-     */
-    private final List<String> unknownFields = new ArrayList<>();
-
+    // Método para lidar com campos desconhecidos enviados no corpo da requisição
     @JsonAnySetter
     public void handleUnknown(String key, Object value) {
         unknownFields.add(key);
-    }
-
-    public void validate() {
-        if (!unknownFields.isEmpty()) {
-            throw new IllegalArgumentException("Os seguintes campos não são permitidos: " + String.join(", ", unknownFields));
-        }
     }
 
     public CompanyRequestDTO() {
@@ -61,6 +51,10 @@ public class CompanyRequestDTO implements Serializable {
         this.addressCity = addressCity;
         this.addressUF = addressUF;
         this.addressZipCode = addressZipCode;
+    }
+
+    public List<String> getUnknownFields() {
+        return unknownFields;
     }
 
     public String getCorporateName() {
