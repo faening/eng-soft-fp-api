@@ -27,7 +27,7 @@ public class CompanyService {
     }
 
     private void createCompanyToCompanyResponseDTOMapping() {
-        // As entidades `Address` e `EntityMetadata` foram embutidas na entidade `CompanyVO`.
+        // As entidades `Address` e `EntityMetadata` foram embutidas na entidade `CompanyResponseDTO`.
         modelMapper.createTypeMap(Company.class, CompanyResponseDTO.class)
             .addMappings(mapper -> {
                 mapper.map(src -> src.getAddress().getAddressStreet(), CompanyResponseDTO::setAddressStreet);
