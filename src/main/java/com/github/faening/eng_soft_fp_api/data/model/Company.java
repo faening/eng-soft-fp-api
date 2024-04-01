@@ -12,28 +12,28 @@ public class Company implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_company")
-    Integer id;
+    private Integer id;
 
     @Column(name = "corporate_name", length = 100, nullable = false)
-    String corporateName;
+    private String corporateName;
 
     @Column(name = "trade_name", length = 100, nullable = false)
-    String tradeName;
+    private String tradeName;
 
     @Column(name = "cnpj", length = 14, nullable = false)
-    String cnpj;
+    private String cnpj;
 
     @Column(name = "ie", length = 10, nullable = false)
-    String ie;
+    private String ie;
 
     @Column(name = "opening_date", nullable = false, columnDefinition = "DEFAULT '2014-01-01'")
-    LocalDate openingDate;
+    private LocalDate openingDate;
 
     @Column(name = "phone", length = 10)
-    String phone;
+    private String phone;
 
     @Column(name = "email", length = 50)
-    String email;
+    private String email;
 
     @Embedded
     @AttributeOverrides({
@@ -44,14 +44,14 @@ public class Company implements Serializable {
         @AttributeOverride(name = "addressUF", column = @Column(name = "address_uf")),
         @AttributeOverride(name = "addressZipCode", column = @Column(name = "address_zip_code"))
     })
-    Address address;
+    private Address address;
 
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
         @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
     })
-    EntityMetadata entityMetadata;
+    private EntityMetadata entityMetadata;
 
     public Company() { }
 

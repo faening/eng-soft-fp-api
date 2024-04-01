@@ -41,7 +41,7 @@ public class CompanyController {
         @PathVariable(value = "id") Integer id,
         @RequestBody CompanyRequestDTO companyRequestDTO
     ) {
-        if (companyRequestDTO.isEmpty()) { throw new ResourceNotFoundException("Nenhum dado de empresa foi fornecido"); }
+        companyRequestDTO.validate();
         CompanyResponseDTO updatedCompany = companyService.updateCompany(id, companyRequestDTO);
         if (updatedCompany == null) { throw new ResourceNotFoundException("Nenhuma empresa encontrada com o id " + id); }
         return ResponseEntity.ok(updatedCompany);

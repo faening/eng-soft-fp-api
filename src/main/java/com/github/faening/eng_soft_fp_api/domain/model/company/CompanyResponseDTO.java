@@ -14,16 +14,12 @@ public class CompanyResponseDTO implements Serializable {
     private LocalDate openingDate;
     private String phone;
     private String email;
-
-    // Address
     private String addressStreet;
     private String addressNumber;
     private String addressComplement;
     private String addressCity;
     private String addressUF;
     private String addressZipCode;
-
-    // EntityMetadata
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

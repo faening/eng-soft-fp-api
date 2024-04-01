@@ -1,6 +1,10 @@
 package com.github.faening.eng_soft_fp_api.domain.model.company;
 
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class CompanyRequestDTO implements Serializable {
@@ -8,14 +12,29 @@ public class CompanyRequestDTO implements Serializable {
     private String tradeName;
     private String phone;
     private String email;
-
-    // Address
     private String addressStreet;
     private String addressNumber;
     private String addressComplement;
     private String addressCity;
     private String addressUF;
     private String addressZipCode;
+
+    /**
+     * A lista `unknownFields` é utilizada para armazenar os campos desconhecidos que são enviados no corpo da requisição.
+     * Esses campos são ignorados e não são utilizados para atualizar a empresa. Caso algum campo desconhecido seja enviado, uma exceção é lançada.
+     */
+    private final List<String> unknownFields = new ArrayList<>();
+
+    @JsonAnySetter
+    public void handleUnknown(String key, Object value) {
+        unknownFields.add(key);
+    }
+
+    public void validate() {
+        if (!unknownFields.isEmpty()) {
+            throw new IllegalArgumentException("Os seguintes campos não são permitidos: " + String.join(", ", unknownFields));
+        }
+    }
 
     public CompanyRequestDTO() {
     }
@@ -122,19 +141,5 @@ public class CompanyRequestDTO implements Serializable {
 
     public void setAddressZipCode(String addressZipCode) {
         this.addressZipCode = addressZipCode;
-    }
-
-    public boolean isEmpty() {
-        return
-            corporateName == null &&
-            tradeName == null &&
-            phone == null &&
-            email == null &&
-            addressStreet == null &&
-            addressNumber == null &&
-            addressComplement == null &&
-            addressCity == null &&
-            addressUF == null &&
-            addressZipCode == null;
     }
 }
