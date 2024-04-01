@@ -12,23 +12,23 @@ import java.io.Serializable;
 @Embeddable
 public class Address implements Serializable {
     @Column(name = "address_street", length = 100, nullable = false)
-    String addressStreet;
+    private String addressStreet;
 
     @Column(name = "address_number", length = 6, nullable = false)
-    String addressNumber;
+    private String addressNumber;
 
     @Column(name = "address_complement", length = 100)
-    String addressComplement;
+    private String addressComplement;
 
     @Column(name = "address_city", length = 100, nullable = false)
-    String addressCity;
+    private String addressCity;
 
     @Column(name = "address_uf", nullable = false)
     @Enumerated(EnumType.STRING)
-    BrazilianState addressUF;
+    private BrazilianState addressUF;
 
     @Column(name = "address_zipCode", length = 8, nullable = false)
-    String addressZipCode;
+    private String addressZipCode;
 
     public Address() { }
 
