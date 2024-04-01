@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 @Table(name = "tax_or_value")

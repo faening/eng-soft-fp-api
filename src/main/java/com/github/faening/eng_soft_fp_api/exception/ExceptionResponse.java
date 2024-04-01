@@ -1,7 +1,6 @@
 package com.github.faening.eng_soft_fp_api.exception;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
 public class ExceptionResponse implements Serializable {
