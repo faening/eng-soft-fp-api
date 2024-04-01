@@ -1,5 +1,5 @@
 INSERT INTO user
-    (username, fullname, password, account_non_expired, account_non_locked, credentials_non_expired, enabled)
+    (user_name, full_name, password, account_non_expired, account_non_locked, credentials_non_expired, enabled)
 VALUES
     ('user_adm', 'Administrativo', 'b26631f4d7e7c4c95cfed395a2bb64b0141adb1f8a38f2823241fce9ef81a4d61bd445640a25cd548995c4b1bed08bfd74a5d83cb5ef946b5beacf727e81c8f6', b'1', b'1', b'1', b'1'),
     ('user_fin', 'Financeiro', '86e14b96b73a3c2c3d044fb59851951181dca6de24d31b8f07094432ffe9d7fe08c01dc5102cf564097537c9339cf8002a4bf7f9275e0462a79c8a1fbf417e73', b'1', b'1', b'1', b'1'),
