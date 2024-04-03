@@ -4,24 +4,94 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "employee_dependent")
-public record EmployeeDependent(
+public class EmployeeDependent implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_employee_dependent")
-    Integer id,
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
-    Employee employee,
+    private Employee employee;
 
     @Embedded
-    Person person,
+    @AttributeOverrides({
+        @AttributeOverride(name = "name", column = @Column(name = "name")),
+        @AttributeOverride(name = "rg", column = @Column(name = "rg")),
+        @AttributeOverride(name = "cpf", column = @Column(name = "cpf")),
+        @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date")),
+        @AttributeOverride(name = "gender", column = @Column(name = "gender")),
+    })
+    private Person person;
 
     @Column(name = "special_needs", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    Boolean specialNeeds,
+    private Boolean specialNeeds;
 
     @Embedded
-    EntityMetadata entityMetadata
-) implements Serializable { }
+    @AttributeOverrides({
+        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
+        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
+    })
+    private EntityMetadata entityMetadata;
+
+    public EmployeeDependent() {
+    }
+
+    public EmployeeDependent(Employee employee, Person person, Boolean specialNeeds, EntityMetadata entityMetadata) {
+        this.employee = employee;
+        this.person = person;
+        this.specialNeeds = specialNeeds;
+        this.entityMetadata = entityMetadata;
+    }
+
+    public EmployeeDependent(Integer id, Employee employee, Person person, Boolean specialNeeds, EntityMetadata entityMetadata) {
+        this.id = id;
+        this.employee = employee;
+        this.person = person;
+        this.specialNeeds = specialNeeds;
+        this.entityMetadata = entityMetadata;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Boolean getSpecialNeeds() {
+        return specialNeeds;
+    }
+
+    public void setSpecialNeeds(Boolean specialNeeds) {
+        this.specialNeeds = specialNeeds;
+    }
+
+    public EntityMetadata getEntityMetadata() {
+        return entityMetadata;
+    }
+
+    public void setEntityMetadata(EntityMetadata entityMetadata) {
+        this.entityMetadata = entityMetadata;
+    }
+}

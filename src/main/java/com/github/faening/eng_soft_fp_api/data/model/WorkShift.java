@@ -5,35 +5,157 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "work_shift")
-public record WorkShift(
+public class WorkShift implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_work_shift")
-    Integer id,
+    private Integer id;
 
     @Column(name = "description", length = 80, nullable = false)
-    String description,
+    private String description;
 
     @Column(name = "start_of_workday", nullable = false)
-    LocalTime startOfWorkday,
+    private LocalTime startOfWorkday;
 
     @Column(name = "start_of_break", nullable = false)
-    LocalTime startOfBreak,
+    private LocalTime startOfBreak;
 
     @Column(name = "end_of_break", nullable = false)
-    LocalTime endOfBreak,
+    private LocalTime endOfBreak;
 
     @Column(name = "end_of_workday", nullable = false)
-    LocalTime endOfWorkday,
+    private LocalTime endOfWorkday;
 
     @Column(name = "night_shift_allowance", columnDefinition = "BOOLEAN DEFAULT FALSE")
-    Boolean nightShiftAllowance,
+    private Boolean nightShiftAllowance;
 
-    @Column(name = "active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
-    Boolean active,
+    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean enabled;
 
     @Embedded
-    EntityMetadata entityMetadata
-) implements Serializable { }
+    @AttributeOverrides({
+        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
+        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
+    })
+    private EntityMetadata entityMetadata;
+
+    public WorkShift() {
+    }
+
+    public WorkShift(
+        String description,
+        LocalTime startOfWorkday,
+        LocalTime startOfBreak,
+        LocalTime endOfBreak,
+        LocalTime endOfWorkday,
+        Boolean nightShiftAllowance,
+        Boolean enabled,
+        EntityMetadata entityMetadata
+    ) {
+        this.description = description;
+        this.startOfWorkday = startOfWorkday;
+        this.startOfBreak = startOfBreak;
+        this.endOfBreak = endOfBreak;
+        this.endOfWorkday = endOfWorkday;
+        this.nightShiftAllowance = nightShiftAllowance;
+        this.enabled = enabled;
+        this.entityMetadata = entityMetadata;
+    }
+
+    public WorkShift(
+        Integer id,
+        String description,
+        LocalTime startOfWorkday,
+        LocalTime startOfBreak,
+        LocalTime endOfBreak,
+        LocalTime endOfWorkday,
+        Boolean nightShiftAllowance,
+        Boolean enabled,
+        EntityMetadata entityMetadata
+    ) {
+        this.id = id;
+        this.description = description;
+        this.startOfWorkday = startOfWorkday;
+        this.startOfBreak = startOfBreak;
+        this.endOfBreak = endOfBreak;
+        this.endOfWorkday = endOfWorkday;
+        this.nightShiftAllowance = nightShiftAllowance;
+        this.enabled = enabled;
+        this.entityMetadata = entityMetadata;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalTime getStartOfWorkday() {
+        return startOfWorkday;
+    }
+
+    public void setStartOfWorkday(LocalTime startOfWorkday) {
+        this.startOfWorkday = startOfWorkday;
+    }
+
+    public LocalTime getStartOfBreak() {
+        return startOfBreak;
+    }
+
+    public void setStartOfBreak(LocalTime startOfBreak) {
+        this.startOfBreak = startOfBreak;
+    }
+
+    public LocalTime getEndOfBreak() {
+        return endOfBreak;
+    }
+
+    public void setEndOfBreak(LocalTime endOfBreak) {
+        this.endOfBreak = endOfBreak;
+    }
+
+    public LocalTime getEndOfWorkday() {
+        return endOfWorkday;
+    }
+
+    public void setEndOfWorkday(LocalTime endOfWorkday) {
+        this.endOfWorkday = endOfWorkday;
+    }
+
+    public Boolean getNightShiftAllowance() {
+        return nightShiftAllowance;
+    }
+
+    public void setNightShiftAllowance(Boolean nightShiftAllowance) {
+        this.nightShiftAllowance = nightShiftAllowance;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public EntityMetadata getEntityMetadata() {
+        return entityMetadata;
+    }
+
+    public void setEntityMetadata(EntityMetadata entityMetadata) {
+        this.entityMetadata = entityMetadata;
+    }
+}

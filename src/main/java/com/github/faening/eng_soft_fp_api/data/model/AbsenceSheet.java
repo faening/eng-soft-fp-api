@@ -7,35 +7,145 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "absence_sheet")
-public record AbsenceSheet(
+public class AbsenceSheet implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_absence_sheet")
-    Integer id,
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
-    Employee employee,
+    private Employee employee;
 
     @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
-    AbsenceType type,
+    private AbsenceType type;
 
     @Column(name = "start_date", nullable = false)
-    LocalDateTime startDate,
+    private LocalDateTime startDate;
 
     @Column(name = "end_date", nullable = false)
-    LocalDateTime endDate,
+    private LocalDateTime endDate;
 
     @Column(name = "observation")
-    String observation,
+    private String observation;
 
     @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
-    ApprovalStatus status,
+    private ApprovalStatus status;
 
     @Embedded
-    EntityMetadata entityMetadata
-) implements Serializable { }
+    @AttributeOverrides({
+        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
+        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
+    })
+    private EntityMetadata entityMetadata;
+
+    public AbsenceSheet() {
+    }
+
+    public AbsenceSheet(
+        Employee employee,
+        AbsenceType type,
+        LocalDateTime startDate,
+        LocalDateTime endDate,
+        String observation,
+        ApprovalStatus status,
+        EntityMetadata entityMetadata
+    ) {
+        this.employee = employee;
+        this.type = type;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.observation = observation;
+        this.status = status;
+        this.entityMetadata = entityMetadata;
+    }
+
+    public AbsenceSheet(
+        Integer id,
+        Employee employee,
+        AbsenceType type,
+        LocalDateTime startDate,
+        LocalDateTime endDate,
+        String observation,
+        ApprovalStatus status,
+        EntityMetadata entityMetadata
+    ) {
+        this.id = id;
+        this.employee = employee;
+        this.type = type;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.observation = observation;
+        this.status = status;
+        this.entityMetadata = entityMetadata;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public AbsenceType getType() {
+        return type;
+    }
+
+    public void setType(AbsenceType type) {
+        this.type = type;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
+
+    public ApprovalStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApprovalStatus status) {
+        this.status = status;
+    }
+
+    public EntityMetadata getEntityMetadata() {
+        return entityMetadata;
+    }
+
+    public void setEntityMetadata(EntityMetadata entityMetadata) {
+        this.entityMetadata = entityMetadata;
+    }
+}
