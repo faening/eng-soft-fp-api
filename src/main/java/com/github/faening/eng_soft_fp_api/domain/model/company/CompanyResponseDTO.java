@@ -16,6 +16,7 @@ public class CompanyResponseDTO implements Serializable {
     private String email;
     private String addressStreet;
     private String addressNumber;
+    private String addressNeighborhood;
     private String addressComplement;
     private String addressCity;
     private String addressUF;
@@ -37,6 +38,7 @@ public class CompanyResponseDTO implements Serializable {
         String email,
         String addressStreet,
         String addressNumber,
+        String addressNeighborhood,
         String addressComplement,
         String addressCity,
         String addressUF,
@@ -54,6 +56,7 @@ public class CompanyResponseDTO implements Serializable {
         this.email = email;
         this.addressStreet = addressStreet;
         this.addressNumber = addressNumber;
+        this.addressNeighborhood = addressNeighborhood;
         this.addressComplement = addressComplement;
         this.addressCity = addressCity;
         this.addressUF = addressUF;
@@ -140,6 +143,14 @@ public class CompanyResponseDTO implements Serializable {
 
     public void setAddressNumber(String addressNumber) {
         this.addressNumber = addressNumber;
+    }
+
+    public String getAddressNeighborhood() {
+        return addressNeighborhood;
+    }
+
+    public void setAddressNeighborhood(String addressNeighborhood) {
+        this.addressNeighborhood = addressNeighborhood;
     }
 
     public String getAddressComplement() {

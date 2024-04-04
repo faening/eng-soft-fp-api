@@ -39,6 +39,7 @@ public class Company implements Serializable {
     @AttributeOverrides({
         @AttributeOverride(name = "addressStreet", column = @Column(name = "address_street")),
         @AttributeOverride(name = "addressNumber", column = @Column(name = "address_number")),
+        @AttributeOverride(name = "addressNeighborhood", column = @Column(name = "address_neighborhood")),
         @AttributeOverride(name = "addressComplement", column = @Column(name = "address_complement")),
         @AttributeOverride(name = "addressCity", column = @Column(name = "address_city")),
         @AttributeOverride(name = "addressUF", column = @Column(name = "address_uf")),
