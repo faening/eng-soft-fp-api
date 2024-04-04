@@ -1,10 +1,11 @@
 package com.github.faening.eng_soft_fp_api.domain.model.work_shift;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @SuppressWarnings("unused")
-public class WorkShiftDTO {
+public class WorkShiftDTO implements Serializable {
     private Integer id;
     private String description;
     private LocalTime startOfWorkday;
