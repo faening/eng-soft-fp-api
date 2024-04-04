@@ -83,46 +83,6 @@ public class Payroll implements Serializable {
     }
 
     public Payroll(
-        Company company,
-        Employee employee,
-        Month month,
-        Integer year,
-        BigDecimal grossSalary,
-        BigDecimal inssBaseAmount,
-        BigDecimal inssTaxRate,
-        BigDecimal irrfBaseAmount,
-        BigDecimal irrTaxRate,
-        BigDecimal fgtsBaseAmount,
-        BigDecimal fgtsPayed,
-        BigDecimal totalAdditions,
-        BigDecimal totalDiscounts,
-        BigDecimal totalLiquid,
-        List<PayrollItem> items,
-        PayrollStatus status,
-        String notes,
-        EntityMetadata entityMetadata
-    ) {
-        this.company = company;
-        this.employee = employee;
-        this.month = month;
-        this.year = year;
-        this.grossSalary = grossSalary;
-        this.inssBaseAmount = inssBaseAmount;
-        this.inssTaxRate = inssTaxRate;
-        this.irrfBaseAmount = irrfBaseAmount;
-        this.irrTaxRate = irrTaxRate;
-        this.fgtsBaseAmount = fgtsBaseAmount;
-        this.fgtsPayed = fgtsPayed;
-        this.totalAdditions = totalAdditions;
-        this.totalDiscounts = totalDiscounts;
-        this.totalLiquid = totalLiquid;
-        this.items = items;
-        this.status = status;
-        this.notes = notes;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public Payroll(
         Integer id,
         Company company,
         Employee employee,

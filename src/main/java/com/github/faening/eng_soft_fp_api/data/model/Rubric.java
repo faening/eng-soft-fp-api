@@ -45,24 +45,6 @@ public class Rubric implements Serializable {
     }
 
     public Rubric(
-        Integer code,
-        String name,
-        String kind,
-        String description,
-        RubricType type,
-        Boolean enabled,
-        EntityMetadata entityMetadata
-    ) {
-        this.code = code;
-        this.name = name;
-        this.kind = kind;
-        this.description = description;
-        this.type = type;
-        this.enabled = enabled;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public Rubric(
         Integer id,
         Integer code,
         String name,

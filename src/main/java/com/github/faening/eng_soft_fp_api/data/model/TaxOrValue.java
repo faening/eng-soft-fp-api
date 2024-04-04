@@ -48,26 +48,6 @@ public class TaxOrValue implements Serializable {
     }
 
     public TaxOrValue(
-        TaxOrValueType type,
-        Integer range,
-        BigDecimal rangeMinimumWage,
-        BigDecimal rangeMaximumWage,
-        BigDecimal fixedValue,
-        BigDecimal taxPercentage,
-        String description,
-        EntityMetadata entityMetadata
-    ) {
-        this.type = type;
-        this.range = range;
-        this.rangeMinimumWage = rangeMinimumWage;
-        this.rangeMaximumWage = rangeMaximumWage;
-        this.fixedValue = fixedValue;
-        this.taxPercentage = taxPercentage;
-        this.description = description;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public TaxOrValue(
         Integer id,
         TaxOrValueType type,
         Integer range,

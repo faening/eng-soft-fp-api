@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS company (
     email VARCHAR(50) DEFAULT NULL,
     address_street VARCHAR(100) NOT NULL,
     address_number VARCHAR(6) NOT NULL,
+    address_neighborhood VARCHAR(100) NOT NULL,
     address_complement VARCHAR(100),
     address_city VARCHAR(100) NOT NULL,
     address_uf ENUM('AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO') NOT NULL,

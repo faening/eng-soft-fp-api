@@ -48,24 +48,6 @@ public class AbsenceSheet implements Serializable {
     }
 
     public AbsenceSheet(
-        Employee employee,
-        AbsenceType type,
-        LocalDateTime startDate,
-        LocalDateTime endDate,
-        String observation,
-        ApprovalStatus status,
-        EntityMetadata entityMetadata
-    ) {
-        this.employee = employee;
-        this.type = type;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.observation = observation;
-        this.status = status;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public AbsenceSheet(
         Integer id,
         Employee employee,
         AbsenceType type,

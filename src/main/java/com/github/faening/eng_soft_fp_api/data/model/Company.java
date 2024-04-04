@@ -56,28 +56,6 @@ public class Company implements Serializable {
     public Company() { }
 
     public Company(
-        String corporateName,
-        String tradeName,
-        String cnpj,
-        String ie,
-        LocalDate openingDate,
-        String phone,
-        String email,
-        Address address,
-        EntityMetadata entityMetadata
-    ) {
-        this.corporateName = corporateName;
-        this.tradeName = tradeName;
-        this.cnpj = cnpj;
-        this.ie = ie;
-        this.openingDate = openingDate;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public Company(
         Integer id,
         String corporateName,
         String tradeName,

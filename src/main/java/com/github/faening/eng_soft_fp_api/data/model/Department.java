@@ -34,18 +34,6 @@ public class Department implements Serializable {
     }
 
     public Department(
-        String description,
-        Boolean enabled,
-        Employee manager,
-        EntityMetadata entityMetadata
-    ) {
-        this.description = description;
-        this.enabled = enabled;
-        this.manager = manager;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public Department(
         Integer id,
         String description,
         Boolean enabled,

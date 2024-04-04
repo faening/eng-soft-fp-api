@@ -36,15 +36,14 @@ public class Installment implements Serializable {
     public Installment() {
     }
 
-    public Installment(FinancialEvent financialEvent, Integer number, Double installmentValue, Boolean paid, EntityMetadata entityMetadata) {
-        this.financialEvent = financialEvent;
-        this.number = number;
-        this.installmentValue = installmentValue;
-        this.paid = paid;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public Installment(Integer id, FinancialEvent financialEvent, Integer number, Double installmentValue, Boolean paid, EntityMetadata entityMetadata) {
+    public Installment(
+        Integer id,
+        FinancialEvent financialEvent,
+        Integer number,
+        Double installmentValue,
+        Boolean paid,
+        EntityMetadata entityMetadata
+    ) {
         this.id = id;
         this.financialEvent = financialEvent;
         this.number = number;

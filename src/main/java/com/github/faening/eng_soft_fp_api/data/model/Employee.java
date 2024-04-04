@@ -93,44 +93,6 @@ public class Employee implements Serializable {
     }
 
     public Employee(
-        Person person,
-        Address address,
-        String phone,
-        String email,
-        LocalDate admissionDate,
-        Department department,
-        Job job,
-        WorkShift workShift,
-        BigDecimal salary,
-        List<EmployeeDependent> dependents,
-        List<AbsenceSheet> absenceSheets,
-        List<HoursWorkedSheet> hoursWorkedSheets,
-        List<FinancialEvent> financialEvents,
-        List<BenefitVoucher> benefitVouchers,
-        List<Department> managedDepartments,
-        Boolean enabled,
-        EntityMetadata entityMetadata
-    ) {
-        this.person = person;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.admissionDate = admissionDate;
-        this.department = department;
-        this.job = job;
-        this.workShift = workShift;
-        this.salary = salary;
-        this.dependents = dependents;
-        this.absenceSheets = absenceSheets;
-        this.hoursWorkedSheets = hoursWorkedSheets;
-        this.financialEvents = financialEvents;
-        this.benefitVouchers = benefitVouchers;
-        this.managedDepartments = managedDepartments;
-        this.enabled = enabled;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public Employee(
         Integer id,
         Person person,
         Address address,

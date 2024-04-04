@@ -47,24 +47,6 @@ public class PayrollItem implements Serializable {
     }
 
     public PayrollItem(
-        Payroll payroll,
-        Rubric rubric,
-        TaxOrValue taxOrValue,
-        FinancialEvent financialEvent,
-        BigDecimal baseValue,
-        BigDecimal calculatedValue,
-        EntityMetadata entityMetadata
-    ) {
-        this.payroll = payroll;
-        this.rubric = rubric;
-        this.taxOrValue = taxOrValue;
-        this.financialEvent = financialEvent;
-        this.baseValue = baseValue;
-        this.calculatedValue = calculatedValue;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public PayrollItem(
         Integer id,
         Payroll payroll,
         Rubric rubric,

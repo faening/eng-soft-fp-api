@@ -49,24 +49,6 @@ public class FinancialEvent implements Serializable {
     }
 
     public FinancialEvent(
-        Employee employee,
-        Rubric rubric,
-        BigDecimal value,
-        LocalDate releaseDate,
-        ApprovalStatus status,
-        List<Installment> installments,
-        EntityMetadata entityMetadata
-    ) {
-        this.employee = employee;
-        this.rubric = rubric;
-        this.value = value;
-        this.releaseDate = releaseDate;
-        this.status = status;
-        this.installments = installments;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public FinancialEvent(
         Integer id,
         Employee employee,
         Rubric rubric,

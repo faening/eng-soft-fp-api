@@ -49,26 +49,6 @@ public class Job implements Serializable {
     }
 
     public Job(
-        String description,
-        ExperienceLevel experienceLevel,
-        BigDecimal baseSalary,
-        Boolean dangerousness,
-        Boolean unhealthiness,
-        Department department,
-        Boolean enabled,
-        EntityMetadata entityMetadata
-    ) {
-        this.description = description;
-        this.experienceLevel = experienceLevel;
-        this.baseSalary = baseSalary;
-        this.dangerousness = dangerousness;
-        this.unhealthiness = unhealthiness;
-        this.department = department;
-        this.enabled = enabled;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public Job(
         Integer id,
         String description,
         ExperienceLevel experienceLevel,

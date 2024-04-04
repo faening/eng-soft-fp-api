@@ -17,6 +17,9 @@ public class Address implements Serializable {
     @Column(name = "address_number", length = 6, nullable = false)
     private String addressNumber;
 
+    @Column(name = "address_neighborhood", length = 100, nullable = false)
+    private String addressneighborhood;
+
     @Column(name = "address_complement", length = 100)
     private String addressComplement;
 
@@ -30,11 +33,21 @@ public class Address implements Serializable {
     @Column(name = "address_zipCode", length = 8, nullable = false)
     private String addressZipCode;
 
-    public Address() { }
+    public Address() {
+    }
 
-    public Address(String addressStreet, String addressNumber, String addressComplement, String addressCity, BrazilianState addressUF, String addressZipCode) {
+    public Address(
+        String addressStreet,
+        String addressNumber,
+        String addressneighborhood,
+        String addressComplement,
+        String addressCity,
+        BrazilianState addressUF,
+        String addressZipCode
+    ) {
         this.addressStreet = addressStreet;
         this.addressNumber = addressNumber;
+        this.addressneighborhood = addressneighborhood;
         this.addressComplement = addressComplement;
         this.addressCity = addressCity;
         this.addressUF = addressUF;
@@ -55,6 +68,14 @@ public class Address implements Serializable {
 
     public void setAddressNumber(String addressNumber) {
         this.addressNumber = addressNumber;
+    }
+
+    public String getAddressneighborhood() {
+        return addressneighborhood;
+    }
+
+    public void setAddressneighborhood(String addressneighborhood) {
+        this.addressneighborhood = addressneighborhood;
     }
 
     public String getAddressComplement() {

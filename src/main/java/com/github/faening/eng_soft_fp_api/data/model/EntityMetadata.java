@@ -19,7 +19,8 @@ public class EntityMetadata implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public EntityMetadata() { }
+    public EntityMetadata() {
+    }
 
     public EntityMetadata(LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.createdAt = createdAt;

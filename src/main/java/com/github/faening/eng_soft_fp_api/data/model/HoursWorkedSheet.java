@@ -44,6 +44,31 @@ public class HoursWorkedSheet implements Serializable {
     })
     private EntityMetadata entityMetadata;
 
+    public HoursWorkedSheet() {
+    }
+
+    public HoursWorkedSheet(
+        Integer id,
+        Employee employee,
+        LocalDate date,
+        LocalTime regularHours,
+        LocalTime negativeHours,
+        LocalTime overtime50,
+        LocalTime overtime100,
+        LocalTime timeBank,
+        EntityMetadata entityMetadata
+    ) {
+        this.id = id;
+        this.employee = employee;
+        this.date = date;
+        this.regularHours = regularHours;
+        this.negativeHours = negativeHours;
+        this.overtime50 = overtime50;
+        this.overtime100 = overtime100;
+        this.timeBank = timeBank;
+        this.entityMetadata = entityMetadata;
+    }
+
     public Integer getId() {
         return id;
     }

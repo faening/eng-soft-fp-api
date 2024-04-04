@@ -46,26 +46,6 @@ public class WorkShift implements Serializable {
     }
 
     public WorkShift(
-        String description,
-        LocalTime startOfWorkday,
-        LocalTime startOfBreak,
-        LocalTime endOfBreak,
-        LocalTime endOfWorkday,
-        Boolean nightShiftAllowance,
-        Boolean enabled,
-        EntityMetadata entityMetadata
-    ) {
-        this.description = description;
-        this.startOfWorkday = startOfWorkday;
-        this.startOfBreak = startOfBreak;
-        this.endOfBreak = endOfBreak;
-        this.endOfWorkday = endOfWorkday;
-        this.nightShiftAllowance = nightShiftAllowance;
-        this.enabled = enabled;
-        this.entityMetadata = entityMetadata;
-    }
-
-    public WorkShift(
         Integer id,
         String description,
         LocalTime startOfWorkday,

@@ -40,13 +40,6 @@ public class EmployeeDependent implements Serializable {
     public EmployeeDependent() {
     }
 
-    public EmployeeDependent(Employee employee, Person person, Boolean specialNeeds, EntityMetadata entityMetadata) {
-        this.employee = employee;
-        this.person = person;
-        this.specialNeeds = specialNeeds;
-        this.entityMetadata = entityMetadata;
-    }
-
     public EmployeeDependent(Integer id, Employee employee, Person person, Boolean specialNeeds, EntityMetadata entityMetadata) {
         this.id = id;
         this.employee = employee;

@@ -62,40 +62,6 @@ public class CompanyResponseDTO implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public CompanyResponseDTO(
-        String corporateName,
-        String tradeName,
-        String cnpj,
-        String ie,
-        LocalDate openingDate,
-        String phone,
-        String email,
-        String addressStreet,
-        String addressNumber,
-        String addressComplement,
-        String addressCity,
-        String addressUF,
-        String addressZipCode,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
-    ) {
-        this.corporateName = corporateName;
-        this.tradeName = tradeName;
-        this.cnpj = cnpj;
-        this.ie = ie;
-        this.openingDate = openingDate;
-        this.phone = phone;
-        this.email = email;
-        this.addressStreet = addressStreet;
-        this.addressNumber = addressNumber;
-        this.addressComplement = addressComplement;
-        this.addressCity = addressCity;
-        this.addressUF = addressUF;
-        this.addressZipCode = addressZipCode;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     public Integer getId() {
         return id;
     }
