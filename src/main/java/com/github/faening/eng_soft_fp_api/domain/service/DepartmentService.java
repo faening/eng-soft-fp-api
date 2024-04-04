@@ -29,38 +29,45 @@ public class DepartmentService {
         this.departmentResponseMapper = departmentResponseMapper;
     }
 
-    private Department searchDepartmentById(Integer id) {
+    public Department searchDepartmentById(Integer id) {
         return departmentRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Nenhum departamento encontrado com o id: " + id)
         );
     }
 
     public List<DepartmentResponseDTO> getAllDepartments() {
-        List<Department> departments = departmentRepository.findAll();                     // Busca todos os departamentos
-        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(departments); // Mapeia a lista de entidades `Department` para a lista de `DepartmentResponseDTO` e a retorna
+        List<Department> departments = departmentRepository.findAll();
+        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(departments);
     }
 
     public DepartmentResponseDTO getDepartmentById(Integer id) {
-        Department department = searchDepartmentById(id);                                 // Busca o departamento pelo id
-        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(department); // Mapeia a entidade `Department` para o `DepartmentResponseDTO` e o retorna
+        Department department = searchDepartmentById(id);
+        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(department);
     }
 
     public DepartmentResponseDTO createDepartment(DepartmentRequestDTO departmentRequestDTO) {
-        departmentRequestDTO.setEnabled(departmentRequestDTO.getEnabled() == null);                                // Define o valor padrão para o campo `enabled`
-        Department department = departmentRequestMapper.mapDepartmentRequestDTOToDepartment(departmentRequestDTO); // Mapeia o `DepartmentRequestDTO` para a entidade `Department`
-        Department createdDepartment = departmentRepository.save(department);                                      // Salva o departamento no banco de dados
-        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(createdDepartment);                   // Mapeia a entidade `Department para o `DepartmentResponseDTO` e o retorna
+        validateDepartmentRequestDTO(departmentRequestDTO);
+        Department department = departmentRequestMapper.mapDepartmentRequestDTOToDepartment(departmentRequestDTO);
+        Department createdDepartment = departmentRepository.save(department);
+        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(createdDepartment);
     }
 
     public DepartmentResponseDTO updateDepartment(Integer id, DepartmentRequestDTO departmentRequestDTO) {
-        Department department = searchDepartmentById(id);                                        // Busca o departamento pelo id
-        departmentRequestMapper.updateSourceFromDestination(department, departmentRequestDTO);   // Atualiza o departamento com os dados do `DepartmentRequestDTO`
-        Department updatedDepartment = departmentRepository.save(department);                    // Salva o departamento no banco de dados
-        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(updatedDepartment); // Mapeia a entidade `Department para o `DepartmentResponseDTO` e o retorna
+        validateDepartmentRequestDTO(departmentRequestDTO);
+        Department department = searchDepartmentById(id);
+        departmentRequestMapper.updateSourceFromDestination(department, departmentRequestDTO);
+        Department updatedDepartment = departmentRepository.save(department);
+        return departmentResponseMapper.mapDepartmentToDepartmentResponseDTO(updatedDepartment);
     }
 
     public void deleteDepartment(Integer id) {
-        Department department = searchDepartmentById(id); // Busca o departamento pelo id
-        departmentRepository.delete(department);          // Deleta o departamento do banco de dados
+        Department department = searchDepartmentById(id);
+        departmentRepository.delete(department);
+    }
+
+    private void validateDepartmentRequestDTO(DepartmentRequestDTO departmentRequestDTO) {
+        if (departmentRequestDTO.getDescription() == null || departmentRequestDTO.getDescription().isEmpty()) throw new IllegalArgumentException("Description is required");
+        if (departmentRequestDTO.getManagerId() == null) throw new IllegalArgumentException("Manager ID is required");
+        if (departmentRequestDTO.getEnabled() == null) departmentRequestDTO.setEnabled(true);
     }
 }
