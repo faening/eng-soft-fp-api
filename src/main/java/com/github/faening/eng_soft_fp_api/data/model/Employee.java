@@ -30,6 +30,7 @@ public class Employee implements Serializable {
     @AttributeOverrides({
         @AttributeOverride(name = "addressStreet", column = @Column(name = "address_street")),
         @AttributeOverride(name = "addressNumber", column = @Column(name = "address_number")),
+        @AttributeOverride(name = "addressNeighborhood", column = @Column(name = "address_neighborhood")),
         @AttributeOverride(name = "addressComplement", column = @Column(name = "address_complement")),
         @AttributeOverride(name = "addressCity", column = @Column(name = "address_city")),
         @AttributeOverride(name = "addressUF", column = @Column(name = "address_uf")),
@@ -92,26 +93,7 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(
-        Integer id,
-        Person person,
-        Address address,
-        String phone,
-        String email,
-        LocalDate admissionDate,
-        Department department,
-        Job job,
-        WorkShift workShift,
-        BigDecimal salary,
-        List<EmployeeDependent> dependents,
-        List<AbsenceSheet> absenceSheets,
-        List<HoursWorkedSheet> hoursWorkedSheets,
-        List<FinancialEvent> financialEvents,
-        List<BenefitVoucher> benefitVouchers,
-        List<Department> managedDepartments,
-        Boolean enabled,
-        EntityMetadata entityMetadata
-    ) {
+    public Employee(Integer id, Person person, Address address, String phone, String email, LocalDate admissionDate, Department department, Job job, WorkShift workShift, BigDecimal salary, List<EmployeeDependent> dependents, List<AbsenceSheet> absenceSheets, List<HoursWorkedSheet> hoursWorkedSheets, List<FinancialEvent> financialEvents, List<BenefitVoucher> benefitVouchers, List<Department> managedDepartments, Boolean enabled, EntityMetadata entityMetadata) {
         this.id = id;
         this.person = person;
         this.address = address;

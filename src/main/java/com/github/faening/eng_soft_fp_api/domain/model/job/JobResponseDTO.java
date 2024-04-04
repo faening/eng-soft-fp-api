@@ -1,63 +1,39 @@
-package com.github.faening.eng_soft_fp_api.data.model;
+package com.github.faening.eng_soft_fp_api.domain.model.job;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.ExperienceLevel;
-import jakarta.persistence.*;
+import com.github.faening.eng_soft_fp_api.domain.model.department.DepartmentResponseDTO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
-@Entity
-@Table(name = "job")
-public class Job implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_job")
+public class JobResponseDTO implements Serializable {
     private Integer id;
-
-    @Column(name = "description", length = 100, nullable = false)
     private String description;
-
-    @Column(name = "experience_level", nullable = false, columnDefinition = "DEFAULT 'ENTRY_LEVEL'")
-    @Enumerated(EnumType.STRING)
     private ExperienceLevel experienceLevel;
-
-    @Column(name = "base_salary", nullable = false, precision = 10, scale = 2)
     private BigDecimal baseSalary;
-
-    @Column(name = "dangerousness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean dangerousness;
-
-    @Column(name = "unhealthiness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean unhealthiness;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
-    private Department department;
-
-    @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private DepartmentResponseDTO department;
     private Boolean enabled;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
-        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
-    })
-    private EntityMetadata entityMetadata;
-
-    public Job() {
+    public JobResponseDTO() {
     }
 
-    public Job(
+    public JobResponseDTO(
         Integer id,
         String description,
         ExperienceLevel experienceLevel,
         BigDecimal baseSalary,
         Boolean dangerousness,
         Boolean unhealthiness,
-        Department department,
+        DepartmentResponseDTO department,
         Boolean enabled,
-        EntityMetadata entityMetadata
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
         this.id = id;
         this.description = description;
@@ -67,7 +43,8 @@ public class Job implements Serializable {
         this.unhealthiness = unhealthiness;
         this.department = department;
         this.enabled = enabled;
-        this.entityMetadata = entityMetadata;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Integer getId() {
@@ -118,11 +95,11 @@ public class Job implements Serializable {
         this.unhealthiness = unhealthiness;
     }
 
-    public Department getDepartment() {
+    public DepartmentResponseDTO getDepartment() {
         return department;
     }
 
-    public void setDepartment(Department department) {
+    public void setDepartment(DepartmentResponseDTO department) {
         this.department = department;
     }
 
@@ -134,11 +111,19 @@ public class Job implements Serializable {
         this.enabled = enabled;
     }
 
-    public EntityMetadata getEntityMetadata() {
-        return entityMetadata;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setEntityMetadata(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
