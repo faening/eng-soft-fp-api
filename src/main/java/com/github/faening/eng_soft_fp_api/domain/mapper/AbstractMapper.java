@@ -1,8 +1,8 @@
 package com.github.faening.eng_soft_fp_api.domain.mapper;
 
+import jakarta.annotation.PostConstruct;
 import org.modelmapper.Condition;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @SuppressWarnings("unused")
@@ -13,9 +13,12 @@ public abstract class AbstractMapper<S, D> {
     @SuppressWarnings("rawtypes")
     public Condition notNull = ctx -> ctx.getSource() != null;
 
-    @Autowired
     public AbstractMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
+    }
+
+    @PostConstruct
+    public void init() {
         createSourceToDestinationMapping();
         createDestinationToSourceMapping();
     }
