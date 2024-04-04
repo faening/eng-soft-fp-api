@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS payroll_item (
     rubric_id INT NOT NULL,
     tax_or_value_id INT,
     financial_event_id INT,
-    base_value DECIMAL(10, 2) NOT NULL,
+    base_value DECIMAL(10, 2),
     calculated_value DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -18,7 +18,7 @@ public class Payroll implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", referencedColumnName = "id_company", nullable = false)
+    @JoinColumn(name = "company_id", referencedColumnName = "id_company", nullable = false, columnDefinition = "DEFAULT 1")
     private Company company;
 
     @ManyToOne(fetch = FetchType.EAGER)

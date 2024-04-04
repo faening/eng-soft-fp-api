@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS financial_event (
-    id_financial_event INT NOT NULL,
+    id_financial_event INT NOT NULL AUTO_INCREMENT,
     employee_id INT NOT NULL,
     rubric_id INT NOT NULL,
     value DECIMAL(10,2) NOT NULL,

@@ -30,7 +30,7 @@ public class PayrollItem implements Serializable {
     @JoinColumn(name = "financial_event_id", referencedColumnName = "id_financial_event")
     private FinancialEvent financialEvent;
 
-    @Column(name = "base_value", nullable = false, precision = 10, scale = 2)
+    @Column(name = "base_value", precision = 10, scale = 2)
     private BigDecimal baseValue;
 
     @Column(name = "calculated_value", nullable = false, precision = 10, scale = 2)

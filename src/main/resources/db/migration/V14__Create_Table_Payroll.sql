@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS payroll (
     id_payroll INT NOT NULL AUTO_INCREMENT,
-    company_id INT NOT NULL,
+    company_id INT NOT NULL DEFAULT 1,
     employee_id INT NOT NULL,
     month ENUM('JANUARY','FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER','NOVEMBER', 'DECEMBER') NOT NULL,
     year INT NOT NULL,
