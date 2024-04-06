@@ -2,6 +2,8 @@ package com.github.faening.eng_soft_fp_api.data.model;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.ExperienceLevel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -28,8 +30,10 @@ public class Job implements Serializable {
     @Column(name = "dangerousness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean dangerousness;
 
-    @Column(name = "unhealthiness", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean unhealthiness;
+    @Column(name = "unhealthiness", nullable = false, columnDefinition = "DEFAULT 0")
+    @Min(0)
+    @Max(3)
+    private Integer unhealthiness;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
@@ -54,7 +58,7 @@ public class Job implements Serializable {
         ExperienceLevel experienceLevel,
         BigDecimal baseSalary,
         Boolean dangerousness,
-        Boolean unhealthiness,
+        Integer unhealthiness,
         Department department,
         Boolean enabled,
         EntityMetadata entityMetadata
@@ -110,11 +114,11 @@ public class Job implements Serializable {
         this.dangerousness = dangerousness;
     }
 
-    public Boolean getUnhealthiness() {
+    public Integer getUnhealthiness() {
         return unhealthiness;
     }
 
-    public void setUnhealthiness(Boolean unhealthiness) {
+    public void setUnhealthiness(Integer unhealthiness) {
         this.unhealthiness = unhealthiness;
     }
 

@@ -15,23 +15,18 @@ VALUES
     ('MEAL_ALLOWANCE', NULL, NULL, NULL, 25.0, NULL, 'Valor diário do vale alimentação ou refeição'),
 
     -- Comissão de Vendas
-    ('MEAL_ALLOWANCE', 1, 5000.0, 20000.0, NULL, 2.0, 'Percentual de comissão para vendas entre R$ 5.000.00 até R$ 20.000,00'),
-    ('MEAL_ALLOWANCE', 2, 20000.01, 40000.0, NULL, 3.0, 'Percentual de comissão para vendas entre R$ 20.000,01 até R$ 40.000,00'),
-    ('MEAL_ALLOWANCE', 3, 40000.01, 60000.0, NULL, 4.0, 'Percentual de comissão para vendas entre R$ 40.000,01 até R$ 60.000,00'),
-    ('MEAL_ALLOWANCE', 4, 60000.01, 80000.0, NULL, 5.0, 'Percentual de comissão para vendas entre R$ 60.000,01 até R$ 80.000,00'),
-    ('MEAL_ALLOWANCE', 5, 80000.01, 100000.0, NULL, 6.0, 'Percentual de comissão para vendas entre R$ 80.000,01 até R$ 100.000,00'),
-    ('MEAL_ALLOWANCE', 6, 100000.01, 999999.99, NULL, 7.0, 'Percentual de comissão para vendas acima de R$ 100.000,00'),
+    ('SALES_ALLOWANCE', NULL, NULL, NULL, NULL, 5.0, 'Percentual de comissão para vendas'),
 
     -- Adicional Noturno
     ('NIGHT_SHIFT_ALLOWANCE', NULL, NULL, NULL, NULL, 20.0, 'Percentual de adicional noturno'),
 
     -- Insalubridade
-    ('NIGHT_SHIFT_ALLOWANCE', 1, NULL, NULL, NULL, 10.0, 'Percentual de adicional por insalubridade - grau mínimo'),
-    ('NIGHT_SHIFT_ALLOWANCE', 2, NULL, NULL, NULL, 20.0, 'Percentual de adicional por insalubridade - grau médio'),
-    ('NIGHT_SHIFT_ALLOWANCE', 3, NULL, NULL, NULL, 30.0, 'Percentual de adicional por insalubridade - grau máximo'),
+    ('UNHEALTHINESS_ALLOWANCE', 1, NULL, NULL, NULL, 10.0, 'Percentual de adicional por insalubridade - grau mínimo'),
+    ('UNHEALTHINESS_ALLOWANCE', 2, NULL, NULL, NULL, 20.0, 'Percentual de adicional por insalubridade - grau médio'),
+    ('UNHEALTHINESS_ALLOWANCE', 3, NULL, NULL, NULL, 30.0, 'Percentual de adicional por insalubridade - grau máximo'),
 
     -- Periculosidade
-    ('NIGHT_SHIFT_ALLOWANCE', NULL, NULL, NULL, NULL, 30.0, 'Percentual de adicional por periculosidade'),
+    ('DANGEROUSNESS_ALLOWANCE', NULL, NULL, NULL, NULL, 30.0, 'Percentual de adicional por periculosidade'),
 
     -- Salário Família
     ('FAMILY_ALLOWANCE', NULL, NULL, NULL, 70.6, 5.0, 'Percentual de adicional para salário família'),

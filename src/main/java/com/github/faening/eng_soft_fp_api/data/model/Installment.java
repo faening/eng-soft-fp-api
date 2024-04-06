@@ -13,7 +13,7 @@ public class Installment implements Serializable {
     @Column(name = "id_installment")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "financial_event_id", referencedColumnName = "id_financial_event", nullable = false)
     private FinancialEvent financialEvent;
 

@@ -35,7 +35,7 @@ public class FinancialEvent implements Serializable {
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
 
-    @OneToMany(mappedBy = "financialEvent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "financialEvent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Installment> installments;
 
     @Embedded

@@ -88,16 +88,16 @@ VALUES
     ('Analista de Suporte', 'EXPERT', 3150.00, 0, 0, 8),
 
     -- Produção
-    ('Técnido de Produção', 'TRAINEE', 1100.00, 0, 1, 9),
-    ('Técnido de Produção', 'ENTRY_LEVEL', 1400.00, 0, 1, 9),
-    ('Técnido de Produção', 'JUNIOR', 1750.00, 0, 1, 9),
-    ('Técnido de Produção', 'MID_LEVEL', 2200.00, 0, 1, 9),
-    ('Técnido de Produção', 'SENIOR', 2750.00, 0, 1, 9),
-    ('Técnido de Produção', 'EXPERT', 3400.00, 0, 1, 9),
+    ('Técnido de Produção', 'TRAINEE', 1100.00, 0, 2, 9),
+    ('Técnido de Produção', 'ENTRY_LEVEL', 1400.00, 0, 2, 9),
+    ('Técnido de Produção', 'JUNIOR', 1750.00, 0, 2, 9),
+    ('Técnido de Produção', 'MID_LEVEL', 2200.00, 0, 2, 9),
+    ('Técnido de Produção', 'SENIOR', 2750.00, 0, 2, 9),
+    ('Técnido de Produção', 'EXPERT', 3400.00, 0, 2, 9),
 
-    ('Operador de Máquinas', 'MID_LEVEL', 2600.00, 1, 1, 9),
-    ('Operador de Máquinas', 'SENIOR', 3250.00, 1, 1, 9),
-    ('Operador de Máquinas', 'EXPERT', 4000.00, 1, 1, 9),
+    ('Operador de Máquinas', 'MID_LEVEL', 2600.00, 1, 3, 9),
+    ('Operador de Máquinas', 'SENIOR', 3250.00, 1, 3, 9),
+    ('Operador de Máquinas', 'EXPERT', 4000.00, 1, 3, 9),
 
     ('Técnido em Manutenção de Máquinas', 'MID_LEVEL', 2500.00, 1, 0, 9),
     ('Técnido em Manutenção de Máquinas', 'SENIOR', 3150.00, 1, 0, 9),
