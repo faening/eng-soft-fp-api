@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS employee (
     phone VARCHAR(11),
     email VARCHAR(80),
     admission_date DATE NOT NULL,
+    time_service_allowance BOOLEAN NOT NULL DEFAULT FALSE,
     department_id INT NOT NULL,
     job_id INT NOT NULL,
     work_shift_id INT NOT NULL,

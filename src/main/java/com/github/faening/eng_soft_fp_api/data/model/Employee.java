@@ -47,6 +47,9 @@ public class Employee implements Serializable {
     @Column(name = "admission_date", nullable = false)
     private LocalDate admissionDate;
 
+    @Column(name = "time_service_allowance", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean timeServiceAllowance;
+
     @ManyToOne
     @JoinColumn(name = "department_id", referencedColumnName = "id_department", nullable = false)
     private Department department;
@@ -93,13 +96,34 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(Integer id, Person person, Address address, String phone, String email, LocalDate admissionDate, Department department, Job job, WorkShift workShift, BigDecimal salary, List<EmployeeDependent> dependents, List<AbsenceSheet> absenceSheets, List<HoursWorkedSheet> hoursWorkedSheets, List<FinancialEvent> financialEvents, List<BenefitVoucher> benefitVouchers, List<Department> managedDepartments, Boolean enabled, EntityMetadata entityMetadata) {
+    public Employee(
+        Integer id,
+        Person person,
+        Address address,
+        String phone,
+        String email,
+        LocalDate admissionDate,
+        Boolean timeServiceAllowance,
+        Department department,
+        Job job,
+        WorkShift workShift,
+        BigDecimal salary,
+        List<EmployeeDependent> dependents,
+        List<AbsenceSheet> absenceSheets,
+        List<HoursWorkedSheet> hoursWorkedSheets,
+        List<FinancialEvent> financialEvents,
+        List<BenefitVoucher> benefitVouchers,
+        List<Department> managedDepartments,
+        Boolean enabled,
+        EntityMetadata entityMetadata
+    ) {
         this.id = id;
         this.person = person;
         this.address = address;
         this.phone = phone;
         this.email = email;
         this.admissionDate = admissionDate;
+        this.timeServiceAllowance = timeServiceAllowance;
         this.department = department;
         this.job = job;
         this.workShift = workShift;
@@ -160,6 +184,14 @@ public class Employee implements Serializable {
 
     public void setAdmissionDate(LocalDate admissionDate) {
         this.admissionDate = admissionDate;
+    }
+
+    public Boolean getTimeServiceAllowance() {
+        return timeServiceAllowance;
+    }
+
+    public void setTimeServiceAllowance(Boolean timeServiceAllowance) {
+        this.timeServiceAllowance = timeServiceAllowance;
     }
 
     public Department getDepartment() {
