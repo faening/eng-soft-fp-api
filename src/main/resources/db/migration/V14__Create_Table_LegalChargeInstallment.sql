@@ -1,6 +1,6 @@
-CREATE TABLE IF NOT EXISTS installment (
-    id_installment INT NOT NULL AUTO_INCREMENT,
-    loan_id INT NOT NULL,
+CREATE TABLE IF NOT EXISTS legal_charge_installment (
+    id_legal_charge_installment INT NOT NULL AUTO_INCREMENT,
+    legal_charge_id INT NOT NULL,
     installment_number INT NOT NULL,
     installment_value DECIMAL(10,2) NOT NULL,
     discount_month ENUM(
@@ -25,6 +25,6 @@ CREATE TABLE IF NOT EXISTS installment (
         'CANCELED') NOT NULL DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (id_installment),
-    FOREIGN KEY (loan_id) REFERENCES loan(id_loan)
+    PRIMARY KEY (id_legal_charge_installment),
+    FOREIGN KEY (legal_charge_id) REFERENCES legal_charge(id_legal_charge)
 );

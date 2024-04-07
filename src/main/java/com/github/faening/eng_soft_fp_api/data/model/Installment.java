@@ -2,24 +2,17 @@ package com.github.faening.eng_soft_fp_api.data.model;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.Month;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @SuppressWarnings("unused")
-@Entity
-@Table(name = "installment")
+@Embeddable
 public class Installment implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_installment")
-    private Integer id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "loan_id", referencedColumnName = "id_loan", nullable = false)
-    private Loan loan;
-
     @Column(name = "installment_number", nullable = false)
     private Integer installmentNumber;
 
@@ -34,15 +27,50 @@ public class Installment implements Serializable {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
-        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
-    })
-    private EntityMetadata entityMetadata;
-
     public Installment() {
     }
 
+    public Installment(
+        Integer installmentNumber,
+        BigDecimal installmentValue,
+        Month discountMonth,
+        PaymentStatus paymentStatus
+    ) {
+        this.installmentNumber = installmentNumber;
+        this.installmentValue = installmentValue;
+        this.discountMonth = discountMonth;
+        this.paymentStatus = paymentStatus;
+    }
 
+    public Integer getInstallmentNumber() {
+        return installmentNumber;
+    }
+
+    public void setInstallmentNumber(Integer installmentNumber) {
+        this.installmentNumber = installmentNumber;
+    }
+
+    public BigDecimal getInstallmentValue() {
+        return installmentValue;
+    }
+
+    public void setInstallmentValue(BigDecimal installmentValue) {
+        this.installmentValue = installmentValue;
+    }
+
+    public Month getDiscountMonth() {
+        return discountMonth;
+    }
+
+    public void setDiscountMonth(Month discountMonth) {
+        this.discountMonth = discountMonth;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 }

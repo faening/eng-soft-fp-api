@@ -41,7 +41,7 @@ public class Loan implements Serializable {
     private PaymentStatus paymentStatus;
 
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Installment> installments;
+    private List<LoanInstallment> installments;
 
     @Embedded
     @AttributeOverrides({
@@ -53,5 +53,107 @@ public class Loan implements Serializable {
     public Loan() {
     }
 
+    public Loan(
+        Integer id,
+        Employee employee,
+        BigDecimal loanAmountValue,
+        Integer installmentQuantity,
+        LocalDate requestDate,
+        LocalDate approvalDate,
+        LocalDate companyPaymentDate,
+        PaymentStatus paymentStatus,
+        List<LoanInstallment> installments,
+        EntityMetadata entityMetadata
+    ) {
+        this.id = id;
+        this.employee = employee;
+        this.loanAmountValue = loanAmountValue;
+        this.installmentQuantity = installmentQuantity;
+        this.requestDate = requestDate;
+        this.approvalDate = approvalDate;
+        this.companyPaymentDate = companyPaymentDate;
+        this.paymentStatus = paymentStatus;
+        this.installments = installments;
+        this.entityMetadata = entityMetadata;
+    }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public BigDecimal getLoanAmountValue() {
+        return loanAmountValue;
+    }
+
+    public void setLoanAmountValue(BigDecimal loanAmountValue) {
+        this.loanAmountValue = loanAmountValue;
+    }
+
+    public Integer getInstallmentQuantity() {
+        return installmentQuantity;
+    }
+
+    public void setInstallmentQuantity(Integer installmentQuantity) {
+        this.installmentQuantity = installmentQuantity;
+    }
+
+    public LocalDate getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(LocalDate requestDate) {
+        this.requestDate = requestDate;
+    }
+
+    public LocalDate getApprovalDate() {
+        return approvalDate;
+    }
+
+    public void setApprovalDate(LocalDate approvalDate) {
+        this.approvalDate = approvalDate;
+    }
+
+    public LocalDate getCompanyPaymentDate() {
+        return companyPaymentDate;
+    }
+
+    public void setCompanyPaymentDate(LocalDate companyPaymentDate) {
+        this.companyPaymentDate = companyPaymentDate;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public List<LoanInstallment> getInstallments() {
+        return installments;
+    }
+
+    public void setInstallments(List<LoanInstallment> installments) {
+        this.installments = installments;
+    }
+
+    public EntityMetadata getEntityMetadata() {
+        return entityMetadata;
+    }
+
+    public void setEntityMetadata(EntityMetadata entityMetadata) {
+        this.entityMetadata = entityMetadata;
+    }
 }

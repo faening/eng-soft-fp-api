@@ -1,4 +1,4 @@
-INSERT INTO installment
+INSERT INTO loan_installment
     (loan_id, installment_number, installment_value, discount_month, payment_status)
 VALUES
     -- Employee 38: Isaac Samuel da Paz
