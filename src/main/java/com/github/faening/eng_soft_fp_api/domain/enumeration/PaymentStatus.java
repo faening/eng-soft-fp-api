@@ -11,7 +11,8 @@ public enum PaymentStatus {
     RELEASED("payrollStatus.released"),
     APPROVED("payrollStatus.approved"),
     DENIED("payrollStatus.denied"),
-    PAID("payrollStatus.paid");
+    PAID("payrollStatus.paid"),
+    CANCELED("payrollStatus.canceled");
 
     private final String code;
     private static MessageSource messageSource;

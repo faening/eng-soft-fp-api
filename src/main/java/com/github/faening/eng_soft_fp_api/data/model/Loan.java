@@ -3,6 +3,7 @@ package com.github.faening.eng_soft_fp_api.data.model;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Entity
 @Table(name = "loan")
-public class Loan {
+public class Loan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_loan")

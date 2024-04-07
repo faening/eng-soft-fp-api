@@ -1,34 +1,32 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
-import com.github.faening.eng_soft_fp_api.domain.enumeration.ApprovalStatus;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @SuppressWarnings("unused")
 @Entity
-@Table(name = "trip_expense")
-public class TripExpense implements Serializable {
+@Table(name = "union_contribution")
+public class UnionContribution implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_trip_expense")
+    @Column(name = "id_union_contribution")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
     private Employee employee;
 
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
+    @Column(name = "release_year", nullable = false)
+    private Integer releaseYear;
 
-    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal amount;
+    @Column(name = "opted_out", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean optedOut;
 
-    @Column(name = "description", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
+    @Column(name = "payment_status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
-    private ApprovalStatus status;
+    private PaymentStatus paymentStatus;
 
     @Embedded
     @AttributeOverrides({
@@ -37,22 +35,22 @@ public class TripExpense implements Serializable {
     })
     private EntityMetadata entityMetadata;
 
-    public TripExpense() {
+    public UnionContribution() {
     }
 
-    public TripExpense(
+    public UnionContribution(
         Integer id,
         Employee employee,
-        LocalDate date,
-        BigDecimal amount,
-        ApprovalStatus status,
+        Integer releaseYear,
+        Boolean optedOut,
+        PaymentStatus paymentStatus,
         EntityMetadata entityMetadata
     ) {
         this.id = id;
         this.employee = employee;
-        this.date = date;
-        this.amount = amount;
-        this.status = status;
+        this.releaseYear = releaseYear;
+        this.optedOut = optedOut;
+        this.paymentStatus = paymentStatus;
         this.entityMetadata = entityMetadata;
     }
 
@@ -72,28 +70,28 @@ public class TripExpense implements Serializable {
         this.employee = employee;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public Integer getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setReleaseYear(Integer year) {
+        this.releaseYear = year;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public Boolean getOptedOut() {
+        return optedOut;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setOptedOut(Boolean optedOut) {
+        this.optedOut = optedOut;
     }
 
-    public ApprovalStatus getStatus() {
-        return status;
+    public PaymentStatus getPaid() {
+        return paymentStatus;
     }
 
-    public void setStatus(ApprovalStatus status) {
-        this.status = status;
+    public void setPaid(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public EntityMetadata getEntityMetadata() {
