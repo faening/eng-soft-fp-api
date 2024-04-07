@@ -58,6 +58,10 @@ VALUES
     (54, 525.00, '2024-03-01', 'VA Ref. Março 2024', 'FOOD', 'APPROVED', 0),
     (55, 525.00, '2024-03-01', 'VA Ref. Março 2024', 'FOOD', 'APPROVED', 1), -- Testar desconto VA
     (56, 525.00, '2024-03-01', 'VA Ref. Março 2024', 'FOOD', 'APPROVED', 0),
+    (57, 525.00, '2024-03-01', 'VA Ref. Março 2024', 'FOOD', 'APPROVED', 0),
+    (58, 525.00, '2024-03-01', 'VA Ref. Março 2024', 'FOOD', 'APPROVED', 0),
+    (59, 525.00, '2024-03-01', 'VA Ref. Março 2024', 'FOOD', 'APPROVED', 0),
+    (60, 525.00, '2024-03-01', 'VA Ref. Março 2024', 'FOOD', 'APPROVED', 0),
 
     (1, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
     (2, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
@@ -115,6 +119,10 @@ VALUES
     (54, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
     (55, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 1), -- -- Testar desconto VA
     (56, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
+    (57, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
+    (58, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
+    (59, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
+    (60, 550.00, '2024-04-01', 'VA Ref. Abril 2024', 'FOOD', 'APPROVED', 0),
 
     -- VT
     (3, 105.00, '2024-03-01', 'VT Ref. Março 2024', 'TRANSPORT', 'APPROVED', 0),

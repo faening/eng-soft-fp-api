@@ -16,6 +16,7 @@ VALUES
     -- Recursos Humanos
     ('Larissa Andreia Vieira', '303353958', '71333385480', '1982-02-06', 'FEMALE', 'Rua América do Sul', '702', 'Nova Boa Vista', 'Cascavel', 'PR', '85780000', '73991949620', 'larissa_andreia_vieira@domain.com', '2015-08-10', 3, 24, 2, 7300.00), -- CHFO
     ('Jennifer Stefany Novaes', '407724400', '99794204994', '1989-02-08', 'FEMALE', 'Rua São Paulo', '785', 'Parque Soledade', 'Cascavel', 'PR', '85780000', '91984010352', 'jennifer_stefany_novaes@domain.com', '2019-05-01', 3, 20, 2, 2900.00),   -- Assistente de RH Junior
+    ('Elisa Adriana Oliveira', '472981845', '69598972038', '1990-08-01', 'FEMALE', 'Rua Rondônia', '826', 'Monte Carlo', 'Cascavel', 'PR', '85780000', '92993278545', 'elisa_adriana_oliveira@domain.com', '2021-08-01', 3, 20, 2, 2500.00),          -- Assistente de RH Junior
 
     -- Pesquisa e Desenvolvimento
     ('Benício Victor Ferreira', '409240813', '62904942106', '1986-12-17', 'MALE', 'Rua América do Sul', '702', 'Nova Boa Vista', 'Cascavel', 'PR', '85780000', '28986861860', 'benício_victor_ferreira@domain.com', '2016-06-01', 4, 37, 2, 7000.00),                          -- CTO
@@ -30,6 +31,7 @@ VALUES
     -- Marketing
     ('Pietro Jorge Barros', '121145554', '80154450600', '1973-08-15', 'MALE', 'Quadra QN 22 Conjunto 5', '470', 'Riacho Fundo II', 'Cascavel', 'PR', '85780000', '62988173735', 'pietro_jorge_barros@domain.com', '2016-01-01', 6, 50, 2, 6800.00),   -- CMO
     ('Theo Victor Manoel Ribeiro', '371515130', '70921520468', '1985-10-18', 'MALE', 'Rua Coletora 2', '238', 'Vila Vitória', 'Cascavel', 'PR', '85780000', '54989253995', 'theo_victor_manoel_ribeiro@domain.com', '2019-05-01', 6, 47, 2, 3400.00), -- Analista de Marketing Mid Level
+    ('Hadassa Letícia da Costa', '30746542283', '30746542283', '1987-03-23', 'FEMALE', 'Rua Manoel Aninha', '116', 'Pescaria', 'Cascavel', 'PR', '85780000', '54989253995', 'hadasssa_leticia_costa@domain.com', '2020-09-10', 6, 47, 2, 3100.00), -- Analista de Marketing Mid Level
 
     -- Vendas
     ('Vera Eliane Lopes', '168622592', '97172829190', '1981-07-15', 'FEMALE', 'Travessa Filó', '302', 'Felipe Camarão', 'Cascavel', 'PR', '85780000', '37982663172', 'vera_eliane_lopes@domain.com', '2014-01-01', 7, 56, 2, 5900.00),
@@ -82,11 +84,13 @@ VALUES
     ('Joaquim da Conceição', '265786381', '83136583981', '1992-05-28', 'MALE', 'Rua Cora Coralina', '759', 'Japiim', 'Cascavel', 'PR', '85780000', '69986093481', 'joaquim_conceicao@domain.com', '2019-05-20', 10, 86, 2, 3900.00),
     ('Bianca Giovana Rocha', '464169562', '32029638560', '1994-03-11', 'FEMALE', 'Rua Anália Gomes Merhy', '811', 'Thomaz Coelho', 'Cascavel', 'PR', '85780000', '27995981100', 'bianca_giovana_rocha@domain.com', '2020-08-01', 10, 81, 2, 2350.00),
     ('Isabel Luciana Nunes', '447429978', '38855632400', '1999-12-04', 'FEMALE', 'Vila Alegria do Castro Neves', '165', 'Mata Atlântica', 'Cascavel', 'PR', '85780000', '84998881690', 'isabel_luciana_nunes@domain.com', '2023-07-01', 10, 79, 5, 1100.00),
-    ('Julia Antônia Fogaça', '262262320', '31904134602', '1997-10-05', 'FEMALE', 'Rua Clemente Pereira', '590', 'Garcia', 'Cascavel', 'PR', '85780000', '21992806149', 'julia_antonia_fogaca@domain.com', '2023-05-10', 10, 79, 6, 1100.00),
+    ('Julia Antônia Fogaça', '262262320', '31904134602', '1997-10-05', 'FEMALE', 'Rua Clemente Pereira', '590', 'Garcia', 'Cascavel', 'PR', '85780000', '47981657793', 'julia_antonia_fogaca@domain.com', '2023-05-10', 10, 79, 6, 1100.00),
 
     -- Jurídico
     ('Tiago Julio Campos', '356110291', '58551867253', '1994-06-08', 'MALE', 'Travessa Um', '177', 'Paraíso', 'Cascavel', 'PR', '85780000', '85983197686', 'tiago_julio_campos@domain.com', '2017-05-15', 11, 86, 6, 4700.00),
+    ('Karine Antônia de Paula', '229665780', '96240733768', '2000-07-18', 'FEMALE', 'Rua Maria Cantilde Gomes', '204', 'Petrolândia', 'Cascavel', 'PR', '85780000', '96995799901', 'karine_antonia_paula@domain.com', '2021-06-01', 11, 85, 6, 3500.00),
 
     -- Limpeza
     ('Raimunda Sales', '110914661', '42704761760', '1982-05-21', 'FEMALE', 'Quadra Quadra 38', '507', 'Núcleo Residencial Brasília', 'Cascavel', 'PR', '85780000', '27983770296', 'raimunda_sales@domain.com', '2016-03-10', 12, 91, 2, 2900.00),
-    ('Carla Eduarda Rodrigues', '340748229', '53785524943', '1988-07-16', 'FEMALE', 'Rua N-007', '270', 'Setor Novo Horizonte', 'Cascavel', 'PR', '85780000', '83981693311', 'carla_eduarda_rodrigues@domain.com', '2018-06-01', 12, 91, 3, 2900.00);
+    ('Carla Eduarda Rodrigues', '340748229', '53785524943', '1988-07-16', 'FEMALE', 'Rua N-007', '270', 'Setor Novo Horizonte', 'Cascavel', 'PR', '85780000', '83981693311', 'carla_eduarda_rodrigues@domain.com', '2018-06-01', 12, 91, 3, 2900.00),
+    ('Rebeca Luzia Rezende', '497072257', '39987173152', '1991-12-12', 'FEMALE', 'Rua Cláudio Lúcio Monteiro', '815', 'Remendos', 'Cascavel', 'PR', '85780000', '96989006876', 'rebeca_luzia_rezende@domain.com', '2020-05-10', 12, 91, 3, 2900.00);
