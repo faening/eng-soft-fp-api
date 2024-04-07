@@ -1,31 +1,31 @@
-package com.github.faening.eng_soft_fp_api.domain.calculation;
+package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
+import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 /*
- * Requisito: [RD004] Calcular Adicional Noturno
+ * Requisito: [RD006] Calcular Adicional por Periculosidade
  *
  * Descrição:
- * Esta classe é responsável por calcular o adicional noturno recebido por um funcionário em um determinado mês.
- * O adicional noturno é um benefício concedido ao trabalhador que realiza suas atividades no período noturno, compreendido entre as 22
- * horas de um dia e as 5 horas do dia seguinte.
+ * Esta classe é responsável por calcular o adicional por periculosidade recebido por um funcionário em um determinado mês.
+ * O adicional por periculosidade é um benefício concedido ao trabalhador que exerce suas atividades em condições consideradas perigosas,
+ * que oferecem risco iminente à sua integridade física.
  *
  * Funcionamento:
- * Para realizar os cálculos, esta classe observa a propriedade `employee.work_shift_id` e `work_shift.night_shift_allowance`.
- * A propriedade `employee.work_shift_id` é uma chave estrangeira para a tabela `work_shift`, e a propriedade
- * `work_shift.night_shift_allowance` é um valor booleano que indica se a jornada de trabalho dá direito ao adicional noturno
- * (0 para não e 1 para sim).
- * Se a jornada de trabalho do funcionário dá direito ao adicional noturno, o valor da hora do funcionário tem um acréscimo de 20%.
- * O adicional noturno é calculado sobre o valor da hora do funcionário, portanto, é necessário replicar o cálculo feito na classe
- * `CalculateRegularHours`.
- * Além disso, a quantidade de horas trabalhadas no mês também deve ser considerada.
+ * Para realizar os cálculos, esta classe observa a propriedade `employee.job_id` e `job.dangerousness`.
+ * A propriedade `employee.job_id` é uma chave estrangeira para a tabela `job`, e a propriedade `job.dangerousness` é um valor
+ * booleano que indica se o cargo é perigoso ou não. (0 = Não Perigoso, 1 = Perigoso).
+ * O adicional por insalubridade é calculado sobre o salário base do funcionário, portanto, é necessário observar a propriedade
+ * `employee.base_salary`.
+ * Além disos, as alíquotas de insalubridade são armazenadas na tabela `tax_or_value` com o `type`: `DANGEROUSNESS_ALLOWANCE`.
  *
  * Exemplos:
  * ...
  */
 
 @SuppressWarnings("unused")
-public class CalculateNightShiftAllowance implements PayrollCalculation {
+public class CalculateDangerousnessAllowance implements PayrollCalculation {
     /*
      * Dicas de codificação:
      *

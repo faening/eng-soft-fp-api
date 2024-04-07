@@ -1,28 +1,29 @@
-package com.github.faening.eng_soft_fp_api.domain.calculation;
+package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
+import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 /*
- * Requisito: [RD005] Calcular Adicional por Insalubridade
+ * Requisito: [RD009] Calcular Adicional Tempo de Serviço
  *
  * Descrição:
- * Esta classe é responsável por calcular o adicional por insalubridade recebido por um funcionário em um determinado mês.
- * O adicional por insalubridade é um benefício concedido ao trabalhador que realiza suas atividades em condições consideradas insalubres.
+ * Esta classe é responsável por calcular o adicional por tempo de serviço recebido por um funcionário em um determinado mês.
+ *
  *
  * Funcionamento:
- * Para realizar os cálculos, esta classe observa a propriedade `employee.job_id` e `job.unhealthiness`.
- * A propriedade `employee.job_id` é uma chave estrangeira para a tabela `job`, e a propriedade `job.unhealthiness` é um valor
- * inteiro que indica o grau de insalubridade, sendo: 0 = Não Insalubre, 1 = Mínimo, 2 = Médio e 3 = Máximo.
- * O adicional por insalubridade é calculado sobre o salário base do funcionário, portanto, é necessário observar a propriedade
- * `employee.base_salary`.
- * Além disos, as alíquotas de insalubridade são armazenadas na tabela `tax_or_value` com o `type`: `UNHEALTHINESS_ALLOWANCE`.
+ * Para realizar os cálculos, esta classe observa as propriedades `employee.time_service_allowance` e `employee.admission_date`.
+ * O adicional de tempo de serviço é um percentual aplicado sobre o salário base do funcionária no mês. O valor é armazenado na tabela
+ * `tax_or_value` com o `type`: `TIME_SERVICE_ALLOWANCE`.
+ * Observe que um funcionário só terá esse adicional se a propriedade `employee.time_service_allowance` for `true` e o funcionário tiver
+ * mais de 10 anos de admissão.
  *
  * Exemplos:
  * ...
  */
 
 @SuppressWarnings("unused")
-public class CalculateUnhealthinessAllowance implements PayrollCalculation {
+public class CalculateTimeServiceAllowance implements PayrollCalculation {
     /*
      * Dicas de codificação:
      *

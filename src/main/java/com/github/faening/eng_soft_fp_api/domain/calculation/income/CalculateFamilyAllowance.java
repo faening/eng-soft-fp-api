@@ -1,25 +1,30 @@
-package com.github.faening.eng_soft_fp_api.domain.calculation;
+package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
+import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 /*
- * Requisito: [RD010] Calcular Adicional para Viagens
+ * Requisito: [RD007] Calcular Adicional Salário Família
  *
  * Descrição:
- * Esta classe é responsável por calcular o adicional para viagens recebido por um funcionário em um determinado mês.
+ * Esta classe é responsável por calcular o adicional por salário família recebido por um funcionário em um determinado mês.
+ * O adicional de salário família é um benefício concedido ao trabalhador que tem filhos menores de 14 anos de idade ou inválidos de
+ * qualquer idade.
  *
  * Funcionamento:
- * Para realizar os cálculos, esta classe observa a tabela `trip_expense`. Basicamente, o adicional para viagens é calculado com base
- * no valor total das despesas de viagem de um funcionário em um determinado mês. O valor total das despesas de viagem é a soma de todas
- * as despesas de viagem registradas na tabela `trip_expense` para um funcionário em um determinado mês.
- * Observe a propriedade status. Se o status for `APPROVED`, o valor total das despesas de viagem é considerado para o cálculo.
+ * Para realizar os cálculos, esta classe observa a propriedade `employee_dependent.family_allowance`.
+ * O adicional por salário família é um percentual aplicado sobre o salário mínimo vigente. Tanto a alíquota quanto o salário mínimo são
+ * armazenados na tabela `tax_or_value` com o `type`: `MINIMUM_WAGE` e `FAMILY_ALLOWANCE`, respectivamente.
+ * Observe que um funcionário pode ter mais de um dependente, e o adicional por salário família deve ser calculado para cada dependente.
+ * O valor total do adicional por salário família é a soma dos valores calculados para cada dependente.
  *
  * Exemplos:
  * ...
  */
 
 @SuppressWarnings("unused")
-public class CalculateTripExpenseAllowance implements PayrollCalculation {
+public class CalculateFamilyAllowance implements PayrollCalculation {
     /*
      * Dicas de codificação:
      *

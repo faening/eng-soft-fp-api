@@ -1,27 +1,31 @@
-package com.github.faening.eng_soft_fp_api.domain.calculation;
+package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
+import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 /*
- * Requisito: [RD009] Calcular Adicional Tempo de Serviço
+ * Requisito: [RD008] Calcular Adicional Creche / Babá
  *
  * Descrição:
- * Esta classe é responsável por calcular o adicional por tempo de serviço recebido por um funcionário em um determinado mês.
- *
+ * Esta classe é responsável por calcular o adicional créche ou babá recebido por uma funcionária em um determinado mês.
+ * Empresas que possuam mais de 30 colaboradoras com mais de 16 anos, têm a obrigação de oferecer um espaço físico para que as mães deixem
+ * seus filhos com idade entre 0 a 6 meses, enquanto elas trabalham. Caso esse espaço não seja ofertado pela empresa, ela passa a ser
+ * obrigada a das auxílio-creche/babá a mulher até que o bebê tenha 6 meses de idade.
  *
  * Funcionamento:
- * Para realizar os cálculos, esta classe observa as propriedades `employee.time_service_allowance` e `employee.admission_date`.
- * O adicional de tempo de serviço é um percentual aplicado sobre o salário base do funcionária no mês. O valor é armazenado na tabela
- * `tax_or_value` com o `type`: `TIME_SERVICE_ALLOWANCE`.
- * Observe que um funcionário só terá esse adicional se a propriedade `employee.time_service_allowance` for `true` e o funcionário tiver
- * mais de 10 anos de admissão.
+ * Para realizar os cálculos, esta classe observa as propriedades `employee_dependent.daycare_allowance` e `employee_dependent.birth_date`.
+ * O adicional de creche/babá é um valor aplicado sobre o dia de trabalho da funcionária no mês. O valor é armazenado na tabela
+ * `tax_or_value` com o `type`: `DAYCARE_ALLOWANCE`.
+ * Observe que um funcionário pode ter mais de um dependente e o adicional para creche / babá deve ser calculado para cada dependente.
+ * O valor total do adicional de creche / babá é a soma dos valores calculados para cada dependente.
  *
  * Exemplos:
  * ...
  */
 
 @SuppressWarnings("unused")
-public class CalculateTimeServiceAllowance implements PayrollCalculation {
+public class CalculateDaycareAllowance implements PayrollCalculation {
     /*
      * Dicas de codificação:
      *

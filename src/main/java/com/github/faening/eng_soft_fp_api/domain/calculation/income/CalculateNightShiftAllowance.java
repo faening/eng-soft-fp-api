@@ -1,28 +1,33 @@
-package com.github.faening.eng_soft_fp_api.domain.calculation;
+package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
+import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 /*
- * Requisito: [RD007] Calcular Adicional Salário Família
+ * Requisito: [RD004] Calcular Adicional Noturno
  *
  * Descrição:
- * Esta classe é responsável por calcular o adicional por salário família recebido por um funcionário em um determinado mês.
- * O adicional de salário família é um benefício concedido ao trabalhador que tem filhos menores de 14 anos de idade ou inválidos de
- * qualquer idade.
+ * Esta classe é responsável por calcular o adicional noturno recebido por um funcionário em um determinado mês.
+ * O adicional noturno é um benefício concedido ao trabalhador que realiza suas atividades no período noturno, compreendido entre as 22
+ * horas de um dia e as 5 horas do dia seguinte.
  *
  * Funcionamento:
- * Para realizar os cálculos, esta classe observa a propriedade `employee_dependent.family_allowance`.
- * O adicional por salário família é um percentual aplicado sobre o salário mínimo vigente. Tanto a alíquota quanto o salário mínimo são
- * armazenados na tabela `tax_or_value` com o `type`: `MINIMUM_WAGE` e `FAMILY_ALLOWANCE`, respectivamente.
- * Observe que um funcionário pode ter mais de um dependente, e o adicional por salário família deve ser calculado para cada dependente.
- * O valor total do adicional por salário família é a soma dos valores calculados para cada dependente.
+ * Para realizar os cálculos, esta classe observa a propriedade `employee.work_shift_id` e `work_shift.night_shift_allowance`.
+ * A propriedade `employee.work_shift_id` é uma chave estrangeira para a tabela `work_shift`, e a propriedade
+ * `work_shift.night_shift_allowance` é um valor booleano que indica se a jornada de trabalho dá direito ao adicional noturno
+ * (0 para não e 1 para sim).
+ * Se a jornada de trabalho do funcionário dá direito ao adicional noturno, o valor da hora do funcionário tem um acréscimo de 20%.
+ * O adicional noturno é calculado sobre o valor da hora do funcionário, portanto, é necessário replicar o cálculo feito na classe
+ * `CalculateRegularHours`.
+ * Além disso, a quantidade de horas trabalhadas no mês também deve ser considerada.
  *
  * Exemplos:
  * ...
  */
 
 @SuppressWarnings("unused")
-public class CalculateFamilyAllowance implements PayrollCalculation {
+public class CalculateNightShiftAllowance implements PayrollCalculation {
     /*
      * Dicas de codificação:
      *

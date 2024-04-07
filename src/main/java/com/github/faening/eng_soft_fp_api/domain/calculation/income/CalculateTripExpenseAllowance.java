@@ -1,29 +1,27 @@
-package com.github.faening.eng_soft_fp_api.domain.calculation;
+package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
+import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 /*
- * Requisito: [RD006] Calcular Adicional por Periculosidade
+ * Requisito: [RD010] Calcular Adicional para Viagens
  *
  * Descrição:
- * Esta classe é responsável por calcular o adicional por periculosidade recebido por um funcionário em um determinado mês.
- * O adicional por periculosidade é um benefício concedido ao trabalhador que exerce suas atividades em condições consideradas perigosas,
- * que oferecem risco iminente à sua integridade física.
+ * Esta classe é responsável por calcular o adicional para viagens recebido por um funcionário em um determinado mês.
  *
  * Funcionamento:
- * Para realizar os cálculos, esta classe observa a propriedade `employee.job_id` e `job.dangerousness`.
- * A propriedade `employee.job_id` é uma chave estrangeira para a tabela `job`, e a propriedade `job.dangerousness` é um valor
- * booleano que indica se o cargo é perigoso ou não. (0 = Não Perigoso, 1 = Perigoso).
- * O adicional por insalubridade é calculado sobre o salário base do funcionário, portanto, é necessário observar a propriedade
- * `employee.base_salary`.
- * Além disos, as alíquotas de insalubridade são armazenadas na tabela `tax_or_value` com o `type`: `DANGEROUSNESS_ALLOWANCE`.
+ * Para realizar os cálculos, esta classe observa a tabela `trip_expense`. Basicamente, o adicional para viagens é calculado com base
+ * no valor total das despesas de viagem de um funcionário em um determinado mês. O valor total das despesas de viagem é a soma de todas
+ * as despesas de viagem registradas na tabela `trip_expense` para um funcionário em um determinado mês.
+ * Observe a propriedade status. Se o status for `APPROVED`, o valor total das despesas de viagem é considerado para o cálculo.
  *
  * Exemplos:
  * ...
  */
 
 @SuppressWarnings("unused")
-public class CalculateDangerousnessAllowance implements PayrollCalculation {
+public class CalculateTripExpenseAllowance implements PayrollCalculation {
     /*
      * Dicas de codificação:
      *

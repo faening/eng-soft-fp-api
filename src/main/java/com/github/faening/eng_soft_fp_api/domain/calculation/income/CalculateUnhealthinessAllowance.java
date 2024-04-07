@@ -1,29 +1,30 @@
-package com.github.faening.eng_soft_fp_api.domain.calculation;
+package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
+import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 /*
- * Requisito: [RD008] Calcular Adicional Creche / Babá
+ * Requisito: [RD005] Calcular Adicional por Insalubridade
  *
  * Descrição:
- * Esta classe é responsável por calcular o adicional créche ou babá recebido por uma funcionária em um determinado mês.
- * Empresas que possuam mais de 30 colaboradoras com mais de 16 anos, têm a obrigação de oferecer um espaço físico para que as mães deixem
- * seus filhos com idade entre 0 a 6 meses, enquanto elas trabalham. Caso esse espaço não seja ofertado pela empresa, ela passa a ser
- * obrigada a das auxílio-creche/babá a mulher até que o bebê tenha 6 meses de idade.
+ * Esta classe é responsável por calcular o adicional por insalubridade recebido por um funcionário em um determinado mês.
+ * O adicional por insalubridade é um benefício concedido ao trabalhador que realiza suas atividades em condições consideradas insalubres.
  *
  * Funcionamento:
- * Para realizar os cálculos, esta classe observa as propriedades `employee_dependent.daycare_allowance` e `employee_dependent.birth_date`.
- * O adicional de creche/babá é um valor aplicado sobre o dia de trabalho da funcionária no mês. O valor é armazenado na tabela
- * `tax_or_value` com o `type`: `DAYCARE_ALLOWANCE`.
- * Observe que um funcionário pode ter mais de um dependente e o adicional para creche / babá deve ser calculado para cada dependente.
- * O valor total do adicional de creche / babá é a soma dos valores calculados para cada dependente.
+ * Para realizar os cálculos, esta classe observa a propriedade `employee.job_id` e `job.unhealthiness`.
+ * A propriedade `employee.job_id` é uma chave estrangeira para a tabela `job`, e a propriedade `job.unhealthiness` é um valor
+ * inteiro que indica o grau de insalubridade, sendo: 0 = Não Insalubre, 1 = Mínimo, 2 = Médio e 3 = Máximo.
+ * O adicional por insalubridade é calculado sobre o salário base do funcionário, portanto, é necessário observar a propriedade
+ * `employee.base_salary`.
+ * Além disos, as alíquotas de insalubridade são armazenadas na tabela `tax_or_value` com o `type`: `UNHEALTHINESS_ALLOWANCE`.
  *
  * Exemplos:
  * ...
  */
 
 @SuppressWarnings("unused")
-public class CalculateDaycareAllowance implements PayrollCalculation {
+public class CalculateUnhealthinessAllowance implements PayrollCalculation {
     /*
      * Dicas de codificação:
      *
