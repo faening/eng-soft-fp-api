@@ -1,63 +1,48 @@
-package com.github.faening.eng_soft_fp_api.data.model;
+package com.github.faening.eng_soft_fp_api.domain.model.payroll_item;
 
-import jakarta.persistence.*;
+import com.github.faening.eng_soft_fp_api.data.model.Payroll;
+import com.github.faening.eng_soft_fp_api.data.model.Rubric;
+import com.github.faening.eng_soft_fp_api.data.model.TaxOrValue;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
-@Entity
-@Table(name = "payroll_item")
-public class PayrollItem implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_payroll_item")
+public class PayrollItemResponseDTO implements Serializable {
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "payroll_id", referencedColumnName = "id_payroll", nullable = false)
     private Payroll payroll;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "rubric_id", referencedColumnName = "id_rubric", nullable = false)
     private Rubric rubric;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tax_or_value_id", referencedColumnName = "id_tax_or_value")
     private TaxOrValue taxOrValue;
-
-    @Column(name = "base_value", precision = 10, scale = 2)
+    private Integer financialEventId;
     private BigDecimal baseValue;
-
-    @Column(name = "calculated_value", nullable = false, precision = 10, scale = 2)
     private BigDecimal calculatedValue;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
-        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
-    })
-    private EntityMetadata entityMetadata;
-
-    public PayrollItem() {
+    public PayrollItemResponseDTO() {
     }
 
-    public PayrollItem(
+    public PayrollItemResponseDTO(
         Integer id,
         Payroll payroll,
         Rubric rubric,
         TaxOrValue taxOrValue,
+        Integer financialEventId,
         BigDecimal baseValue,
         BigDecimal calculatedValue,
-        EntityMetadata entityMetadata
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
         this.id = id;
         this.payroll = payroll;
         this.rubric = rubric;
         this.taxOrValue = taxOrValue;
+        this.financialEventId = financialEventId;
         this.baseValue = baseValue;
         this.calculatedValue = calculatedValue;
-        this.entityMetadata = entityMetadata;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Integer getId() {
@@ -92,6 +77,14 @@ public class PayrollItem implements Serializable {
         this.taxOrValue = taxOrValue;
     }
 
+    public Integer getFinancialEventId() {
+        return financialEventId;
+    }
+
+    public void setFinancialEventId(Integer financialEventId) {
+        this.financialEventId = financialEventId;
+    }
+
     public BigDecimal getBaseValue() {
         return baseValue;
     }
@@ -108,11 +101,19 @@ public class PayrollItem implements Serializable {
         this.calculatedValue = calculatedValue;
     }
 
-    public EntityMetadata getEntityMetadata() {
-        return entityMetadata;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setEntityMetadata(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
