@@ -36,6 +36,9 @@ public class TripExpense {
     })
     private EntityMetadata entityMetadata;
 
+    public TripExpense() {
+    }
+
     public TripExpense(
         Integer id,
         Employee employee,
