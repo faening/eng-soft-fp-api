@@ -30,6 +30,9 @@ public class EmployeeDependent implements Serializable {
     @Column(name = "special_needs", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean specialNeeds;
 
+    @Column(name = "family_allowance", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean familyAllowance;
+
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
@@ -40,11 +43,19 @@ public class EmployeeDependent implements Serializable {
     public EmployeeDependent() {
     }
 
-    public EmployeeDependent(Integer id, Employee employee, Person person, Boolean specialNeeds, EntityMetadata entityMetadata) {
+    public EmployeeDependent(
+        Integer id,
+        Employee employee,
+        Person person,
+        Boolean specialNeeds,
+        Boolean familyAllowance,
+        EntityMetadata entityMetadata
+    ) {
         this.id = id;
         this.employee = employee;
         this.person = person;
         this.specialNeeds = specialNeeds;
+        this.familyAllowance = familyAllowance;
         this.entityMetadata = entityMetadata;
     }
 
@@ -78,6 +89,14 @@ public class EmployeeDependent implements Serializable {
 
     public void setSpecialNeeds(Boolean specialNeeds) {
         this.specialNeeds = specialNeeds;
+    }
+
+    public Boolean getFamilyAllowance() {
+        return familyAllowance;
+    }
+
+    public void setFamilyAllowance(Boolean familyAllowance) {
+        this.familyAllowance = familyAllowance;
     }
 
     public EntityMetadata getEntityMetadata() {
