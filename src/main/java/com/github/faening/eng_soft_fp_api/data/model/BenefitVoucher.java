@@ -1,7 +1,7 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
-import com.github.faening.eng_soft_fp_api.domain.enumeration.ApprovalStatus;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.BenefitVoucherType;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -33,9 +33,9 @@ public class BenefitVoucher implements Serializable {
     @Enumerated(EnumType.STRING)
     private BenefitVoucherType benefitType;
 
-    @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
+    @Column(name = "payment_status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
-    private ApprovalStatus status;
+    private PaymentStatus paymentStatus;
 
     @Column(name = "payroll_deductible", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean payrollDeductible;
@@ -57,7 +57,7 @@ public class BenefitVoucher implements Serializable {
         LocalDate releaseDate,
         String description,
         BenefitVoucherType benefitType,
-        ApprovalStatus status,
+        PaymentStatus paymentStatus,
         Boolean payrollDeductible,
         EntityMetadata entityMetadata
     ) {
@@ -67,7 +67,7 @@ public class BenefitVoucher implements Serializable {
         this.releaseDate = releaseDate;
         this.description = description;
         this.benefitType = benefitType;
-        this.status = status;
+        this.paymentStatus = paymentStatus;
         this.payrollDeductible = payrollDeductible;
         this.entityMetadata = entityMetadata;
     }
@@ -120,12 +120,12 @@ public class BenefitVoucher implements Serializable {
         this.benefitType = benefitType;
     }
 
-    public ApprovalStatus getStatus() {
-        return status;
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setStatus(ApprovalStatus status) {
-        this.status = status;
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public Boolean getPayrollDeductible() {

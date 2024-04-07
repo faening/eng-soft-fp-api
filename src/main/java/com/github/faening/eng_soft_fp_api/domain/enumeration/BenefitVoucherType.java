@@ -7,7 +7,7 @@ import java.util.Locale;
 
 @SuppressWarnings("unused")
 public enum BenefitVoucherType {
-    FOOD("benefitVoucherType.food"),
+    MEAL("benefitVoucherType.food"),
     TRANSPORT("benefitVoucherType.transport");
 
     private final String code;

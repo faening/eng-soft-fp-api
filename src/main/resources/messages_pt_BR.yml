@@ -14,7 +14,7 @@ approvalStatus:
   denied: Negado
 
 benefitVoucherType:
-  food: Alimentação
+  meal: Alimentação
   transport: Transporte
 
 brazilianState:
