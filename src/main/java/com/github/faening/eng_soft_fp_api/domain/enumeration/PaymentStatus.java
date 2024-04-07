@@ -6,16 +6,17 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import java.util.Locale;
 
 @SuppressWarnings("unused")
-public enum PayrollStatus {
+public enum PaymentStatus {
     PENDING("payrollStatus.pending"),
     RELEASED("payrollStatus.released"),
     APPROVED("payrollStatus.approved"),
+    DENIED("payrollStatus.denied"),
     PAID("payrollStatus.paid");
 
     private final String code;
     private static MessageSource messageSource;
 
-    PayrollStatus(String code) {
+    PaymentStatus(String code) {
         this.code = code;
     }
 
@@ -25,6 +26,6 @@ public enum PayrollStatus {
     }
 
     public static void setMessageSource(MessageSource messageSource) {
-        PayrollStatus.messageSource = messageSource;
+        PaymentStatus.messageSource = messageSource;
     }
 }

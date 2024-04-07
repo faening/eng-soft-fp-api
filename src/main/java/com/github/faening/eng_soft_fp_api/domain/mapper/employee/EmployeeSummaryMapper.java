@@ -103,7 +103,7 @@ public class EmployeeSummaryMapper extends AbstractMapper<Employee, EmployeeSumm
                 mapper.skip(Employee::setDepartment);
                 mapper.skip(Employee::setAbsenceSheets);
                 mapper.skip(Employee::setHoursWorkedSheets);
-                mapper.skip(Employee::setFinancialEvents);
+                mapper.skip(Employee::setLoans);
                 mapper.skip(Employee::setBenefitVouchers);
                 mapper.skip(Employee::setManagedDepartments);
             });

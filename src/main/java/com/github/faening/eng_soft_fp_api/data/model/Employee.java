@@ -75,7 +75,7 @@ public class Employee implements Serializable {
     private List<HoursWorkedSheet> hoursWorkedSheets;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<FinancialEvent> financialEvents;
+    private List<Loan> loans;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BenefitVoucher> benefitVouchers;
@@ -111,7 +111,7 @@ public class Employee implements Serializable {
         List<EmployeeDependent> dependents,
         List<AbsenceSheet> absenceSheets,
         List<HoursWorkedSheet> hoursWorkedSheets,
-        List<FinancialEvent> financialEvents,
+        List<Loan> loans,
         List<BenefitVoucher> benefitVouchers,
         List<Department> managedDepartments,
         Boolean enabled,
@@ -131,7 +131,7 @@ public class Employee implements Serializable {
         this.dependents = dependents;
         this.absenceSheets = absenceSheets;
         this.hoursWorkedSheets = hoursWorkedSheets;
-        this.financialEvents = financialEvents;
+        this.loans = loans;
         this.benefitVouchers = benefitVouchers;
         this.managedDepartments = managedDepartments;
         this.enabled = enabled;
@@ -250,12 +250,12 @@ public class Employee implements Serializable {
         this.hoursWorkedSheets = hoursWorkedSheets;
     }
 
-    public List<FinancialEvent> getFinancialEvents() {
-        return financialEvents;
+    public List<Loan> getLoans() {
+        return loans;
     }
 
-    public void setFinancialEvents(List<FinancialEvent> financialEvents) {
-        this.financialEvents = financialEvents;
+    public void setLoans(List<Loan> loans) {
+        this.loans = loans;
     }
 
     public List<BenefitVoucher> getBenefitVouchers() {

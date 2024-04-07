@@ -1,11 +1,12 @@
 CREATE TABLE IF NOT EXISTS installment (
     id_installment INT NOT NULL AUTO_INCREMENT,
-    financial_event_id INT NOT NULL,
-    number INT NOT NULL,
-    installment_value DOUBLE NOT NULL,
-    paid BOOLEAN NOT NULL DEFAULT FALSE,
+    loan_id INT NOT NULL,
+    installment_number INT NOT NULL,
+    installment_value DECIMAL(10,2) NOT NULL,
+    discount_month ENUM('JANUARY','FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER','NOVEMBER', 'DECEMBER') NOT NULL,
+    payment_status ENUM('PENDING', 'RELEASED', 'APPROVED', 'DENIED', 'PAID') NOT NULL DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id_installment),
-    FOREIGN KEY (financial_event_id) REFERENCES financial_event(id_financial_event)
+    FOREIGN KEY (loan_id) REFERENCES loan(id_loan)
 );

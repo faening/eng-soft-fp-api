@@ -1,7 +1,7 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.Month;
-import com.github.faening.eng_soft_fp_api.domain.enumeration.PayrollStatus;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -67,7 +67,7 @@ public class Payroll implements Serializable {
 
     @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
-    private PayrollStatus status;
+    private PaymentStatus status;
 
     @Column(name = "notes")
     private String notes;
@@ -99,7 +99,7 @@ public class Payroll implements Serializable {
         BigDecimal totalDiscounts,
         BigDecimal totalLiquid,
         List<PayrollItem> items,
-        PayrollStatus status,
+        PaymentStatus status,
         String notes,
         EntityMetadata entityMetadata
     ) {
@@ -252,11 +252,11 @@ public class Payroll implements Serializable {
         this.items = items;
     }
 
-    public PayrollStatus getStatus() {
+    public PaymentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(PayrollStatus status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 

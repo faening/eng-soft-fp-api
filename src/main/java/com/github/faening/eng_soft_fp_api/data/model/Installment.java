@@ -1,8 +1,11 @@
 package com.github.faening.eng_soft_fp_api.data.model;
 
+import com.github.faening.eng_soft_fp_api.domain.enumeration.Month;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @SuppressWarnings("unused")
 @Entity
@@ -14,17 +17,22 @@ public class Installment implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "financial_event_id", referencedColumnName = "id_financial_event", nullable = false)
-    private FinancialEvent financialEvent;
+    @JoinColumn(name = "loan_id", referencedColumnName = "id_loan", nullable = false)
+    private Loan loan;
 
-    @Column(name = "number", nullable = false)
-    private Integer number;
+    @Column(name = "installment_number", nullable = false)
+    private Integer installmentNumber;
 
-    @Column(name = "installment_value", nullable = false)
-    private Double installmentValue;
+    @Column(name = "installment_value", nullable = false, precision = 10, scale = 2)
+    private BigDecimal installmentValue;
 
-    @Column(name = "paid", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private Boolean paid;
+    @Column(name = "discount_month", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Month discountMonth;
+
+    @Column(name = "payment_status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     @Embedded
     @AttributeOverrides({
@@ -36,67 +44,5 @@ public class Installment implements Serializable {
     public Installment() {
     }
 
-    public Installment(
-        Integer id,
-        FinancialEvent financialEvent,
-        Integer number,
-        Double installmentValue,
-        Boolean paid,
-        EntityMetadata entityMetadata
-    ) {
-        this.id = id;
-        this.financialEvent = financialEvent;
-        this.number = number;
-        this.installmentValue = installmentValue;
-        this.paid = paid;
-        this.entityMetadata = entityMetadata;
-    }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public FinancialEvent getFinancialEvent() {
-        return financialEvent;
-    }
-
-    public void setFinancialEvent(FinancialEvent financialEvent) {
-        this.financialEvent = financialEvent;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public Double getInstallmentValue() {
-        return installmentValue;
-    }
-
-    public void setInstallmentValue(Double installmentValue) {
-        this.installmentValue = installmentValue;
-    }
-
-    public Boolean getPaid() {
-        return paid;
-    }
-
-    public void setPaid(Boolean paid) {
-        this.paid = paid;
-    }
-
-    public EntityMetadata getEntityMetadata() {
-        return entityMetadata;
-    }
-
-    public void setEntityMetadata(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
-    }
 }
