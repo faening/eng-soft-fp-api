@@ -8,21 +8,15 @@ import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemR
  * Descrição:
  * Esta classe é responsável por calcular as comissões recebidas por um funcionário em um determinado mês.
  * As comissões são calculadas como percentuais sobre o valor das vendas realizadas pelo funcionário. O percentual de comissão pode variar
- * de acordo com a faixa de lucro nas vendas ou ser um valor fixo, conforme acordado com o funcionário.
- * Nós não vamos gerenciar os fluxos de venda e produtos diretamente. Consideramos que o percentual padrão da comissão é de 5% sobre o total
- * de vendas. As vendas são representadas por eventos financeiros com o código rubric_id 1207 (Comissão).
- *
- * Para realizar os cálculos, esta classe utiliza o serviço `FinancialEventService` para buscar os eventos financeiros de um funcionário em
- * um determinado mês, com um rubric_id específico. Todas as informações relevantes da comissão estão disponíveis na tabela
- * `financial_event`, especialmente no campo 'value'. Portanto, a classe simplesmente busca esses dados e retorna o valor da comissão.
- *
- * Ao calcular a comissão, deve-se observar o campo `release_date` para considerar o mês corrente, e também verificar se o campo status
- * está como 'APPROVED' para garantir que o valor da comissão seja considerado.
- * Possíveis descontos que podem ser aplicados sobre o valor da comissão devem ser descritos nos requisitos e considerados durante o
- * cálculo.
+ * de acordo com a faixa de lucro nas vendas.
+ * O extrato diário de vendas está armazenados na tabela `sales`. As comissões por sua vez estão armazenadas na tabela `tax_or_value` com o
+ * `type` SALES_ALLOWANCE.
  *
  * Funcionamento:
- * ...
+ * Para realizar os cálculos, esta classe utiliza o serviço `SaleService` para buscar as vendas de um funcionário em um determinado mês e
+ * o serviço `TaxOrValueService` para buscar as comissões de vendas.
+ * Observe o total de vendas realizadas pelo funcionário em um determinado mês e aplique o percentual de comissão correspondente.
+ * Observe se existem possíveis descontos que podem ser aplicados sobre o valor da comissão.
  *
  * Exemplos:
  * ...
@@ -131,5 +125,4 @@ public class CalculateSalesAllowance implements PayrollCalculation {
          * */
         return null;
     }
-
 }
