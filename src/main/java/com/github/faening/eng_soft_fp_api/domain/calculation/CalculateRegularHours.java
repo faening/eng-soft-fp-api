@@ -19,6 +19,8 @@ import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemR
  * Se o funcionário trabalhou a mesma quantidade de horas do mês, o valor do salário base do funcionário é retornado.
  * Caso contrário, o valor da hora do funcionário é multiplicado pela quantidade de horas trabalhadas no mês.
  *
+ * Observe que alguns funcinários são "estagiários" e possuem uma carga horária diferente, por exemplo, 6 horas diárias.
+ *
  * Exemplos:
  * Exemplo 1:
  *   Dias Trabalhados em Março: 21 dias
