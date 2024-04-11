@@ -35,7 +35,6 @@ public class HoursWorkedSheetRequestMapper extends AbstractMapper<HoursWorkedShe
                 mapper.skip(HoursWorkedSheet::setId);
                 mapper.skip(HoursWorkedSheet::setEmployee);
                 mapper.skip(HoursWorkedSheet::setEntityMetadata);
-                mapper.skip(HoursWorkedSheet::setEntityMetadata);
 
                 mapper.when(notNull).map(HoursWorkedSheetRequestDTO::getDate, HoursWorkedSheet::setDate);
                 mapper.when(notNull).map(HoursWorkedSheetRequestDTO::getRegularHours, HoursWorkedSheet::setRegularHours);

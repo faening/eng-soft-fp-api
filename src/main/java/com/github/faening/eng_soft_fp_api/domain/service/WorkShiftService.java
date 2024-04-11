@@ -2,24 +2,71 @@ package com.github.faening.eng_soft_fp_api.domain.service;
 
 import com.github.faening.eng_soft_fp_api.data.model.WorkShift;
 import com.github.faening.eng_soft_fp_api.data.repository.WorkShiftRepository;
-import com.github.faening.eng_soft_fp_api.domain.mapper.work_shift.WorkShiftMapper;
-import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftDTO;
+import com.github.faening.eng_soft_fp_api.domain.mapper.work_shift.WorkShiftRequestMapper;
+import com.github.faening.eng_soft_fp_api.domain.mapper.work_shift.WorkShiftResponseMapper;
+import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftRequestDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftResponseDTO;
 import com.github.faening.eng_soft_fp_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
-public class WorkShiftService {
+public class WorkShiftService extends AbstractService<WorkShiftRequestDTO, WorkShiftResponseDTO> {
     private final WorkShiftRepository workShiftRepository;
-    private final WorkShiftMapper workShiftMapper;
+    private final WorkShiftRequestMapper workShiftRequestMapper;
+    private final WorkShiftResponseMapper workShiftResponseMapper;
 
     @Autowired
-    public WorkShiftService(WorkShiftRepository workShiftRepository, WorkShiftMapper workShiftMapper) {
+    public WorkShiftService(
+        WorkShiftRepository workShiftRepository,
+        WorkShiftRequestMapper workShiftRequestMapper,
+        WorkShiftResponseMapper workShiftResponseMapper
+    ) {
         this.workShiftRepository = workShiftRepository;
-        this.workShiftMapper = workShiftMapper;
+        this.workShiftRequestMapper = workShiftRequestMapper;
+        this.workShiftResponseMapper = workShiftResponseMapper;
+    }
+
+    @Override
+    public List<WorkShiftResponseDTO> getAll() {
+        return workShiftRepository
+            .findAll()
+            .stream()
+            .map(workShift -> workShiftResponseMapper.toDTO(workShift, WorkShiftResponseDTO.class))
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public WorkShiftResponseDTO getById(Integer id) {
+        validateId(id);
+        return workShiftResponseMapper.toDTO(searchWorkShiftById(id), WorkShiftResponseDTO.class);
+    }
+
+    @Override
+    public WorkShiftResponseDTO create(WorkShiftRequestDTO request) {
+        validateWorkShiftDTO(request);
+        WorkShift workShift = workShiftRequestMapper.toEntity(request, WorkShift.class);
+        WorkShift savedWorkShift = workShiftRepository.save(workShift);
+        return workShiftResponseMapper.toDTO(savedWorkShift, WorkShiftResponseDTO.class);
+    }
+
+    @Override
+    public WorkShiftResponseDTO update(Integer id, WorkShiftRequestDTO request) {
+        validateId(id);
+        validateWorkShiftDTO(request);
+        WorkShift workShift = searchWorkShiftById(id);
+        workShiftRequestMapper.updateSourceFromDestination(workShift, request);
+        WorkShift savedWorkShift = workShiftRepository.save(workShift);
+        return workShiftResponseMapper.toDTO(savedWorkShift, WorkShiftResponseDTO.class);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        validateId(id);
+        workShiftRepository.deleteById(id);
     }
 
     private WorkShift searchWorkShiftById(Integer id) {
@@ -28,43 +75,17 @@ public class WorkShiftService {
         );
     }
 
-    public List<WorkShiftDTO> getAllWorkShifts() {
-        List<WorkShift> workShifts = workShiftRepository.findAll();
-        return workShiftMapper.mapWorkShiftToWorkShiftDTO(workShifts);
+    private void validateId(Integer id) {
+        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.workShiftId"));
     }
 
-    public WorkShiftDTO getWorkShiftById(Integer id) {
-        WorkShift workShift = searchWorkShiftById(id);
-        return workShiftMapper.mapWorkShiftToWorkShiftDTO(workShift);
-    }
-
-    public WorkShiftDTO createWorkShift(WorkShiftDTO workShiftDTO) {
-        validateWorkShiftDTO(workShiftDTO);
-        WorkShift workShift = workShiftMapper.mapWorkShiftDTOToWorkShift(workShiftDTO);
-        WorkShift createdWorkShift = workShiftRepository.save(workShift);
-        return workShiftMapper.mapWorkShiftToWorkShiftDTO(createdWorkShift);
-    }
-
-    public WorkShiftDTO updateWorkShift(Integer id, WorkShiftDTO workShiftDTO) {
-        validateWorkShiftDTO(workShiftDTO);
-        WorkShift workShift = searchWorkShiftById(id);
-        workShiftMapper.updateSourceFromDestination(workShift, workShiftDTO);
-        WorkShift updatedWorkShift = workShiftRepository.save(workShift);
-        return workShiftMapper.mapWorkShiftToWorkShiftDTO(updatedWorkShift);
-    }
-
-    public void deleteWorkShift(Integer id) {
-        WorkShift workShift = searchWorkShiftById(id);
-        workShiftRepository.delete(workShift);
-    }
-
-    private void validateWorkShiftDTO(WorkShiftDTO workShiftDTO) {
-        if (workShiftDTO.getDescription() == null) throw new IllegalArgumentException("Descrição do turno de trabalho não pode ser nula");
-        if (workShiftDTO.getStartOfWorkday() == null) throw new IllegalArgumentException("Início do turno de trabalho não pode ser nulo");
-        if (workShiftDTO.getStartOfBreak() == null) throw new IllegalArgumentException("Início do intervalo do turno de trabalho não pode ser nulo");
-        if (workShiftDTO.getEndOfBreak() == null) throw new IllegalArgumentException("Fim do intervalo do turno de trabalho não pode ser nulo");
-        if (workShiftDTO.getEndOfWorkday() == null) throw new IllegalArgumentException("Fim do turno de trabalho não pode ser nulo");
-        if (workShiftDTO.getNightShiftAllowance() == null) throw new IllegalArgumentException("Adicional noturno do turno de trabalho não pode ser nulo");
-        if (workShiftDTO.getEnabled() == null) throw new IllegalArgumentException("Habilitado do turno de trabalho não pode ser nulo");
+    private void validateWorkShiftDTO(WorkShiftRequestDTO workShiftRequestDTO) {
+        if (workShiftRequestDTO.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.description"));
+        if (workShiftRequestDTO.getStartOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.startOfWorkday"));
+        if (workShiftRequestDTO.getStartOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.startOfBreak"));
+        if (workShiftRequestDTO.getEndOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.endOfBreak"));
+        if (workShiftRequestDTO.getEndOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.endOfWorkday"));
+        if (workShiftRequestDTO.getNightShiftAllowance() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.nightShiftAllowance"));
+        if (workShiftRequestDTO.getEnabled() == null) workShiftRequestDTO.setEnabled(true);
     }
 }
