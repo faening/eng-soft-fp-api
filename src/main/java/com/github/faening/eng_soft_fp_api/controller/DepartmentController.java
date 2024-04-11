@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/departments")
 public class DepartmentController {
@@ -25,7 +26,7 @@ public class DepartmentController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<List<DepartmentResponseDTO>> getAllDepartments() {
-        List<DepartmentResponseDTO> departmentResponseDTOList = departmentService.getAllDepartments();
+        List<DepartmentResponseDTO> departmentResponseDTOList = departmentService.getAll();
         return ResponseEntity.ok(departmentResponseDTOList);
     }
 
@@ -36,7 +37,7 @@ public class DepartmentController {
     public ResponseEntity<DepartmentResponseDTO> getDepartmentById(
         @PathVariable(value = "id") Integer id
     ) {
-        DepartmentResponseDTO departmentResponseDTO = departmentService.getDepartmentById(id);
+        DepartmentResponseDTO departmentResponseDTO = departmentService.getById(id);
         return ResponseEntity.ok(departmentResponseDTO);
     }
 
@@ -48,7 +49,7 @@ public class DepartmentController {
     public ResponseEntity<DepartmentResponseDTO> createDepartment(
         @RequestBody DepartmentRequestDTO departmentRequestDTO
     ) {
-        DepartmentResponseDTO createdDepartment = departmentService.createDepartment(departmentRequestDTO);
+        DepartmentResponseDTO createdDepartment = departmentService.create(departmentRequestDTO);
         return ResponseEntity.ok(createdDepartment);
     }
 
@@ -61,7 +62,7 @@ public class DepartmentController {
         @PathVariable(value = "id") Integer id,
         @RequestBody DepartmentRequestDTO departmentRequestDTO
     ) {
-        DepartmentResponseDTO updatedDepartment = departmentService.updateDepartment(id, departmentRequestDTO);
+        DepartmentResponseDTO updatedDepartment = departmentService.update(id, departmentRequestDTO);
         return ResponseEntity.ok(updatedDepartment);
     }
 
@@ -71,7 +72,7 @@ public class DepartmentController {
     public ResponseEntity<Void> deleteDepartment(
         @PathVariable(value = "id") Integer id
     ) {
-        departmentService.deleteDepartment(id);
+        departmentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

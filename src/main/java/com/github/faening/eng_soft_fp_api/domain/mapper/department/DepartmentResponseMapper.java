@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @SuppressWarnings("unused")
 @Service
@@ -16,22 +15,6 @@ public class DepartmentResponseMapper extends AbstractMapper<Department, Departm
     @Autowired
     public DepartmentResponseMapper(ModelMapper modelMapper) {
         super(modelMapper);
-    }
-
-    public DepartmentResponseDTO mapDepartmentToDepartmentResponseDTO(Department department) {
-        return modelMapper.map(department, DepartmentResponseDTO.class);
-    }
-
-    public List<DepartmentResponseDTO> mapDepartmentToDepartmentResponseDTO(List<Department> departments) {
-        return List.of(modelMapper.map(departments, DepartmentResponseDTO[].class));
-    }
-
-    public Department mapDepartmentResponseDTOToDepartment(DepartmentResponseDTO departmentResponseDTO) {
-        return modelMapper.map(departmentResponseDTO, Department.class);
-    }
-
-    public List<Department> mapDepartmentResponseDTOToDepartment(List<DepartmentResponseDTO> departmentResponseDTOs) {
-        return List.of(modelMapper.map(departmentResponseDTOs, Department[].class));
     }
 
     @Override
