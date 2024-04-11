@@ -10,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
 @Service
 public class DepartmentRequestMapper extends AbstractMapper<Department, DepartmentRequestDTO> {
@@ -21,22 +19,6 @@ public class DepartmentRequestMapper extends AbstractMapper<Department, Departme
     public DepartmentRequestMapper(ModelMapper modelMapper, EmployeeService employeeService) {
         super(modelMapper);
         this.employeeService = employeeService;
-    }
-
-    public DepartmentRequestDTO mapDepartmentToDepartmentRequestDTO(Department department) {
-        return modelMapper.map(department, DepartmentRequestDTO.class);
-    }
-
-    public List<DepartmentRequestDTO> mapDepartmentToDepartmentRequestDTO(List<Department> departments) {
-        return List.of(modelMapper.map(departments, DepartmentRequestDTO[].class));
-    }
-
-    public Department mapDepartmentRequestDTOToDepartment(DepartmentRequestDTO DepartmentRequestDTO) {
-        return modelMapper.map(DepartmentRequestDTO, Department.class);
-    }
-
-    public List<Department> mapDepartmentRequestDTOToDepartment(List<DepartmentRequestDTO> DepartmentRequestDTOs) {
-        return List.of(modelMapper.map(DepartmentRequestDTOs, Department[].class));
     }
 
     @Override

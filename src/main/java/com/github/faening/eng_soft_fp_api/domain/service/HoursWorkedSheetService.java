@@ -47,6 +47,7 @@ public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetReq
 
     @Override
     public HoursWorkedSheetResponseDTO getById(Integer id) {
+        validateId(id);
         return hoursWorkedSheetResponseMapper.toDTO(searchHoursWorkedSheetById(id), HoursWorkedSheetResponseDTO.class);
     }
 
@@ -71,8 +72,7 @@ public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetReq
     @Override
     public void delete(Integer id) {
         validateId(id);
-        HoursWorkedSheet hoursWorkedSheet = searchHoursWorkedSheetById(id);
-        hoursWorkedSheetRepository.delete(hoursWorkedSheet);
+        hoursWorkedSheetRepository.deleteById(id);
     }
 
     /**
@@ -92,7 +92,7 @@ public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetReq
             .collect(Collectors.toList());
     }
 
-    private HoursWorkedSheet searchHoursWorkedSheetById(Integer id) {
+    public HoursWorkedSheet searchHoursWorkedSheetById(Integer id) {
         return hoursWorkedSheetRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Nenhum registro de horas trabalhadas encontrado com o id: " + id)
         );
