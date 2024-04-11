@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class HoursWorkedSheetResponseMapper extends AbstractMapper<HoursWorkedSheet, HoursWorkedSheetResponseDTO> {
     private final EmployeeService employeeService;
