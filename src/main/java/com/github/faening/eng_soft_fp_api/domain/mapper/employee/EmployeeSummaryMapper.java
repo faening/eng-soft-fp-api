@@ -21,22 +21,6 @@ public class EmployeeSummaryMapper extends AbstractMapper<Employee, EmployeeSumm
         super(modelMapper);
     }
 
-    public EmployeeSummaryDTO mapEmployeeToEmployeeSummaryDTO(Employee employee) {
-        return modelMapper.map(employee, EmployeeSummaryDTO.class);
-    }
-
-    public List<EmployeeSummaryDTO> mapEmployeeToEmployeeSummaryDTO(List<Employee> employees) {
-        return List.of(modelMapper.map(employees, EmployeeSummaryDTO[].class));
-    }
-
-    public Employee mapEmployeeSummaryDTOToEmployee(EmployeeSummaryDTO employeeSummaryDTO) {
-        return modelMapper.map(employeeSummaryDTO, Employee.class);
-    }
-
-    public List<Employee> mapEmployeeSummaryDTOToEmployee(List<EmployeeSummaryDTO> employeeSummaryDTOs) {
-        return List.of(modelMapper.map(employeeSummaryDTOs, Employee[].class));
-    }
-
     @Override
     protected void createSourceToDestinationMapping() {
         modelMapper.createTypeMap(Employee.class, EmployeeSummaryDTO.class)

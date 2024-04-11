@@ -1,88 +1,47 @@
-package com.github.faening.eng_soft_fp_api.data.model;
-
-import jakarta.persistence.*;
+package com.github.faening.eng_soft_fp_api.domain.model.hours_worked_sheet;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @SuppressWarnings("unused")
-@Entity
-@Table(name = "hours_worked_sheet")
-public class HoursWorkedSheet implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_hours_worked_sheet")
-    private Integer id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
-    private Employee employee;
-
-    @Column(name = "date", nullable = false)
+public class HoursWorkedSheetRequestDTO implements Serializable {
+    private Integer employeeId;
     private LocalDate date;
-
-    @Column(name = "regular_hours")
     private LocalTime regularHours;
-
-    @Column(name = "negative_hours")
     private LocalTime negativeHours;
-
-    @Column(name = "overtime50")
     private LocalTime overtime50;
-
-    @Column(name = "overtime100")
     private LocalTime overtime100;
-
-    @Column(name = "time_bank")
     private LocalTime timeBank;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
-        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
-    })
-    private EntityMetadata entityMetadata;
-
-    public HoursWorkedSheet() {
+    public HoursWorkedSheetRequestDTO() {
     }
 
-    public HoursWorkedSheet(
-        Integer id,
-        Employee employee,
+    public HoursWorkedSheetRequestDTO(
+        Integer employeeId,
         LocalDate date,
         LocalTime regularHours,
         LocalTime negativeHours,
         LocalTime overtime50,
         LocalTime overtime100,
-        LocalTime timeBank,
-        EntityMetadata entityMetadata
+        LocalTime timeBank
     ) {
-        this.id = id;
-        this.employee = employee;
+        this.employeeId = employeeId;
         this.date = date;
         this.regularHours = regularHours;
         this.negativeHours = negativeHours;
         this.overtime50 = overtime50;
         this.overtime100 = overtime100;
         this.timeBank = timeBank;
-        this.entityMetadata = entityMetadata;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
     public LocalDate getDate() {
@@ -133,11 +92,29 @@ public class HoursWorkedSheet implements Serializable {
         this.timeBank = timeBank;
     }
 
-    public EntityMetadata getEntityMetadata() {
-        return entityMetadata;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HoursWorkedSheetRequestDTO that = (HoursWorkedSheetRequestDTO) o;
+        return Objects.equals(employeeId, that.employeeId) && Objects.equals(date, that.date) && Objects.equals(regularHours, that.regularHours) && Objects.equals(negativeHours, that.negativeHours) && Objects.equals(overtime50, that.overtime50) && Objects.equals(overtime100, that.overtime100) && Objects.equals(timeBank, that.timeBank);
     }
 
-    public void setEntityMetadata(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, date, regularHours, negativeHours, overtime50, overtime100, timeBank);
+    }
+
+    @Override
+    public String toString() {
+        return "HoursWorkedSheetRequestDTO{" +
+            "employeeId=" + employeeId +
+            ", date=" + date +
+            ", regularHours=" + regularHours +
+            ", negativeHours=" + negativeHours +
+            ", overtime50=" + overtime50 +
+            ", overtime100=" + overtime100 +
+            ", timeBank=" + timeBank +
+            '}';
     }
 }
