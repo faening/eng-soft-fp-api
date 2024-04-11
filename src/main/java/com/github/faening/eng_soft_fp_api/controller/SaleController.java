@@ -36,7 +36,7 @@ public class SaleController {
         value = { "/{id}" },
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<SaleResponseDTO> getAllSales(
+    public ResponseEntity<SaleResponseDTO> getSaleById(
         @PathVariable(value = "id") Integer id
     ) {
         SaleResponseDTO sale = saleService.getById(id);
