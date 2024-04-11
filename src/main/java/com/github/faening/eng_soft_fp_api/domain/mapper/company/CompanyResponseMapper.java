@@ -1,36 +1,22 @@
 package com.github.faening.eng_soft_fp_api.domain.mapper.company;
 
 import com.github.faening.eng_soft_fp_api.data.model.Company;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.BrazilianState;
 import com.github.faening.eng_soft_fp_api.domain.mapper.AbstractMapper;
 import com.github.faening.eng_soft_fp_api.domain.model.company.CompanyResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class CompanyResponseMapper extends AbstractMapper<Company, CompanyResponseDTO> {
     @Autowired
     public CompanyResponseMapper(ModelMapper modelMapper) {
         super(modelMapper);
-    }
-
-    public CompanyResponseDTO mapCompanyToCompanyResponseDTO(Company company) {
-        return modelMapper.map(company, CompanyResponseDTO.class);
-    }
-
-    public List<CompanyResponseDTO> mapCompanyToCompanyResponseDTO(List<Company> companies) {
-        return List.of(modelMapper.map(companies, CompanyResponseDTO[].class));
-    }
-
-    public Company mapCompanyResponseDTOToCompany(CompanyResponseDTO companyResponseDTO) {
-        return modelMapper.map(companyResponseDTO, Company.class);
-    }
-
-    public List<Company> mapCompanyResponseDTOToCompany(List<CompanyResponseDTO> companyResponseDTOs) {
-        return List.of(modelMapper.map(companyResponseDTOs, Company[].class));
     }
 
     @Override
@@ -60,5 +46,28 @@ public class CompanyResponseMapper extends AbstractMapper<Company, CompanyRespon
     }
 
     @Override
-    protected void createDestinationToSourceMapping() { }
+    protected void createDestinationToSourceMapping() {
+        modelMapper.createTypeMap(CompanyResponseDTO.class, Company.class)
+            .addMappings(mapper -> {
+                mapper.when(notNull).map(CompanyResponseDTO::getId, Company::setId);
+                mapper.when(notNull).map(CompanyResponseDTO::getCorporateName, Company::setCorporateName);
+                mapper.when(notNull).map(CompanyResponseDTO::getTradeName, Company::setTradeName);
+                mapper.when(notNull).map(CompanyResponseDTO::getCnpj, Company::setCnpj);
+                mapper.when(notNull).map(CompanyResponseDTO::getIe, Company::setIe);
+                mapper.when(notNull).map(CompanyResponseDTO::getOpeningDate, Company::setOpeningDate);
+                mapper.when(notNull).map(CompanyResponseDTO::getPhone, Company::setPhone);
+                mapper.when(notNull).map(CompanyResponseDTO::getEmail, Company::setEmail);
+
+                mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressStreet, (dest, v) -> dest.getAddress().setAddressStreet(v));
+                mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressNumber, (dest, v) -> dest.getAddress().setAddressNumber(v));
+                mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressNeighborhood, (dest, v) -> dest.getAddress().setAddressNeighborhood(v));
+                mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressComplement, (dest, v) -> dest.getAddress().setAddressComplement(v));
+                mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressCity, (dest, v) -> dest.getAddress().setAddressCity(v));
+                mapper.when(notNull).<BrazilianState>map(CompanyResponseDTO::getAddressUF, (dest, v) -> dest.getAddress().setAddressUF(v));
+                mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressZipCode, (dest, v) -> dest.getAddress().setAddressZipCode(v));
+
+                mapper.when(notNull).<LocalDateTime>map(CompanyResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
+                mapper.when(notNull).<LocalDateTime>map(CompanyResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
+            });
+    }
 }

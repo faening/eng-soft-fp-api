@@ -1,10 +1,8 @@
 package com.github.faening.eng_soft_fp_api.domain.model.company;
 
-import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.BrazilianState;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("unused")
 public class CompanyRequestDTO implements Serializable {
@@ -14,17 +12,11 @@ public class CompanyRequestDTO implements Serializable {
     private String email;
     private String addressStreet;
     private String addressNumber;
+    private String addressNeighborhood;
     private String addressComplement;
     private String addressCity;
-    private String addressUF;
+    private BrazilianState addressUF;
     private String addressZipCode;
-    private final List<String> unknownFields = new ArrayList<>(); // Armazena campos desconhecidos enviados no corpo da requisição.
-
-    // Método para lidar com campos desconhecidos enviados no corpo da requisição
-    @JsonAnySetter
-    public void handleUnknown(String key, Object value) {
-        unknownFields.add(key);
-    }
 
     public CompanyRequestDTO() {
     }
@@ -36,9 +28,10 @@ public class CompanyRequestDTO implements Serializable {
         String email,
         String addressStreet,
         String addressNumber,
+        String addressNeighborhood,
         String addressComplement,
         String addressCity,
-        String addressUF,
+        BrazilianState addressUF,
         String addressZipCode
     ) {
         this.corporateName = corporateName;
@@ -47,14 +40,11 @@ public class CompanyRequestDTO implements Serializable {
         this.email = email;
         this.addressStreet = addressStreet;
         this.addressNumber = addressNumber;
+        this.addressNeighborhood = addressNeighborhood;
         this.addressComplement = addressComplement;
         this.addressCity = addressCity;
         this.addressUF = addressUF;
         this.addressZipCode = addressZipCode;
-    }
-
-    public List<String> getUnknownFields() {
-        return unknownFields;
     }
 
     public String getCorporateName() {
@@ -105,6 +95,14 @@ public class CompanyRequestDTO implements Serializable {
         this.addressNumber = addressNumber;
     }
 
+    public String getAddressNeighborhood() {
+        return addressNeighborhood;
+    }
+
+    public void setAddressNeighborhood(String addressNeighborhood) {
+        this.addressNeighborhood = addressNeighborhood;
+    }
+
     public String getAddressComplement() {
         return addressComplement;
     }
@@ -121,11 +119,11 @@ public class CompanyRequestDTO implements Serializable {
         this.addressCity = addressCity;
     }
 
-    public String getAddressUF() {
-        return this.addressUF;
+    public BrazilianState getAddressUF() {
+        return addressUF;
     }
 
-    public void setAddressUF(String addressUF) {
+    public void setAddressUF(BrazilianState addressUF) {
         this.addressUF = addressUF;
     }
 

@@ -12,8 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
-public class CompanyService {
+public class CompanyService extends AbstractService<CompanyRequestDTO, CompanyResponseDTO> {
     private final CompanyRepository companyRepository;
     private final CompanyRequestMapper companyRequestMapper;
     private final CompanyResponseMapper companyResponseMapper;
@@ -29,29 +30,42 @@ public class CompanyService {
         this.companyResponseMapper = companyResponseMapper;
     }
 
-    private Company searchCompanyById(Integer id) {
+    @Override
+    public List<CompanyResponseDTO> getAll() {
+        return null;
+    }
+
+    @Override
+    public CompanyResponseDTO getById(Integer id) {
+        validadeId(id);
+        return companyResponseMapper.toDTO(searchCompanyById(id), CompanyResponseDTO.class);
+    }
+
+    @Override
+    public CompanyResponseDTO create(CompanyRequestDTO request) {
+        return null;
+    }
+
+    @Override
+    public CompanyResponseDTO update(Integer id, CompanyRequestDTO request) {
+        validadeId(id);
+        Company company = searchCompanyById(id);
+        companyRequestMapper.updateSourceFromDestination(company, request);
+        Company updatedCompany = companyRepository.save(company);
+        return companyResponseMapper.toDTO(updatedCompany, CompanyResponseDTO.class);
+    }
+
+    @Override
+    public void delete(Integer id) {
+    }
+
+    public Company searchCompanyById(Integer id) {
         return companyRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Nenhuma empresa encontrada com o ID informado: " + id)
         );
     }
 
-    public CompanyResponseDTO getCompanyById(Integer id) {
-        Company company = searchCompanyById(id);                               // Busca a empresa no banco de dados
-        return companyResponseMapper.mapCompanyToCompanyResponseDTO(company);  // Converte a empresa para o CompanyResponseDTO e retorna
-    }
-
-    public CompanyResponseDTO updateCompany(Integer id, CompanyRequestDTO companyRequestDTO) {
-        validateCompanyRequestDTO(companyRequestDTO);                                  // Valida se os campos do CompanyRequestDTO são válidos
-        Company company = searchCompanyById(id);                                       // Busca a empresa no banco de dados
-        companyRequestMapper.updateSourceFromDestination(company, companyRequestDTO);  // Atualiza os campos da empresa com os valores novos do CompanyRequestDTO
-        companyRepository.save(company);                                               // Salva a empresa no banco de dados
-        return companyResponseMapper.mapCompanyToCompanyResponseDTO(company);          // Converte a empresa para o CompanyResponseDTO e retorna
-    }
-
-    private void validateCompanyRequestDTO(CompanyRequestDTO companyRequestDTO) {
-        List<String> unknownFields = companyRequestDTO.getUnknownFields();
-        if (!unknownFields.isEmpty()) {
-            throw new IllegalArgumentException("Os seguintes campos não são permitidos: " + String.join(", ", unknownFields));
-        }
+    private void validadeId(Integer id) {
+        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("companyService.validation.companyId"));
     }
 }
