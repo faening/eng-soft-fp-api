@@ -93,19 +93,6 @@ public class HoursWorkedSheetRequestDTO implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HoursWorkedSheetRequestDTO that = (HoursWorkedSheetRequestDTO) o;
-        return Objects.equals(employeeId, that.employeeId) && Objects.equals(date, that.date) && Objects.equals(regularHours, that.regularHours) && Objects.equals(negativeHours, that.negativeHours) && Objects.equals(overtime50, that.overtime50) && Objects.equals(overtime100, that.overtime100) && Objects.equals(timeBank, that.timeBank);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(employeeId, date, regularHours, negativeHours, overtime50, overtime100, timeBank);
-    }
-
-    @Override
     public String toString() {
         return "HoursWorkedSheetRequestDTO{" +
             "employeeId=" + employeeId +

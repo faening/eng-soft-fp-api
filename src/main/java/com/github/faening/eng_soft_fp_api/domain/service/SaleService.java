@@ -94,7 +94,7 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
             .collect(Collectors.toList());
     }
 
-    private Sale searchSaleById(Integer id) {
+    public Sale searchSaleById(Integer id) {
         validateId(id);
         return saleRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Nenhuma venda encontrada com o id: " + id)
