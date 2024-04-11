@@ -1,17 +1,14 @@
 package com.github.faening.eng_soft_fp_api.domain.model.hours_worked_sheet;
 
-import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class HoursWorkedSheetResponseDTO implements Serializable {
     private Integer id;
-    private EmployeeSummaryDTO employee;
+    private Integer employeeId;
     private LocalDate date;
     private LocalTime regularHours;
     private LocalTime negativeHours;
@@ -26,7 +23,7 @@ public class HoursWorkedSheetResponseDTO implements Serializable {
 
     public HoursWorkedSheetResponseDTO(
         Integer id,
-        EmployeeSummaryDTO employee,
+        Integer employeeId,
         LocalDate date,
         LocalTime regularHours,
         LocalTime negativeHours,
@@ -37,7 +34,7 @@ public class HoursWorkedSheetResponseDTO implements Serializable {
         LocalDateTime updatedAt
     ) {
         this.id = id;
-        this.employee = employee;
+        this.employeeId = employeeId;
         this.date = date;
         this.regularHours = regularHours;
         this.negativeHours = negativeHours;
@@ -56,12 +53,12 @@ public class HoursWorkedSheetResponseDTO implements Serializable {
         this.id = id;
     }
 
-    public EmployeeSummaryDTO getEmployee() {
-        return employee;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(EmployeeSummaryDTO employee) {
-        this.employee = employee;
+    public void setEmployeeId(Integer employee) {
+        this.employeeId = employee;
     }
 
     public LocalDate getDate() {
@@ -129,23 +126,10 @@ public class HoursWorkedSheetResponseDTO implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HoursWorkedSheetResponseDTO that = (HoursWorkedSheetResponseDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(employee, that.employee) && Objects.equals(date, that.date) && Objects.equals(regularHours, that.regularHours) && Objects.equals(negativeHours, that.negativeHours) && Objects.equals(overtime50, that.overtime50) && Objects.equals(overtime100, that.overtime100) && Objects.equals(timeBank, that.timeBank) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, employee, date, regularHours, negativeHours, overtime50, overtime100, timeBank, createdAt, updatedAt);
-    }
-
-    @Override
     public String toString() {
         return "HoursWorkedSheetResponseDTO{" +
             "id=" + id +
-            ", employee=" + employee +
+            ", employeeId=" + employeeId +
             ", date=" + date +
             ", regularHours=" + regularHours +
             ", negativeHours=" + negativeHours +
