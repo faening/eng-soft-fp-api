@@ -1,6 +1,9 @@
 cors:
   originPatterns: http://localhost:3000,http://localhost:4200,http://localhost:8080
 spring:
+  mvc:
+    locale: pt_BR
+    locale-resolver: fixed
   datasource:
     url: jdbc:mysql://localhost:3306/egs19502fp.db?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC
     username: root
@@ -13,6 +16,9 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
       show-sql: false
+  messages:
+    encoding: UTF-8
+    basename: messages_pt_BR
 server:
   port: 8080
   servlet:
