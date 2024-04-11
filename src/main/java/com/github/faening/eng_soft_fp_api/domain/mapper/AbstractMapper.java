@@ -5,6 +5,8 @@ import org.modelmapper.Condition;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 @Service
 public abstract class AbstractMapper<S, D> {
@@ -27,12 +29,20 @@ public abstract class AbstractMapper<S, D> {
 
     protected abstract void createDestinationToSourceMapping();
 
-    public D mapSourceToDestination(S source, Class<D> destinationClass) {
+    public D toDTO(S source, Class<D> destinationClass) {
         return modelMapper.map(source, destinationClass);
     }
 
-    public S mapDestinationToSource(D destination, Class<S> sourceClass) {
+    public List<D> toDTO(List<S> source, Class<D> destinationClass) {
+        return List.of(modelMapper.map(source, destinationClass));
+    }
+
+    public S toEntity(D destination, Class<S> sourceClass) {
         return modelMapper.map(destination, sourceClass);
+    }
+
+    public List<S> toEntity(List<S> destination, Class<S> sourceClass) {
+        return List.of(modelMapper.map(destination, sourceClass));
     }
 
     public void updateSourceFromDestination(S source, D destination) {
