@@ -10,8 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @SuppressWarnings("unused")
 @Service
 public class JobRequestMapper extends AbstractMapper<Job, JobRequestDTO> {
@@ -21,22 +19,6 @@ public class JobRequestMapper extends AbstractMapper<Job, JobRequestDTO> {
     public JobRequestMapper(ModelMapper modelMapper, DepartmentService departmentService) {
         super(modelMapper);
         this.departmentService = departmentService;
-    }
-
-    public JobRequestDTO mapJobToJobRequestDTO(Job job) {
-        return modelMapper.map(job, JobRequestDTO.class);
-    }
-
-    public List<JobRequestDTO> mapJobToJobRequestDTO(List<Job> jobs) {
-        return List.of(modelMapper.map(jobs, JobRequestDTO[].class));
-    }
-
-    public Job mapJobRequestDTOToJob(JobRequestDTO jobRequestDTO) {
-        return modelMapper.map(jobRequestDTO, Job.class);
-    }
-
-    public List<Job> mapJobRequestDTOToJob(List<JobRequestDTO> jobRequestDTOs) {
-        return List.of(modelMapper.map(jobRequestDTOs, Job[].class));
     }
 
     @Override

@@ -93,4 +93,17 @@ public class JobRequestDTO implements Serializable {
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
+    @Override
+    public String toString() {
+        return "JobRequestDTO{" +
+            "description='" + description + '\'' +
+            ", experienceLevel=" + experienceLevel +
+            ", baseSalary=" + baseSalary +
+            ", dangerousness=" + dangerousness +
+            ", unhealthiness=" + unhealthiness +
+            ", departmentId=" + departmentId +
+            ", enabled=" + enabled +
+            '}';
+    }
 }
