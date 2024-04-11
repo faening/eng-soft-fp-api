@@ -28,7 +28,7 @@ public class EmployeeService {
         );
     }
 
-    public EmployeeSummaryDTO getEmployeeSummayById(Integer id) {
+    public EmployeeSummaryDTO getEmployeeSummaryById(Integer id) {
         Employee employee = searchEmployeeById(id);
         return employeeSummaryMapper.toDTO(employee, EmployeeSummaryDTO.class);
     }

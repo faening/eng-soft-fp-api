@@ -23,6 +23,7 @@ public class HoursWorkedSheetService {
     private final HoursWorkedSheetRepository hoursWorkedSheetRepository;
     private final HoursWorkedSheetRequestMapper hoursWorkedSheetRequestMapper;
     private final HoursWorkedSheetResponseMapper hoursWorkedSheetResponseMapper;
+    private final EmployeeService employeeService;
     private final EmployeeSummaryMapper employeeSummaryMapper;
 
     @Autowired
@@ -30,11 +31,13 @@ public class HoursWorkedSheetService {
         HoursWorkedSheetRepository hoursWorkedSheetRepository,
         HoursWorkedSheetRequestMapper hoursWorkedSheetRequestMapper,
         HoursWorkedSheetResponseMapper hoursWorkedSheetResponseMapper,
+        EmployeeService employeeService,
         EmployeeSummaryMapper employeeSummaryMapper
     ) {
         this.hoursWorkedSheetRepository = hoursWorkedSheetRepository;
         this.hoursWorkedSheetRequestMapper = hoursWorkedSheetRequestMapper;
         this.hoursWorkedSheetResponseMapper = hoursWorkedSheetResponseMapper;
+        this.employeeService = employeeService;
         this.employeeSummaryMapper = employeeSummaryMapper;
     }
 
@@ -47,15 +50,17 @@ public class HoursWorkedSheetService {
     /**
      * Busca as horas trabalhadas de um funcionário em um intervalo de datas.
      *
-     * @param employeeSummaryDTO DTO com o resumo do funcionário
+     * @param employeId Id do funcionário
      * @param startDate Data de início do intervalo
      * @param endDate Data de fim do intervalo
      *
      * @return Lista de horas trabalhadas
      */
-    public List<HoursWorkedSheetResponseDTO> getWorkedHoursByEmployeeAndDateRange(EmployeeSummaryDTO employeeSummaryDTO, LocalDate startDate, LocalDate endDate) {
+    public List<HoursWorkedSheetResponseDTO> getWorkedHoursByEmployeeIdAndDateRange(Integer employeId, LocalDate startDate, LocalDate endDate) {
+        EmployeeSummaryDTO employeeSummaryDTO = this.employeeService.getEmployeeSummaryById(employeId);
+        Employee employee = employeeSummaryMapper.toEntity(employeeSummaryDTO, Employee.class);
         return hoursWorkedSheetRepository
-            .findByEmployeeAndDateBetween(employeeSummaryMapper.toEntity(employeeSummaryDTO, Employee.class), startDate, endDate)
+            .findByEmployeeAndDateBetween(employee, startDate, endDate)
             .stream()
             .map(hoursWorkedSheet -> hoursWorkedSheetResponseMapper.toDTO(hoursWorkedSheet, HoursWorkedSheetResponseDTO.class))
             .collect(Collectors.toList());
