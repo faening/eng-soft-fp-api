@@ -22,10 +22,14 @@ public class EmployeeService {
         this.employeeSummaryMapper = employeeSummaryMapper;
     }
 
-    public Employee searchEmployeeById(Integer id) {
+    private Employee searchEmployeeById(Integer id) {
         return employeeRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Nenhum funcionário encontrado com o id: " + id)
         );
+    }
+
+    public Employee getEmployeeById(Integer id) {
+        return searchEmployeeById(id);
     }
 
     public EmployeeSummaryDTO getEmployeeSummaryById(Integer id) {
