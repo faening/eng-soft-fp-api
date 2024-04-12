@@ -36,7 +36,7 @@ public class AbsenceSheetRequestMapper extends AbstractMapper<AbsenceSheet, Abse
 
     @Override
     protected void createDestinationToSourceMapping() {
-        Converter<Integer, Employee> employeeIdToEmployee = context -> employeeService.getEmployeeById(context.getSource());
+        Converter<Integer, Employee> employeeIdToEmployee = context -> employeeService.getEmployeeEntityById(context.getSource());
 
         modelMapper.createTypeMap(AbsenceSheetRequestDTO.class, AbsenceSheet.class)
             .addMappings(mapper -> {

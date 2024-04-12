@@ -10,30 +10,30 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeService {
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository repository;
     private final EmployeeSummaryMapper employeeSummaryMapper;
 
     @Autowired
     public EmployeeService(
-        EmployeeRepository employeeRepository,
+        EmployeeRepository repository,
         EmployeeSummaryMapper employeeSummaryMapper
     ) {
-        this.employeeRepository = employeeRepository;
+        this.repository = repository;
         this.employeeSummaryMapper = employeeSummaryMapper;
     }
 
-    private Employee searchEmployeeById(Integer id) {
-        return employeeRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum funcionário encontrado com o id: " + id)
-        );
-    }
-
-    public Employee getEmployeeById(Integer id) {
+    public Employee getEmployeeEntityById(Integer id) {
         return searchEmployeeById(id);
     }
 
     public EmployeeSummaryDTO getEmployeeSummaryById(Integer id) {
         Employee employee = searchEmployeeById(id);
         return employeeSummaryMapper.toDTO(employee, EmployeeSummaryDTO.class);
+    }
+
+    private Employee searchEmployeeById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Nenhum funcionário encontrado com o id: " + id)
+        );
     }
 }

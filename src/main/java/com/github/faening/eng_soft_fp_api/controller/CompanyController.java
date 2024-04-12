@@ -8,38 +8,29 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/companies")
-public class CompanyController {
-    private final CompanyService companyService;
-
+public class CompanyController extends AbstractController<CompanyRequestDTO, CompanyResponseDTO> {
     @Autowired
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
+    public CompanyController(CompanyService service) {
+        super(service);
     }
 
-    @GetMapping(
-        value = { "/{id}" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<CompanyResponseDTO> getCompanyById(
-        @PathVariable(value = "id") Integer id
-    ) {
-        CompanyResponseDTO companyResponseDTO = companyService.getById(id);
-        return ResponseEntity.ok(companyResponseDTO);
+    @Override
+    public ResponseEntity<List<CompanyResponseDTO>> getAll() {
+        return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(
-        value = { "/{id}" },
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<CompanyResponseDTO> updateCompany(
-        @PathVariable(value = "id") Integer id,
-        @RequestBody CompanyRequestDTO companyRequestDTO
-    ) {
-        CompanyResponseDTO updatedCompany = companyService.update(id, companyRequestDTO);
-        return ResponseEntity.ok(updatedCompany);
+    @Override
+    public ResponseEntity<CompanyResponseDTO> update(Integer id, CompanyRequestDTO request) {
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> delete(Integer id) {
+        return ResponseEntity.noContent().build();
     }
 }

@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,79 +18,22 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/sales")
-public class SaleController {
-    private final SaleService saleService;
+public class SaleController extends AbstractController<SaleRequestDTO, SaleResponseDTO> {
+    private final SaleService service;
 
     @Autowired
-    public SaleController(SaleService saleService) {
-        this.saleService = saleService;
+    public SaleController(SaleService service) {
+        super(service);
+        this.service = service;
     }
 
-    @GetMapping(
-        value = { "" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<List<SaleResponseDTO>> getAllSales() {
-        List<SaleResponseDTO> sales = saleService.getAll();
-        return ResponseEntity.ok(sales);
-    }
-
-    @GetMapping(
-        value = { "/{id}" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<SaleResponseDTO> getSaleById(
-        @PathVariable(value = "id") Integer id
-    ) {
-        SaleResponseDTO sale = saleService.getById(id);
-        return ResponseEntity.ok(sale);
-    }
-
-    @GetMapping(
-        value = { "/employee" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @GetMapping(value = {"/employee"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<SaleResponseDTO>> getSalesByEmployeeIdAndDateRange(
         @RequestParam Integer employeeId,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     ) {
-        List<SaleResponseDTO> sales = saleService.getSalesByEmployeeIdAndDateRange(employeeId, startDate, endDate);
+        List<SaleResponseDTO> sales = service.getSalesByEmployeeIdAndDateRange(employeeId, startDate, endDate);
         return ResponseEntity.ok(sales);
-    }
-
-    @PostMapping(
-        value = { "" },
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<SaleResponseDTO> createSale(
-        @RequestBody SaleRequestDTO saleRequestDTO
-    ) {
-        SaleResponseDTO createdSale = saleService.create(saleRequestDTO);
-        return ResponseEntity.ok(createdSale);
-    }
-
-    @PatchMapping(
-        value = { "/{id}" },
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<SaleResponseDTO> updateSale(
-        @PathVariable(value = "id") Integer id,
-        @RequestBody SaleRequestDTO saleRequestDTO
-    ) {
-        SaleResponseDTO updatedSale = saleService.update(id, saleRequestDTO);
-        return ResponseEntity.ok(updatedSale);
-    }
-
-    @DeleteMapping(
-        value = { "/{id}" }
-    )
-    public ResponseEntity<Void> deleteSale(
-        @PathVariable(value = "id") Integer id
-    ) {
-        saleService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -15,76 +15,86 @@ import java.util.List;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class EmployeeDependentService extends AbstractService<EmployeeDependentRequestDTO, EmployeeDependentResponseDTO>{
-    private final EmployeeDependentRepository employeeDependentRepository;
-    private final EmployeeDependentRequestMapper employeeDependentRequestMapper;
-    private final EmployeeDependentResponseMapper employeeDependentResponseMapper;
+    private final EmployeeDependentRepository repository;
+    private final EmployeeDependentRequestMapper requestMapper;
+    private final EmployeeDependentResponseMapper responseMapper;
+
+    private static final String EMPLOYEE_DEPENDENT_EMPLOYEE_ID_VALIDATION_MESSAGE = "employeeDependentService.validation.employeeId";
+    private static final String EMPLOYEE_DEPENDENT_NAME_VALIDATION_MESSAGE = "employeeDependentService.validation.name";
+    private static final String EMPLOYEE_DEPENDENT_RG_VALIDATION_MESSAGE = "employeeDependentService.validation.rg";
+    private static final String EMPLOYEE_DEPENDENT_CPF_VALIDATION_MESSAGE = "employeeDependentService.validation.cpf";
+    private static final String EMPLOYEE_DEPENDENT_BIRTH_DATE_VALIDATION_MESSAGE = "employeeDependentService.validation.birthDate";
+    private static final String EMPLOYEE_DEPENDENT_GENDER_VALIDATION_MESSAGE = "employeeDependentService.validation.gender";
 
     @Autowired
     public EmployeeDependentService(
-        EmployeeDependentRepository employeeDependentRepository,
-        EmployeeDependentRequestMapper employeeDependentRequestMapper,
-        EmployeeDependentResponseMapper employeeDependentResponseMapper
+        EmployeeDependentRepository repository,
+        EmployeeDependentRequestMapper requestMapper,
+        EmployeeDependentResponseMapper responseMapper
     ) {
-        this.employeeDependentRepository = employeeDependentRepository;
-        this.employeeDependentRequestMapper = employeeDependentRequestMapper;
-        this.employeeDependentResponseMapper = employeeDependentResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
     }
 
     @Override
     public List<EmployeeDependentResponseDTO> getAll() {
-        return employeeDependentRepository
+        return repository
             .findAll()
             .stream()
-            .map(employeeDependent -> employeeDependentResponseMapper.toDTO(employeeDependent, EmployeeDependentResponseDTO.class))
+            .map(employeeDependent -> responseMapper.toDTO(employeeDependent, EmployeeDependentResponseDTO.class))
             .toList();
     }
 
     @Override
     public EmployeeDependentResponseDTO getById(Integer id) {
-        validateId(id);
-        return employeeDependentResponseMapper.toDTO(searchEmployeeDependentById(id), EmployeeDependentResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchEmployeeDependentEntityById(id), EmployeeDependentResponseDTO.class);
+    }
+
+    public EmployeeDependent getEntityById(Integer id) {
+        validate(id);
+        return searchEmployeeDependentEntityById(id);
     }
 
     @Override
     public EmployeeDependentResponseDTO create(EmployeeDependentRequestDTO request) {
-        validateEmployeeDependentRequestDTO(request);
-        EmployeeDependent employeeDependent = employeeDependentRequestMapper.toEntity(request, EmployeeDependent.class);
-        EmployeeDependent savedEmployeeDependent = employeeDependentRepository.save(employeeDependent);
-        return employeeDependentResponseMapper.toDTO(savedEmployeeDependent, EmployeeDependentResponseDTO.class);
+        validate(request);
+        EmployeeDependent employeeDependent = requestMapper.toEntity(request, EmployeeDependent.class);
+        EmployeeDependent savedEmployeeDependent = repository.save(employeeDependent);
+        return responseMapper.toDTO(savedEmployeeDependent, EmployeeDependentResponseDTO.class);
     }
 
     @Override
     public EmployeeDependentResponseDTO update(Integer id, EmployeeDependentRequestDTO request) {
-        validateId(id);
-        validateEmployeeDependentRequestDTO(request);
-        EmployeeDependent employeeDependent = searchEmployeeDependentById(id);
-        employeeDependentRequestMapper.updateSourceFromDestination(employeeDependent, request);
-        return employeeDependentResponseMapper.toDTO(employeeDependentRepository.save(employeeDependent), EmployeeDependentResponseDTO.class);
+        validate(id);
+        validate(request);
+        EmployeeDependent employeeDependent = searchEmployeeDependentEntityById(id);
+        requestMapper.updateSourceFromDestination(employeeDependent, request);
+        return responseMapper.toDTO(repository.save(employeeDependent), EmployeeDependentResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        validateId(id);
-        employeeDependentRepository.deleteById(id);
+        validate(id);
+        repository.deleteById(id);
     }
 
-    public EmployeeDependent searchEmployeeDependentById(Integer id) {
-        return employeeDependentRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum dependente encontrado com o id: " + id)
+    private EmployeeDependent searchEmployeeDependentEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    private void validateId(Integer id) {
-        if (id == null) throw new ResourceNotFoundException(getLocalizedMessage("employeeDependentService.validation.employeeDependentId"));
-    }
-
-    private void validateEmployeeDependentRequestDTO(EmployeeDependentRequestDTO request) {
-        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage("employeeDependentService.validation.employeeId"));
-        if (request.getName() == null) throw new ResourceNotFoundException(getLocalizedMessage("employeeDependentService.validation.name"));
-        if (request.getRg() == null) throw new ResourceNotFoundException(getLocalizedMessage("employeeDependentService.validation.rg"));
-        if (request.getCpf() == null) throw new ResourceNotFoundException(getLocalizedMessage("employeeDependentService.validation.cpf"));
-        if (request.getBirthDate() == null) throw new ResourceNotFoundException(getLocalizedMessage("employeeDependentService.validation.birthDate"));
-        if (request.getGender() == null) throw new ResourceNotFoundException(getLocalizedMessage("employeeDependentService.validation.gender"));
+    @Override
+    protected void validate(EmployeeDependentRequestDTO request) {
+        super.validate(request);
+        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_EMPLOYEE_ID_VALIDATION_MESSAGE));
+        if (request.getName() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_NAME_VALIDATION_MESSAGE));
+        if (request.getRg() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_RG_VALIDATION_MESSAGE));
+        if (request.getCpf() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_CPF_VALIDATION_MESSAGE));
+        if (request.getBirthDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_BIRTH_DATE_VALIDATION_MESSAGE));
+        if (request.getGender() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_GENDER_VALIDATION_MESSAGE));
         if (request.getSpecialNeeds() == null) request.setSpecialNeeds(false);
         if (request.getFamilyAllowance() == null) request.setSpecialNeeds(false);
         if (request.getDaycareAllowance() == null) request.setSpecialNeeds(false);
