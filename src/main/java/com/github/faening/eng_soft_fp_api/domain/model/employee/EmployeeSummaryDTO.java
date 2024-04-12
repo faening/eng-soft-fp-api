@@ -26,6 +26,10 @@ public class EmployeeSummaryDTO implements Serializable {
     private String phone;
     private String email;
     private LocalDate admissionDate;
+    private Boolean timeServiceAllowance;
+    private Integer departmentId;
+    private Integer jobId;
+    private Integer workShiftId;
     private BigDecimal salary;
     private Boolean enabled;
     private LocalDateTime createdAt;
@@ -51,6 +55,10 @@ public class EmployeeSummaryDTO implements Serializable {
         String phone,
         String email,
         LocalDate admissionDate,
+        Boolean timeServiceAllowance,
+        Integer departmentId,
+        Integer jobId,
+        Integer workShiftId,
         BigDecimal salary,
         Boolean enabled,
         LocalDateTime createdAt,
@@ -72,6 +80,10 @@ public class EmployeeSummaryDTO implements Serializable {
         this.phone = phone;
         this.email = email;
         this.admissionDate = admissionDate;
+        this.timeServiceAllowance = timeServiceAllowance;
+        this.departmentId = departmentId;
+        this.jobId = jobId;
+        this.workShiftId = workShiftId;
         this.salary = salary;
         this.enabled = enabled;
         this.createdAt = createdAt;
@@ -206,6 +218,38 @@ public class EmployeeSummaryDTO implements Serializable {
         this.admissionDate = admissionDate;
     }
 
+    public Boolean getTimeServiceAllowance() {
+        return timeServiceAllowance;
+    }
+
+    public void setTimeServiceAllowance(Boolean timeServiceAllowance) {
+        this.timeServiceAllowance = timeServiceAllowance;
+    }
+
+    public Integer getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public Integer getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(Integer jobId) {
+        this.jobId = jobId;
+    }
+
+    public Integer getWorkShiftId() {
+        return workShiftId;
+    }
+
+    public void setWorkShiftId(Integer workShiftId) {
+        this.workShiftId = workShiftId;
+    }
+
     public BigDecimal getSalary() {
         return salary;
     }
@@ -236,5 +280,35 @@ public class EmployeeSummaryDTO implements Serializable {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeeSummaryDTO{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", rg='" + rg + '\'' +
+            ", cpf='" + cpf + '\'' +
+            ", birthDate=" + birthDate +
+            ", gender=" + gender +
+            ", addressStreet='" + addressStreet + '\'' +
+            ", addressNumber='" + addressNumber + '\'' +
+            ", addressNeighborhood='" + addressNeighborhood + '\'' +
+            ", addressComplement='" + addressComplement + '\'' +
+            ", addressCity='" + addressCity + '\'' +
+            ", addressUF=" + addressUF +
+            ", addressZipCode='" + addressZipCode + '\'' +
+            ", phone='" + phone + '\'' +
+            ", email='" + email + '\'' +
+            ", admissionDate=" + admissionDate +
+            ", timeServiceAllowance=" + timeServiceAllowance +
+            ", departmentId=" + departmentId +
+            ", jobId=" + jobId +
+            ", workShiftId=" + workShiftId +
+            ", salary=" + salary +
+            ", enabled=" + enabled +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
     }
 }

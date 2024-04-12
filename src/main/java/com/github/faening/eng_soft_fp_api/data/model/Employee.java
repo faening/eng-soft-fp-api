@@ -65,7 +65,7 @@ public class Employee implements Serializable {
     @Column(name = "salary", nullable = false, precision = 10, scale = 2)
     private BigDecimal salary;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<EmployeeDependent> dependents;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

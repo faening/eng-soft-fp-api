@@ -11,9 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class EmployeeSummaryMapper extends AbstractMapper<Employee, EmployeeSummaryDTO> {
     @Autowired
@@ -44,6 +43,12 @@ public class EmployeeSummaryMapper extends AbstractMapper<Employee, EmployeeSumm
                 mapper.when(notNull).map(Employee::getPhone, EmployeeSummaryDTO::setPhone);
                 mapper.when(notNull).map(Employee::getEmail, EmployeeSummaryDTO::setEmail);
                 mapper.when(notNull).map(Employee::getAdmissionDate, EmployeeSummaryDTO::setAdmissionDate);
+                mapper.when(notNull).map(Employee::getTimeServiceAllowance, EmployeeSummaryDTO::setTimeServiceAllowance);
+
+                mapper.when(notNull).map(src -> src.getDepartment().getId(), EmployeeSummaryDTO::setDepartmentId);
+                mapper.when(notNull).map(src -> src.getJob().getId(), EmployeeSummaryDTO::setJobId);
+                mapper.when(notNull).map(src -> src.getWorkShift().getId(), EmployeeSummaryDTO::setWorkShiftId);
+
                 mapper.when(notNull).map(Employee::getSalary, EmployeeSummaryDTO::setSalary);
                 mapper.when(notNull).map(Employee::getEnabled, EmployeeSummaryDTO::setEnabled);
 
@@ -75,16 +80,18 @@ public class EmployeeSummaryMapper extends AbstractMapper<Employee, EmployeeSumm
                 mapper.when(notNull).map(EmployeeSummaryDTO::getPhone, Employee::setPhone);
                 mapper.when(notNull).map(EmployeeSummaryDTO::getEmail, Employee::setEmail);
                 mapper.when(notNull).map(EmployeeSummaryDTO::getAdmissionDate, Employee::setAdmissionDate);
+                mapper.when(notNull).map(EmployeeSummaryDTO::getTimeServiceAllowance, Employee::setTimeServiceAllowance);
+
+                mapper.when(notNull).map(EmployeeSummaryDTO::getDepartmentId, Employee::setDepartment);
+                mapper.when(notNull).map(EmployeeSummaryDTO::getJobId, Employee::setJob);
+                mapper.when(notNull).map(EmployeeSummaryDTO::getWorkShiftId, Employee::setWorkShift);
+
                 mapper.when(notNull).map(EmployeeSummaryDTO::getSalary, Employee::setSalary);
                 mapper.when(notNull).map(EmployeeSummaryDTO::getEnabled, Employee::setEnabled);
 
                 mapper.when(notNull).<LocalDateTime>map(EmployeeSummaryDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(EmployeeSummaryDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
 
-                mapper.skip(Employee::setDepartment);
-                mapper.skip(Employee::setJob);
-                mapper.skip(Employee::setWorkShift);
-                mapper.skip(Employee::setDepartment);
                 mapper.skip(Employee::setAbsenceSheets);
                 mapper.skip(Employee::setHoursWorkedSheets);
                 mapper.skip(Employee::setLoans);
