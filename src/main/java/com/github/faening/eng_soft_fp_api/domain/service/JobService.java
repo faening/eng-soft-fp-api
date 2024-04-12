@@ -2,6 +2,7 @@ package com.github.faening.eng_soft_fp_api.domain.service;
 
 import com.github.faening.eng_soft_fp_api.data.model.Job;
 import com.github.faening.eng_soft_fp_api.data.repository.JobRepository;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
 import com.github.faening.eng_soft_fp_api.domain.mapper.job.JobRequestMapper;
 import com.github.faening.eng_soft_fp_api.domain.mapper.job.JobResponseMapper;
 import com.github.faening.eng_soft_fp_api.domain.model.job.JobRequestDTO;
@@ -19,16 +20,19 @@ public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
     private final JobRepository jobRepository;
     private final JobRequestMapper jobRequestMapper;
     private final JobResponseMapper jobResponseMapper;
+    private final TaxOrValueService taxOrValueService;
 
     @Autowired
     public JobService(
         JobRepository jobRepository,
         JobRequestMapper jobRequestMapper,
-        JobResponseMapper jobResponseMapper
+        JobResponseMapper jobResponseMapper,
+        TaxOrValueService taxOrValueService
     ) {
         this.jobRepository = jobRepository;
         this.jobRequestMapper = jobRequestMapper;
         this.jobResponseMapper = jobResponseMapper;
+        this.taxOrValueService = taxOrValueService;
     }
 
     @Override
@@ -88,6 +92,8 @@ public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
         if (jobRequestDTO.getDangerousness() == null) jobRequestDTO.setDangerousness(false);
         if (jobRequestDTO.getUnhealthiness() == null) jobRequestDTO.setUnhealthiness(false);
         if (jobRequestDTO.getEnabled() == null) jobRequestDTO.setEnabled(true);
-        // TODO: Se o `baseSalary` não for informado, definir o valor padrão com o salário mínimo vigente
+        if (jobRequestDTO.getBaseSalary() == null) jobRequestDTO.setBaseSalary(
+            taxOrValueService.getByType(TaxOrValueType.MINIMUM_WAGE).get(0).getFixedValue()
+        );
     }
 }
