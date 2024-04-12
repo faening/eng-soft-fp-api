@@ -12,7 +12,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @RestController
-    @RequestMapping("/v1/employee-dependents")
+@RequestMapping("/v1/employee-dependents")
 public class EmployeeDependentController {
     private final EmployeeDependentService employeeDependentService;
 
