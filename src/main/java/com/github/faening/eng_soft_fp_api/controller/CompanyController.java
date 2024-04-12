@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/companies")
 public class CompanyController {
@@ -25,7 +26,7 @@ public class CompanyController {
     public ResponseEntity<CompanyResponseDTO> getCompanyById(
         @PathVariable(value = "id") Integer id
     ) {
-        CompanyResponseDTO companyResponseDTO = companyService.getCompanyById(id);
+        CompanyResponseDTO companyResponseDTO = companyService.getById(id);
         return ResponseEntity.ok(companyResponseDTO);
     }
 
@@ -38,7 +39,7 @@ public class CompanyController {
         @PathVariable(value = "id") Integer id,
         @RequestBody CompanyRequestDTO companyRequestDTO
     ) {
-        CompanyResponseDTO updatedCompany = companyService.updateCompany(id, companyRequestDTO);
+        CompanyResponseDTO updatedCompany = companyService.update(id, companyRequestDTO);
         return ResponseEntity.ok(updatedCompany);
     }
 }

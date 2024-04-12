@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/jobs")
 public class JobController {
@@ -25,7 +26,7 @@ public class JobController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<List<JobResponseDTO>> getAllJobs() {
-        List<JobResponseDTO> jobs = jobService.getAllJobs();
+        List<JobResponseDTO> jobs = jobService.getAll();
         return ResponseEntity.ok(jobs);
     }
 
@@ -36,7 +37,7 @@ public class JobController {
     public ResponseEntity<JobResponseDTO> getJobById(
         @PathVariable(value = "id") Integer id
     ) {
-        JobResponseDTO job = jobService.getJobById(id);
+        JobResponseDTO job = jobService.getById(id);
         return ResponseEntity.ok(job);
     }
 
@@ -48,7 +49,7 @@ public class JobController {
     public ResponseEntity<JobResponseDTO> createJob(
         @RequestBody JobRequestDTO jobRequestDTO
     ) {
-        JobResponseDTO createdJob = jobService.createJob(jobRequestDTO);
+        JobResponseDTO createdJob = jobService.create(jobRequestDTO);
         return ResponseEntity.ok(createdJob);
     }
 
@@ -61,7 +62,7 @@ public class JobController {
         @PathVariable(value = "id") Integer id,
         @RequestBody JobRequestDTO jobRequestDTO
     ) {
-        JobResponseDTO updatedJob = jobService.updateJob(id, jobRequestDTO);
+        JobResponseDTO updatedJob = jobService.update(id, jobRequestDTO);
         return ResponseEntity.ok(updatedJob);
     }
 
@@ -71,7 +72,7 @@ public class JobController {
     public ResponseEntity<Void> deleteJob(
         @PathVariable(value = "id") Integer id
     ) {
-        jobService.deleteJob(id);
+        jobService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

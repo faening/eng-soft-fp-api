@@ -1,6 +1,7 @@
 package com.github.faening.eng_soft_fp_api.controller;
 
-import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftRequestDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.WorkShiftService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/work-shifts")
 public class WorkShiftController {
@@ -24,8 +26,8 @@ public class WorkShiftController {
         value = {""},
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<List<WorkShiftDTO>> getAllWorkShifts() {
-        List<WorkShiftDTO> workShifts = workShiftService.getAllWorkShifts();
+    public ResponseEntity<List<WorkShiftResponseDTO>> getAllWorkShifts() {
+        List<WorkShiftResponseDTO> workShifts = workShiftService.getAll();
         return ResponseEntity.ok(workShifts);
     }
 
@@ -33,10 +35,10 @@ public class WorkShiftController {
         value = {"/{id}"},
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<WorkShiftDTO> getWorkShiftById(
+    public ResponseEntity<WorkShiftResponseDTO> getWorkShiftById(
         @PathVariable(value = "id") Integer id
     ) {
-        WorkShiftDTO workShift = workShiftService.getWorkShiftById(id);
+        WorkShiftResponseDTO workShift = workShiftService.getById(id);
         return ResponseEntity.ok(workShift);
     }
 
@@ -45,10 +47,10 @@ public class WorkShiftController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<WorkShiftDTO> createWorkShift(
-        @RequestBody WorkShiftDTO workShiftDTO
+    public ResponseEntity<WorkShiftResponseDTO> createWorkShift(
+        @RequestBody WorkShiftRequestDTO workShiftRequestDTO
     ) {
-        WorkShiftDTO createdWorkShift = workShiftService.createWorkShift(workShiftDTO);
+        WorkShiftResponseDTO createdWorkShift = workShiftService.create(workShiftRequestDTO);
         return ResponseEntity.ok(createdWorkShift);
     }
 
@@ -57,11 +59,11 @@ public class WorkShiftController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<WorkShiftDTO> updateWorkShift(
+    public ResponseEntity<WorkShiftResponseDTO> updateWorkShift(
         @PathVariable(value = "id") Integer id,
-        @RequestBody WorkShiftDTO workShiftDTO
+        @RequestBody WorkShiftRequestDTO workShiftRequestDTO
     ) {
-        WorkShiftDTO updatedWorkShift = workShiftService.updateWorkShift(id, workShiftDTO);
+        WorkShiftResponseDTO updatedWorkShift = workShiftService.update(id, workShiftRequestDTO);
         return ResponseEntity.ok(updatedWorkShift);
     }
 
@@ -71,7 +73,7 @@ public class WorkShiftController {
     public ResponseEntity<Void> deleteWorkShift(
         @PathVariable(value = "id") Integer id
     ) {
-        workShiftService.deleteWorkShift(id);
+        workShiftService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

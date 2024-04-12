@@ -1,7 +1,6 @@
 package com.github.faening.eng_soft_fp_api.domain.model.job;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.ExperienceLevel;
-import com.github.faening.eng_soft_fp_api.domain.model.department.DepartmentResponseDTO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -14,8 +13,8 @@ public class JobResponseDTO implements Serializable {
     private ExperienceLevel experienceLevel;
     private BigDecimal baseSalary;
     private Boolean dangerousness;
-    private Boolean unhealthiness;
-    private DepartmentResponseDTO department;
+    private Integer unhealthiness;
+    private Integer departmentId;
     private Boolean enabled;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -29,8 +28,8 @@ public class JobResponseDTO implements Serializable {
         ExperienceLevel experienceLevel,
         BigDecimal baseSalary,
         Boolean dangerousness,
-        Boolean unhealthiness,
-        DepartmentResponseDTO department,
+        Integer unhealthiness,
+        Integer departmentId,
         Boolean enabled,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
@@ -41,7 +40,7 @@ public class JobResponseDTO implements Serializable {
         this.baseSalary = baseSalary;
         this.dangerousness = dangerousness;
         this.unhealthiness = unhealthiness;
-        this.department = department;
+        this.departmentId = departmentId;
         this.enabled = enabled;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -87,20 +86,20 @@ public class JobResponseDTO implements Serializable {
         this.dangerousness = dangerousness;
     }
 
-    public Boolean getUnhealthiness() {
+    public Integer getUnhealthiness() {
         return unhealthiness;
     }
 
-    public void setUnhealthiness(Boolean unhealthiness) {
+    public void setUnhealthiness(Integer unhealthiness) {
         this.unhealthiness = unhealthiness;
     }
 
-    public DepartmentResponseDTO getDepartment() {
-        return department;
+    public Integer getDepartmentId() {
+        return departmentId;
     }
 
-    public void setDepartment(DepartmentResponseDTO department) {
-        this.department = department;
+    public void setDepartmentId(Integer departmentId) {
+        this.departmentId = departmentId;
     }
 
     public Boolean getEnabled() {
@@ -125,5 +124,21 @@ public class JobResponseDTO implements Serializable {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "JobResponseDTO{" +
+            "id=" + id +
+            ", description='" + description + '\'' +
+            ", experienceLevel=" + experienceLevel +
+            ", baseSalary=" + baseSalary +
+            ", dangerousness=" + dangerousness +
+            ", unhealthiness=" + unhealthiness +
+            ", departmentId=" + departmentId +
+            ", enabled=" + enabled +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
     }
 }

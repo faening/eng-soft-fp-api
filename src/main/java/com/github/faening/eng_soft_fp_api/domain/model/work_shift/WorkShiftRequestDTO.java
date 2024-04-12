@@ -1,12 +1,10 @@
 package com.github.faening.eng_soft_fp_api.domain.model.work_shift;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @SuppressWarnings("unused")
-public class WorkShiftDTO implements Serializable {
-    private Integer id;
+public class WorkShiftRequestDTO implements Serializable {
     private String description;
     private LocalTime startOfWorkday;
     private LocalTime startOfBreak;
@@ -14,25 +12,19 @@ public class WorkShiftDTO implements Serializable {
     private LocalTime endOfWorkday;
     private Boolean nightShiftAllowance;
     private Boolean enabled;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
-    public WorkShiftDTO() {
+    public WorkShiftRequestDTO() {
     }
 
-    public WorkShiftDTO(
-        Integer id,
+    public WorkShiftRequestDTO(
         String description,
         LocalTime startOfWorkday,
         LocalTime startOfBreak,
         LocalTime endOfBreak,
         LocalTime endOfWorkday,
         Boolean nightShiftAllowance,
-        Boolean enabled,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        Boolean enabled
     ) {
-        this.id = id;
         this.description = description;
         this.startOfWorkday = startOfWorkday;
         this.startOfBreak = startOfBreak;
@@ -40,16 +32,6 @@ public class WorkShiftDTO implements Serializable {
         this.endOfWorkday = endOfWorkday;
         this.nightShiftAllowance = nightShiftAllowance;
         this.enabled = enabled;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getDescription() {
@@ -108,19 +90,16 @@ public class WorkShiftDTO implements Serializable {
         this.enabled = enabled;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    @Override
+    public String toString() {
+        return "WorkShiftResponseDTO{" +
+            ", description='" + description + '\'' +
+            ", startOfWorkday=" + startOfWorkday +
+            ", startOfBreak=" + startOfBreak +
+            ", endOfBreak=" + endOfBreak +
+            ", endOfWorkday=" + endOfWorkday +
+            ", nightShiftAllowance=" + nightShiftAllowance +
+            ", enabled=" + enabled +
+            '}';
     }
 }
