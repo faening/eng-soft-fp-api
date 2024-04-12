@@ -69,7 +69,7 @@ public class WorkShiftService extends AbstractService<WorkShiftRequestDTO, WorkS
         workShiftRepository.deleteById(id);
     }
 
-    private WorkShift searchWorkShiftById(Integer id) {
+    public WorkShift searchWorkShiftById(Integer id) {
         return workShiftRepository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Nenhum turno de trabalho encontrado com o id: " + id)
         );
