@@ -43,7 +43,7 @@ public class JobResponseMapper extends AbstractMapper<Job, JobResponseDTO> {
 
     @Override
     protected void createDestinationToSourceMapping() {
-        Converter<Integer, Department> departmentIdToDepartmentConverter = context -> departmentService.searchDepartmentById(context.getSource());
+        Converter<Integer, Department> departmentIdToDepartmentConverter = context -> departmentService.getEntityById(context.getSource());
 
         modelMapper.createTypeMap(JobResponseDTO.class, Job.class)
             .addMappings(mapper -> {

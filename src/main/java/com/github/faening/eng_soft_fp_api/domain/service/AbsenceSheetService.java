@@ -20,96 +20,100 @@ import java.util.List;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO, AbsenceSheetResponseDTO> {
-    private final AbsenceSheetRepository absenceSheetRepository;
-    private final AbsenceSheetRequestMapper absenceSheetRequestMapper;
-    private final AbsenceSheetResponseMapper absenceSheetResponseMapper;
+    private final AbsenceSheetRepository repository;
+    private final AbsenceSheetRequestMapper requestMapper;
+    private final AbsenceSheetResponseMapper responseMapper;
     private final EmployeeService employeeService;
+
+    private static final String ABSENCE_SHEET_EMPLOYEE_ID_VALIDATION_MESSAGE = "absenceSheetService.validation.employeeId";
+    private static final String ABSENCE_SHEET_TYPE_VALIDATION_MESSAGE = "absenceSheetService.validation.type";
+    private static final String ABSENCE_SHEET_START_DATE_VALIDATION_MESSAGE = "absenceSheetService.validation.startDate";
+    private static final String ABSENCE_SHEET_END_DATE_VALIDATION_MESSAGE = "absenceSheetService.validation.endDate";
 
     @Autowired
     public AbsenceSheetService(
-        AbsenceSheetRepository absenceSheetRepository,
-        AbsenceSheetRequestMapper absenceSheetRequestMapper,
-        AbsenceSheetResponseMapper absenceSheetResponseMapper,
+        AbsenceSheetRepository repository,
+        AbsenceSheetRequestMapper requestMapper,
+        AbsenceSheetResponseMapper responseMapper,
         EmployeeService employeeService
     ) {
-        this.absenceSheetRepository = absenceSheetRepository;
-        this.absenceSheetRequestMapper = absenceSheetRequestMapper;
-        this.absenceSheetResponseMapper = absenceSheetResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
         this.employeeService = employeeService;
     }
 
     @Override
     public List<AbsenceSheetResponseDTO> getAll() {
-        return absenceSheetRepository
+        return repository
             .findAll()
             .stream()
-            .map(absenceSheet -> absenceSheetResponseMapper.toDTO(absenceSheet, AbsenceSheetResponseDTO.class))
+            .map(absenceSheet -> responseMapper.toDTO(absenceSheet, AbsenceSheetResponseDTO.class))
             .toList();
     }
 
     @Override
     public AbsenceSheetResponseDTO getById(Integer id) {
-        validateId(id);
-        return absenceSheetResponseMapper.toDTO(searchAbsenceSheetById(id), AbsenceSheetResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchAbsenceSheetEntityById(id), AbsenceSheetResponseDTO.class);
+    }
+
+    public AbsenceSheet getEntityById(Integer id) {
+        validate(id);
+        return searchAbsenceSheetEntityById(id);
+    }
+
+    public List<AbsenceSheetResponseDTO> getAbsenceSheetsByEmployeeIdAndTypeAndDateRange(
+        Integer employeeId,
+        AbsenceType type,
+        LocalDateTime startDate,
+        LocalDateTime endDate
+    ) {
+        Employee employee = employeeService.getEmployeeEntityById(employeeId);
+        AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDate, endDate);
+        return repository
+            .findAll(spec)
+            .stream()
+            .map(absenceSheet -> responseMapper.toDTO(absenceSheet, AbsenceSheetResponseDTO.class))
+            .toList();
     }
 
     @Override
     public AbsenceSheetResponseDTO create(AbsenceSheetRequestDTO request) {
-        validateAbsenceSheetRequestDTO(request);
-        AbsenceSheet absenceSheet = absenceSheetRequestMapper.toEntity(request, AbsenceSheet.class);
-        AbsenceSheet savedAbsenceSheet = absenceSheetRepository.save(absenceSheet);
-        return absenceSheetResponseMapper.toDTO(savedAbsenceSheet, AbsenceSheetResponseDTO.class);
+        validate(request);
+        AbsenceSheet absenceSheet = requestMapper.toEntity(request, AbsenceSheet.class);
+        AbsenceSheet savedAbsenceSheet = repository.save(absenceSheet);
+        return responseMapper.toDTO(savedAbsenceSheet, AbsenceSheetResponseDTO.class);
     }
 
     @Override
     public AbsenceSheetResponseDTO update(Integer id, AbsenceSheetRequestDTO request) {
-        validateId(id);
-        validateAbsenceSheetRequestDTO(request);
-        AbsenceSheet absenceSheet = searchAbsenceSheetById(id);
-        absenceSheetRequestMapper.updateSourceFromDestination(absenceSheet, request);
-        return absenceSheetResponseMapper.toDTO(absenceSheetRepository.save(absenceSheet), AbsenceSheetResponseDTO.class);
+        validate(id);
+        validate(request);
+        AbsenceSheet absenceSheet = searchAbsenceSheetEntityById(id);
+        requestMapper.updateSourceFromDestination(absenceSheet, request);
+        return responseMapper.toDTO(repository.save(absenceSheet), AbsenceSheetResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        validateId(id);
-        absenceSheetRepository.deleteById(id);
+        validate(id);
+        repository.deleteById(id);
     }
 
-    public AbsenceSheet searchAbsenceSheetById(Integer id) {
-        return absenceSheetRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum relatório de ausências encontrado com o ID: " + id)
+    private AbsenceSheet searchAbsenceSheetEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    /**
-     * Busca as folhas de ausência de um funcionário em um intervalo de datas.
-     *
-     * @param employeeId Id do funcionário
-     * @param type (opcional) Tipo de ausência
-     * @param startDate (opcional) Data de início do intervalo
-     * @param endDate (opcional) Data de fim do intervalo
-     * @return Lista de folhas de ausência
-    */
-    public List<AbsenceSheetResponseDTO> getAbsenceSheetsByEmployeeIdAndTypeAndDateRange(Integer employeeId, AbsenceType type, LocalDateTime startDate, LocalDateTime endDate) {
-        Employee employee = employeeService.getEmployeeById(employeeId);
-        AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDate, endDate);
-        return absenceSheetRepository
-            .findAll(spec)
-            .stream()
-            .map(absenceSheet -> absenceSheetResponseMapper.toDTO(absenceSheet, AbsenceSheetResponseDTO.class))
-            .toList();
-    }
-
-    private void validateId(Integer id) {
-        if (id == null) throw new ResourceNotFoundException(getLocalizedMessage("absenceSheetService.validation.absenceSheetId"));
-    }
-
-    private void validateAbsenceSheetRequestDTO(AbsenceSheetRequestDTO request) {
-        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage("absenceSheetService.validation.employeeId"));
-        if (request.getType() == null) throw new ResourceNotFoundException(getLocalizedMessage("absenceSheetService.validation.type"));
-        if (request.getStartDate() == null) throw new ResourceNotFoundException(getLocalizedMessage("absenceSheetService.validation.startDate"));
-        if (request.getEndDate() == null) throw new ResourceNotFoundException(getLocalizedMessage("absenceSheetService.validation.endDate"));
+    @Override
+    protected void validate(AbsenceSheetRequestDTO request) {
+        super.validate(request);
+        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_EMPLOYEE_ID_VALIDATION_MESSAGE));
+        if (request.getType() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_TYPE_VALIDATION_MESSAGE));
+        if (request.getStartDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_START_DATE_VALIDATION_MESSAGE));
+        if (request.getEndDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_END_DATE_VALIDATION_MESSAGE));
         if (request.getStatus() == null) request.setStatus(ApprovalStatus.PENDING);
     }
 }

@@ -15,75 +15,79 @@ import java.util.List;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class DepartmentService extends AbstractService<DepartmentRequestDTO, DepartmentResponseDTO> {
-    private final DepartmentRepository departmentRepository;
-    private final DepartmentRequestMapper departmentRequestMapper;
-    private final DepartmentResponseMapper departmentResponseMapper;
+    private final DepartmentRepository repository;
+    private final DepartmentRequestMapper requestMapper;
+    private final DepartmentResponseMapper responseMapper;
+
+    private static final String DEPARTMENT_DESCRIPTION_VALIDATION_MESSAGE = "departmentService.validation.description";
+    private static final String DEPARTMENT_MANAGER_ID_VALIDATION_MESSAGE = "departmentService.validation.managerId";
 
     @Autowired
     public DepartmentService(
-        DepartmentRepository departmentRepository,
-        DepartmentRequestMapper departmentRequestMapper,
-        DepartmentResponseMapper departmentResponseMapper
+        DepartmentRepository repository,
+        DepartmentRequestMapper requestMapper,
+        DepartmentResponseMapper responseMapper
     ) {
-        this.departmentRepository = departmentRepository;
-        this.departmentRequestMapper = departmentRequestMapper;
-        this.departmentResponseMapper = departmentResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
     }
 
     @Override
     public List<DepartmentResponseDTO> getAll() {
-        return departmentRepository
+        return repository
             .findAll()
             .stream()
-            .map(department -> departmentResponseMapper.toDTO(department, DepartmentResponseDTO.class))
+            .map(department -> responseMapper.toDTO(department, DepartmentResponseDTO.class))
             .toList();
     }
 
     @Override
     public DepartmentResponseDTO getById(Integer id) {
-        validateId(id);
-        return departmentResponseMapper.toDTO(searchDepartmentById(id), DepartmentResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchDepartmentEntityById(id), DepartmentResponseDTO.class);
+    }
+
+    public Department getEntityById(Integer id) {
+        validate(id);
+        return searchDepartmentEntityById(id);
     }
 
     @Override
     public DepartmentResponseDTO create(DepartmentRequestDTO request) {
-        validateDepartmentRequestDTO(request);
-        Department department = departmentRequestMapper.toEntity(request, Department.class);
-        Department savedDepartment = departmentRepository.save(department);
-        return departmentResponseMapper.toDTO(savedDepartment, DepartmentResponseDTO.class);
+        validate(request);
+        Department department = requestMapper.toEntity(request, Department.class);
+        Department savedDepartment = repository.save(department);
+        return responseMapper.toDTO(savedDepartment, DepartmentResponseDTO.class);
     }
 
     @Override
     public DepartmentResponseDTO update(Integer id, DepartmentRequestDTO request) {
-        validateId(id);
-        validateDepartmentRequestDTO(request);
-        Department department = searchDepartmentById(id);
-        departmentRequestMapper.updateSourceFromDestination(department, request);
-        Department updatedDepartment = departmentRepository.save(department);
-        return departmentResponseMapper.toDTO(updatedDepartment, DepartmentResponseDTO.class);
+        validate(id);
+        validate(request);
+        Department department = searchDepartmentEntityById(id);
+        requestMapper.updateSourceFromDestination(department, request);
+        Department updatedDepartment = repository.save(department);
+        return responseMapper.toDTO(updatedDepartment, DepartmentResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        validateId(id);
-        departmentRepository.deleteById(id);
+        validate(id);
+        repository.deleteById(id);
     }
 
-    public Department searchDepartmentById(Integer id) {
-        return departmentRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum departamento encontrado com o id: " + id)
+    private Department searchDepartmentEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    private void validateId(Integer id) {
-        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("departmentService.validation.departmentId"));
-    }
-
-    private void validateDepartmentRequestDTO(DepartmentRequestDTO departmentRequestDTO) {
-        if (departmentRequestDTO.getDescription() == null || departmentRequestDTO.getDescription().isEmpty())
-            throw new IllegalArgumentException(getLocalizedMessage("departmentService.validation.description"));
-        if (departmentRequestDTO.getManagerId() == null)
-            throw new IllegalArgumentException(getLocalizedMessage("departmentService.validation.managerId"));
-        if (departmentRequestDTO.getEnabled() == null) departmentRequestDTO.setEnabled(true);
+    @Override
+    protected void validate(DepartmentRequestDTO request) {
+        super.validate(request);
+        if (request.getDescription() == null || request.getDescription().isEmpty())  throw new IllegalArgumentException(getLocalizedMessage(DEPARTMENT_DESCRIPTION_VALIDATION_MESSAGE));
+        if (request.getManagerId() == null) throw new IllegalArgumentException(getLocalizedMessage(DEPARTMENT_MANAGER_ID_VALIDATION_MESSAGE));
+        if (request.getEnabled() == null) request.setEnabled(true);
     }
 }

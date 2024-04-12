@@ -15,77 +15,86 @@ import java.util.List;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class WorkShiftService extends AbstractService<WorkShiftRequestDTO, WorkShiftResponseDTO> {
-    private final WorkShiftRepository workShiftRepository;
-    private final WorkShiftRequestMapper workShiftRequestMapper;
-    private final WorkShiftResponseMapper workShiftResponseMapper;
+    private final WorkShiftRepository repository;
+    private final WorkShiftRequestMapper requestMapper;
+    private final WorkShiftResponseMapper responseMapper;
+
+    private static final String WS_DESCRIPTION_VALIDATION_MESSAGE = "workShiftService.validation.description";
+    private static final String WS_START_OF_WORKDAY_VALIDATION_MESSAGE = "workShiftService.validation.startOfWorkday";
+    private static final String WS_START_OF_BREAK_VALIDATION_MESSAGE = "workShiftService.validation.startOfBreak";
+    private static final String WS_END_OF_BREAK_VALIDATION_MESSAGE = "workShiftService.validation.endOfBreak";
+    private static final String WS_END_OF_WORKDAY_VALIDATION_MESSAGE = "workShiftService.validation.endOfWorkday";
+    private static final String WS_NIGHT_SHIFT_ALLOWANCE_VALIDATION_MESSAGE = "workShiftService.validation.nightShiftAllowance";
 
     @Autowired
     public WorkShiftService(
-        WorkShiftRepository workShiftRepository,
-        WorkShiftRequestMapper workShiftRequestMapper,
-        WorkShiftResponseMapper workShiftResponseMapper
+        WorkShiftRepository repository,
+        WorkShiftRequestMapper requestMapper,
+        WorkShiftResponseMapper responseMapper
     ) {
-        this.workShiftRepository = workShiftRepository;
-        this.workShiftRequestMapper = workShiftRequestMapper;
-        this.workShiftResponseMapper = workShiftResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
     }
 
     @Override
     public List<WorkShiftResponseDTO> getAll() {
-        return workShiftRepository
+        return repository
             .findAll()
             .stream()
-            .map(workShift -> workShiftResponseMapper.toDTO(workShift, WorkShiftResponseDTO.class))
+            .map(workShift -> responseMapper.toDTO(workShift, WorkShiftResponseDTO.class))
             .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     public WorkShiftResponseDTO getById(Integer id) {
-        validateId(id);
-        return workShiftResponseMapper.toDTO(searchWorkShiftById(id), WorkShiftResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchWorkShiftById(id), WorkShiftResponseDTO.class);
+    }
+
+    public WorkShift getEntityById(Integer id) {
+        validate(id);
+        return searchWorkShiftById(id);
     }
 
     @Override
     public WorkShiftResponseDTO create(WorkShiftRequestDTO request) {
-        validateWorkShiftDTO(request);
-        WorkShift workShift = workShiftRequestMapper.toEntity(request, WorkShift.class);
-        WorkShift savedWorkShift = workShiftRepository.save(workShift);
-        return workShiftResponseMapper.toDTO(savedWorkShift, WorkShiftResponseDTO.class);
+        validate(request);
+        WorkShift workShift = requestMapper.toEntity(request, WorkShift.class);
+        WorkShift savedWorkShift = repository.save(workShift);
+        return responseMapper.toDTO(savedWorkShift, WorkShiftResponseDTO.class);
     }
 
     @Override
     public WorkShiftResponseDTO update(Integer id, WorkShiftRequestDTO request) {
-        validateId(id);
-        validateWorkShiftDTO(request);
+        validate(id);
+        validate(request);
         WorkShift workShift = searchWorkShiftById(id);
-        workShiftRequestMapper.updateSourceFromDestination(workShift, request);
-        WorkShift savedWorkShift = workShiftRepository.save(workShift);
-        return workShiftResponseMapper.toDTO(savedWorkShift, WorkShiftResponseDTO.class);
+        requestMapper.updateSourceFromDestination(workShift, request);
+        WorkShift savedWorkShift = repository.save(workShift);
+        return responseMapper.toDTO(savedWorkShift, WorkShiftResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        validateId(id);
-        workShiftRepository.deleteById(id);
+        validate(id);
+        repository.deleteById(id);
     }
 
-    public WorkShift searchWorkShiftById(Integer id) {
-        return workShiftRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum turno de trabalho encontrado com o id: " + id)
+    private WorkShift searchWorkShiftById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    private void validateId(Integer id) {
-        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.workShiftId"));
-    }
-
-    private void validateWorkShiftDTO(WorkShiftRequestDTO workShiftRequestDTO) {
-        if (workShiftRequestDTO.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.description"));
-        if (workShiftRequestDTO.getStartOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.startOfWorkday"));
-        if (workShiftRequestDTO.getStartOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.startOfBreak"));
-        if (workShiftRequestDTO.getEndOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.endOfBreak"));
-        if (workShiftRequestDTO.getEndOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.endOfWorkday"));
-        if (workShiftRequestDTO.getNightShiftAllowance() == null) throw new IllegalArgumentException(getLocalizedMessage("workShiftService.validation.nightShiftAllowance"));
+    @Override
+    protected void validate(WorkShiftRequestDTO workShiftRequestDTO) {
+        if (workShiftRequestDTO.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_DESCRIPTION_VALIDATION_MESSAGE));
+        if (workShiftRequestDTO.getStartOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_WORKDAY_VALIDATION_MESSAGE));
+        if (workShiftRequestDTO.getStartOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_BREAK_VALIDATION_MESSAGE));
+        if (workShiftRequestDTO.getEndOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_BREAK_VALIDATION_MESSAGE));
+        if (workShiftRequestDTO.getEndOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_WORKDAY_VALIDATION_MESSAGE));
+        if (workShiftRequestDTO.getNightShiftAllowance() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_NIGHT_SHIFT_ALLOWANCE_VALIDATION_MESSAGE));
         if (workShiftRequestDTO.getEnabled() == null) workShiftRequestDTO.setEnabled(true);
     }
 }

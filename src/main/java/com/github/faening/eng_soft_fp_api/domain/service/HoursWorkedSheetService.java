@@ -18,92 +18,90 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetRequestDTO, HoursWorkedSheetResponseDTO> {
-    private final HoursWorkedSheetRepository hoursWorkedSheetRepository;
-    private final HoursWorkedSheetRequestMapper hoursWorkedSheetRequestMapper;
-    private final HoursWorkedSheetResponseMapper hoursWorkedSheetResponseMapper;
+    private final HoursWorkedSheetRepository repository;
+    private final HoursWorkedSheetRequestMapper requestMapper;
+    private final HoursWorkedSheetResponseMapper responseMapper;
     private final EmployeeService employeeService;
+
+    private static final String HWS_EMPLOYEE_ID_VALIDATION_MESSAGE = "hoursWorkedSheetService.validation.employeeId";
+    private static final String HWS_DATE_VALIDATION_MESSAGE = "hoursWorkedSheetService.validation.date";
 
     @Autowired
     public HoursWorkedSheetService(
-        HoursWorkedSheetRepository hoursWorkedSheetRepository,
-        HoursWorkedSheetRequestMapper hoursWorkedSheetRequestMapper,
-        HoursWorkedSheetResponseMapper hoursWorkedSheetResponseMapper,
+        HoursWorkedSheetRepository repository,
+        HoursWorkedSheetRequestMapper requestMapper,
+        HoursWorkedSheetResponseMapper responseMapper,
         EmployeeService employeeService
     ) {
-        this.hoursWorkedSheetRepository = hoursWorkedSheetRepository;
-        this.hoursWorkedSheetRequestMapper = hoursWorkedSheetRequestMapper;
-        this.hoursWorkedSheetResponseMapper = hoursWorkedSheetResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
         this.employeeService = employeeService;
     }
 
     @Override
     public List<HoursWorkedSheetResponseDTO> getAll() {
-        return hoursWorkedSheetRepository
+        return repository
             .findAll()
             .stream()
-            .map(hoursWorkedSheet -> hoursWorkedSheetResponseMapper.toDTO(hoursWorkedSheet, HoursWorkedSheetResponseDTO.class))
+            .map(hoursWorkedSheet -> responseMapper.toDTO(hoursWorkedSheet, HoursWorkedSheetResponseDTO.class))
             .collect(Collectors.toList());
     }
 
     @Override
     public HoursWorkedSheetResponseDTO getById(Integer id) {
-        validateId(id);
-        return hoursWorkedSheetResponseMapper.toDTO(searchHoursWorkedSheetById(id), HoursWorkedSheetResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchHoursWorkedSheetEntityById(id), HoursWorkedSheetResponseDTO.class);
+    }
+
+    public HoursWorkedSheet getEntityById(Integer id) {
+        validate(id);
+        return searchHoursWorkedSheetEntityById(id);
+    }
+
+    public List<HoursWorkedSheetResponseDTO> getWorkedHoursByEmployeeIdAndDateRange(Integer employeId, LocalDate startDate, LocalDate endDate) {
+        Employee employee = employeeService.getEmployeeEntityById(employeId);
+        return repository
+            .findByEmployeeAndDateBetween(employee, startDate, endDate)
+            .stream()
+            .map(hoursWorkedSheet -> responseMapper.toDTO(hoursWorkedSheet, HoursWorkedSheetResponseDTO.class))
+            .collect(Collectors.toList());
     }
 
     @Override
     public HoursWorkedSheetResponseDTO create(HoursWorkedSheetRequestDTO request) {
-        validateHoursWorkedSheetRequestDTO(request);
-        HoursWorkedSheet hoursWorkedSheet = hoursWorkedSheetRequestMapper.toEntity(request, HoursWorkedSheet.class);
-        HoursWorkedSheet savedHoursWorkedSheet = hoursWorkedSheetRepository.save(hoursWorkedSheet);
-        return hoursWorkedSheetResponseMapper.toDTO(savedHoursWorkedSheet, HoursWorkedSheetResponseDTO.class);
+        validate(request);
+        HoursWorkedSheet hoursWorkedSheet = requestMapper.toEntity(request, HoursWorkedSheet.class);
+        HoursWorkedSheet savedHoursWorkedSheet = repository.save(hoursWorkedSheet);
+        return responseMapper.toDTO(savedHoursWorkedSheet, HoursWorkedSheetResponseDTO.class);
     }
 
     @Override
     public HoursWorkedSheetResponseDTO update(Integer id, HoursWorkedSheetRequestDTO request) {
-        validateId(id);
-        validateHoursWorkedSheetRequestDTO(request);
-        HoursWorkedSheet hoursWorkedSheet = searchHoursWorkedSheetById(id);
-        hoursWorkedSheetRequestMapper.updateSourceFromDestination(hoursWorkedSheet, request);
-        HoursWorkedSheet updatedHoursWorkedSheet = hoursWorkedSheetRepository.save(hoursWorkedSheet);
-        return hoursWorkedSheetResponseMapper.toDTO(updatedHoursWorkedSheet, HoursWorkedSheetResponseDTO.class);
+        validate(id);
+        validate(request);
+        HoursWorkedSheet hoursWorkedSheet = searchHoursWorkedSheetEntityById(id);
+        requestMapper.updateSourceFromDestination(hoursWorkedSheet, request);
+        HoursWorkedSheet updatedHoursWorkedSheet = repository.save(hoursWorkedSheet);
+        return responseMapper.toDTO(updatedHoursWorkedSheet, HoursWorkedSheetResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        validateId(id);
-        hoursWorkedSheetRepository.deleteById(id);
+        validate(id);
+        repository.deleteById(id);
     }
 
-    /**
-     * Busca as horas trabalhadas de um funcionário em um intervalo de datas.
-     *
-     * @param employeId Id do funcionário
-     * @param startDate Data de início do intervalo
-     * @param endDate   Data de fim do intervalo
-     * @return Lista de horas trabalhadas
-     */
-    public List<HoursWorkedSheetResponseDTO> getWorkedHoursByEmployeeIdAndDateRange(Integer employeId, LocalDate startDate, LocalDate endDate) {
-        Employee employee = employeeService.getEmployeeById(employeId);
-        return hoursWorkedSheetRepository
-            .findByEmployeeAndDateBetween(employee, startDate, endDate)
-            .stream()
-            .map(hoursWorkedSheet -> hoursWorkedSheetResponseMapper.toDTO(hoursWorkedSheet, HoursWorkedSheetResponseDTO.class))
-            .collect(Collectors.toList());
-    }
-
-    public HoursWorkedSheet searchHoursWorkedSheetById(Integer id) {
-        return hoursWorkedSheetRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum registro de horas trabalhadas encontrado com o id: " + id)
+    private HoursWorkedSheet searchHoursWorkedSheetEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    private void validateId(Integer id) {
-        if (id == null) throw new IllegalArgumentException(getLocalizedMessage(getLocalizedMessage("hoursWorkedSheetService.validation.hoursWorkedSheetId")));
-    }
-
-    private void validateHoursWorkedSheetRequestDTO(HoursWorkedSheetRequestDTO hoursWorkedSheetRequestDTO) {
-        if (hoursWorkedSheetRequestDTO.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage("hoursWorkedSheetService.validation.employeeId"));
-        if (hoursWorkedSheetRequestDTO.getDate() == null) throw new IllegalArgumentException(getLocalizedMessage("hoursWorkedSheetService.validation.date"));
+    @Override
+    protected void validate(HoursWorkedSheetRequestDTO request) {
+        super.validate(request);
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(HWS_EMPLOYEE_ID_VALIDATION_MESSAGE));
+        if (request.getDate() == null) throw new IllegalArgumentException(getLocalizedMessage(HWS_DATE_VALIDATION_MESSAGE));
     }
 }

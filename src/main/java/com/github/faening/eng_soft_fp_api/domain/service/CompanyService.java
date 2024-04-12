@@ -15,19 +15,19 @@ import java.util.List;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class CompanyService extends AbstractService<CompanyRequestDTO, CompanyResponseDTO> {
-    private final CompanyRepository companyRepository;
-    private final CompanyRequestMapper companyRequestMapper;
-    private final CompanyResponseMapper companyResponseMapper;
+    private final CompanyRepository repository;
+    private final CompanyRequestMapper requestMapper;
+    private final CompanyResponseMapper responseMapper;
 
     @Autowired
     public CompanyService(
-        CompanyRepository companyRepository,
-        CompanyRequestMapper companyRequestMapper,
-        CompanyResponseMapper companyResponseMapper
+        CompanyRepository repository,
+        CompanyRequestMapper requestMapper,
+        CompanyResponseMapper responseMapper
     ) {
-        this.companyRepository = companyRepository;
-        this.companyRequestMapper = companyRequestMapper;
-        this.companyResponseMapper = companyResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
     }
 
     @Override
@@ -37,8 +37,13 @@ public class CompanyService extends AbstractService<CompanyRequestDTO, CompanyRe
 
     @Override
     public CompanyResponseDTO getById(Integer id) {
-        validadeId(id);
-        return companyResponseMapper.toDTO(searchCompanyById(id), CompanyResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchCompanyEntityById(id), CompanyResponseDTO.class);
+    }
+
+    public Company getEntityById(Integer id) {
+        validate(id);
+        return searchCompanyEntityById(id);
     }
 
     @Override
@@ -48,24 +53,21 @@ public class CompanyService extends AbstractService<CompanyRequestDTO, CompanyRe
 
     @Override
     public CompanyResponseDTO update(Integer id, CompanyRequestDTO request) {
-        validadeId(id);
-        Company company = searchCompanyById(id);
-        companyRequestMapper.updateSourceFromDestination(company, request);
-        Company updatedCompany = companyRepository.save(company);
-        return companyResponseMapper.toDTO(updatedCompany, CompanyResponseDTO.class);
+        validate(id);
+        validate(request);
+        Company company = searchCompanyEntityById(id);
+        requestMapper.updateSourceFromDestination(company, request);
+        Company updatedCompany = repository.save(company);
+        return responseMapper.toDTO(updatedCompany, CompanyResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
     }
 
-    public Company searchCompanyById(Integer id) {
-        return companyRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhuma empresa encontrada com o ID informado: " + id)
+    private Company searchCompanyEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(getLocalizedMessage(ID_VALIDATION_MESSAGE))
         );
-    }
-
-    private void validadeId(Integer id) {
-        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("companyService.validation.companyId"));
     }
 }

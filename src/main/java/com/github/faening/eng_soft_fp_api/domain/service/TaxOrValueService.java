@@ -16,88 +16,86 @@ import java.util.List;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, TaxOrValueResponseDTO> {
-    private final TaxOrValueRepository taxOrValueRepository;
-    private final TaxOrValueRequestMapper taxOrValueRequestMapper;
-    private final TaxOrValueResponseMapper taxOrValueResponseMapper;
+    private final TaxOrValueRepository repository;
+    private final TaxOrValueRequestMapper requestMapper;
+    private final TaxOrValueResponseMapper responseMapper;
+
+    private static final String TOV_TYPE_VALIDATION_MESSAGE = "taxOrValueService.validation.type";
+    private static final String TOV_DESCRIPTION_VALIDATION_MESSAGE = "taxOrValueService.validation.description";
 
     @Autowired
     public TaxOrValueService(
-        TaxOrValueRepository taxOrValueRepository,
-        TaxOrValueRequestMapper taxOrValueRequestMapper,
-        TaxOrValueResponseMapper taxOrValueResponseMapper
+        TaxOrValueRepository repository,
+        TaxOrValueRequestMapper requestMapper,
+        TaxOrValueResponseMapper responseMapper
     ) {
-        this.taxOrValueRepository = taxOrValueRepository;
-        this.taxOrValueRequestMapper = taxOrValueRequestMapper;
-        this.taxOrValueResponseMapper = taxOrValueResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
     }
 
     @Override
     public List<TaxOrValueResponseDTO> getAll() {
-        return taxOrValueRepository
+        return repository
             .findAll()
             .stream()
-            .map(taxOrValue -> taxOrValueResponseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
             .collect(java.util.stream.Collectors.toList());
     }
 
     @Override
     public TaxOrValueResponseDTO getById(Integer id) {
-        validateId(id);
-        return taxOrValueResponseMapper.toDTO(searchTaxOrValueById(id), TaxOrValueResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchTaxOrValueEntityById(id), TaxOrValueResponseDTO.class);
+    }
+
+    public TaxOrValue getEntityById(Integer id) {
+        validate(id);
+        return searchTaxOrValueEntityById(id);
+    }
+
+    public List<TaxOrValueResponseDTO> getByType(TaxOrValueType type) {
+        return repository
+            .findByType(type)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .collect(java.util.stream.Collectors.toList()
+            );
     }
 
     @Override
     public TaxOrValueResponseDTO create(TaxOrValueRequestDTO request) {
-        validateTaxOrValueRequestDTO(request);
-        TaxOrValue taxOrValue = taxOrValueRequestMapper.toEntity(request, TaxOrValue.class);
-        TaxOrValue savedTaxOrValue = taxOrValueRepository.save(taxOrValue);
-        return taxOrValueResponseMapper.toDTO(savedTaxOrValue, TaxOrValueResponseDTO.class);
+        validate(request);
+        TaxOrValue taxOrValue = requestMapper.toEntity(request, TaxOrValue.class);
+        TaxOrValue savedTaxOrValue = repository.save(taxOrValue);
+        return responseMapper.toDTO(savedTaxOrValue, TaxOrValueResponseDTO.class);
     }
 
     @Override
     public TaxOrValueResponseDTO update(Integer id, TaxOrValueRequestDTO request) {
-        validateId(id);
-        validateTaxOrValueRequestDTO(request);
-        TaxOrValue taxOrValue = searchTaxOrValueById(id);
-        taxOrValueRequestMapper.updateSourceFromDestination(taxOrValue, request);
-        TaxOrValue updatedTaxOrValue = taxOrValueRepository.save(taxOrValue);
-        return taxOrValueResponseMapper.toDTO(updatedTaxOrValue, TaxOrValueResponseDTO.class);
+        validate(id);
+        validate(request);
+        TaxOrValue taxOrValue = searchTaxOrValueEntityById(id);
+        requestMapper.updateSourceFromDestination(taxOrValue, request);
+        TaxOrValue updatedTaxOrValue = repository.save(taxOrValue);
+        return responseMapper.toDTO(updatedTaxOrValue, TaxOrValueResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        validateId(id);
-        taxOrValueRepository.deleteById(id);
+        validate(id);
+        repository.deleteById(id);
     }
 
-    /**
-     * Busca um imposto ou valor pelo tipo de imposto ou valor
-     *
-     * @param type Tipo de imposto ou valor
-     *
-     * @return TaxOrValueResponseDTO
-     */
-    public List<TaxOrValueResponseDTO> getByType(TaxOrValueType type) {
-        return taxOrValueRepository
-            .findByType(type)
-            .stream()
-            .map(taxOrValue -> taxOrValueResponseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
-            .collect(java.util.stream.Collectors.toList()
+    private TaxOrValue searchTaxOrValueEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    public TaxOrValue searchTaxOrValueById(Integer id) {
-        return taxOrValueRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum imposto ou valor encontrado com o id: " + id)
-        );
-    }
-
-    private void validateId(Integer id) {
-        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("taxOrValueService.validation.taxOrValueId"));
-    }
-
-    private void validateTaxOrValueRequestDTO(TaxOrValueRequestDTO request) {
-        if (request.getType() == null) throw new IllegalArgumentException(getLocalizedMessage("taxOrValueService.validation.type"));
-        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage("taxOrValueService.validation.description"));
+    @Override
+    protected void validate(TaxOrValueRequestDTO request) {
+        if (request.getType() == null) throw new IllegalArgumentException(getLocalizedMessage(TOV_TYPE_VALIDATION_MESSAGE));
+        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(TOV_DESCRIPTION_VALIDATION_MESSAGE));
     }
 }

@@ -17,78 +17,79 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
-    private final JobRepository jobRepository;
-    private final JobRequestMapper jobRequestMapper;
-    private final JobResponseMapper jobResponseMapper;
+    private final JobRepository repository;
+    private final JobRequestMapper requestMapper;
+    private final JobResponseMapper responseMapper;
     private final TaxOrValueService taxOrValueService;
+
+    private static final String JOB_DESCRIPTION_VALIDATION_MESSAGE = "jobService.validation.description";
+    private static final String JOB_EXPERIENCE_LEVEL_VALIDATION_MESSAGE = "jobService.validation.experienceLevel";
+    private static final String JOB_DEPARTMENT_ID_VALIDATION_MESSAGE = "jobService.validation.departmentId";
 
     @Autowired
     public JobService(
-        JobRepository jobRepository,
-        JobRequestMapper jobRequestMapper,
-        JobResponseMapper jobResponseMapper,
+        JobRepository repository,
+        JobRequestMapper requestMapper,
+        JobResponseMapper responseMapper,
         TaxOrValueService taxOrValueService
     ) {
-        this.jobRepository = jobRepository;
-        this.jobRequestMapper = jobRequestMapper;
-        this.jobResponseMapper = jobResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
         this.taxOrValueService = taxOrValueService;
     }
 
     @Override
     public List<JobResponseDTO> getAll() {
-        return jobRepository
+        return repository
             .findAll()
             .stream()
-            .map(jobs -> jobResponseMapper.toDTO(jobs, JobResponseDTO.class))
+            .map(jobs -> responseMapper.toDTO(jobs, JobResponseDTO.class))
             .collect(Collectors.toList());
     }
 
     @Override
     public JobResponseDTO getById(Integer id) {
-        validateId(id);
-        return jobResponseMapper.toDTO(searchJobById(id), JobResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchJobEntityById(id), JobResponseDTO.class);
     }
 
     @Override
     public JobResponseDTO create(JobRequestDTO request) {
-        validateJobRequestDTO(request);
-        Job job = jobRequestMapper.toEntity(request, Job.class);
-        Job createdJob = jobRepository.save(job);
-        return jobResponseMapper.toDTO(createdJob, JobResponseDTO.class);
+        validate(request);
+        Job job = requestMapper.toEntity(request, Job.class);
+        Job createdJob = repository.save(job);
+        return responseMapper.toDTO(createdJob, JobResponseDTO.class);
     }
 
     @Override
     public JobResponseDTO update(Integer id, JobRequestDTO request) {
-        validateId(id);
-        validateJobRequestDTO(request);
-        Job job = searchJobById(id);
-        jobRequestMapper.updateSourceFromDestination(job, request);
-        Job updatedJob = jobRepository.save(job);
-        return jobResponseMapper.toDTO(updatedJob, JobResponseDTO.class);
+        validate(id);
+        validate(request);
+        Job job = searchJobEntityById(id);
+        requestMapper.updateSourceFromDestination(job, request);
+        Job updatedJob = repository.save(job);
+        return responseMapper.toDTO(updatedJob, JobResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        Job job = searchJobById(id);
-        jobRepository.delete(job);
+        Job job = searchJobEntityById(id);
+        repository.delete(job);
     }
 
-    public Job searchJobById(Integer id) {
-        return jobRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhum trabalho encontrado com o id: " + id)
+    private Job searchJobEntityById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    private void validateId(Integer id) {
-        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("jobService.validation.jobId"));
-    }
-
-    private void validateJobRequestDTO(JobRequestDTO jobRequestDTO) {
-        if (jobRequestDTO.getDescription() == null || jobRequestDTO.getDescription().isEmpty())
-            throw new IllegalArgumentException(getLocalizedMessage("jobService.validation.description"));
-        if (jobRequestDTO.getExperienceLevel() == null) throw new IllegalArgumentException(getLocalizedMessage("jobService.validation.experienceLevel"));
-        if (jobRequestDTO.getDepartmentId() == null) throw new IllegalArgumentException(getLocalizedMessage("jobService.validation.departmentId"));
+    @Override
+    protected void validate(JobRequestDTO jobRequestDTO) {
+        super.validate(jobRequestDTO);
+        if (jobRequestDTO.getDescription() == null || jobRequestDTO.getDescription().isEmpty()) throw new IllegalArgumentException(getLocalizedMessage(JOB_DESCRIPTION_VALIDATION_MESSAGE));
+        if (jobRequestDTO.getExperienceLevel() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_EXPERIENCE_LEVEL_VALIDATION_MESSAGE));
+        if (jobRequestDTO.getDepartmentId() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_DEPARTMENT_ID_VALIDATION_MESSAGE));
         if (jobRequestDTO.getDangerousness() == null) jobRequestDTO.setDangerousness(false);
         if (jobRequestDTO.getUnhealthiness() == null) jobRequestDTO.setUnhealthiness(false);
         if (jobRequestDTO.getEnabled() == null) jobRequestDTO.setEnabled(true);

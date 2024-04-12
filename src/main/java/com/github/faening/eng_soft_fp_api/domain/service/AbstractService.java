@@ -32,11 +32,11 @@ public abstract class AbstractService<REQ, RES> {
 
     public abstract void delete(Integer id);
 
-    public void validate(Integer id) {
+    protected void validate(Integer id) {
         if (id == null) throw new IllegalArgumentException(getLocalizedMessage(ID_VALIDATION_MESSAGE));
     }
 
-    public void validate(REQ request) {
+    protected void validate(REQ request) {
         if (request == null) throw new IllegalArgumentException(getLocalizedMessage(REQUEST_VALIDATION_MESSAGE));
     }
 }

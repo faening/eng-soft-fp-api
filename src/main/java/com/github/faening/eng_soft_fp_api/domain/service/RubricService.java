@@ -92,7 +92,7 @@ public class RubricService extends AbstractService<RubricRequestDTO, RubricRespo
 
     private Rubric searchRubricEntityById(Integer id) {
         return repository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException("Nenhuma rúbrica encontrada com o id: " + id)
+            () -> new EntityNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 

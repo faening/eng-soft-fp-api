@@ -86,7 +86,7 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
      * @return Lista de vendas
      */
     public List<SaleResponseDTO> getSalesByEmployeeIdAndDateRange(Integer employeId, LocalDate startDate, LocalDate endDate) {
-        Employee employee = employeeService.getEmployeeById(employeId);
+        Employee employee = employeeService.getEmployeeEntityById(employeId);
         return saleRepository
             .findByEmployeeAndDateBetween(employee, startDate, endDate)
             .stream()

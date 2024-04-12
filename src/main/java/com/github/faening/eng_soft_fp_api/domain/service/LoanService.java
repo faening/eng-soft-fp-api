@@ -18,47 +18,73 @@ import java.util.List;
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO> {
-    private final LoanRepository loanRepository;
-    private final LoanRequestMapper loanRequestMapper;
-    private final LoanResponseMapper loanResponseMapper;
+    private final LoanRepository repository;
+    private final LoanRequestMapper requestMapper;
+    private final LoanResponseMapper responseMapper;
     private final EmployeeService employeeService;
+
+    private static final String LOAN_EMPLOYEE_ID_VALIDATION_MESSAGE = "loanService.validation.employeeId";
+    private static final String LOAN_AMOUNT_VALUE_VALIDATION_MESSAGE = "loanService.validation.loanAmountValue";
+    private static final String LOAN_INSTALLMENT_QUANTITY_VALIDATION_MESSAGE = "loanService.validation.installmentQuantity";
+    private static final String LOAN_REQUEST_DATE_VALIDATION_MESSAGE = "loanService.validation.requestDate";
 
     @Autowired
     public LoanService(
-        LoanRepository loanRepository,
-        LoanRequestMapper loanRequestMapper,
-        LoanResponseMapper loanResponseMapper,
+        LoanRepository repository,
+        LoanRequestMapper requestMapper,
+        LoanResponseMapper responseMapper,
         EmployeeService employeeService
     ) {
-        this.loanRepository = loanRepository;
-        this.loanRequestMapper = loanRequestMapper;
-        this.loanResponseMapper = loanResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
         this.employeeService = employeeService;
     }
 
     @Override
     public List<LoanResponseDTO> getAll() {
-        return loanRepository
+        return repository
             .findAll()
             .stream()
-            .map(loan -> loanResponseMapper.toDTO(loan, LoanResponseDTO.class))
+            .map(loan -> responseMapper.toDTO(loan, LoanResponseDTO.class))
             .toList();
     }
 
     @Override
     public LoanResponseDTO getById(Integer id) {
-        validadeId(id);
-        return loanResponseMapper.toDTO(searchLoanById(id), LoanResponseDTO.class);
+        validate(id);
+        return responseMapper.toDTO(searchLoanById(id), LoanResponseDTO.class);
+    }
+
+    public Loan getEntityById(Integer id) {
+        validate(id);
+        return searchLoanById(id);
+    }
+
+    public List<LoanResponseDTO> searchLoanByEmployeeIdAndSpecs(
+        Integer employeeId,
+        LocalDate requestDate,
+        LocalDate approvalDate,
+        LocalDate companyPaymentDate,
+        PaymentStatus paymentStatus
+    ) {
+        Employee employee = employeeService.getEmployeeEntityById(employeeId);
+        LoanSpecification spec = new LoanSpecification(employee, requestDate, approvalDate, companyPaymentDate, paymentStatus);
+        return repository
+            .findAll(spec)
+            .stream()
+            .map(loan -> responseMapper.toDTO(loan, LoanResponseDTO.class))
+            .toList();
     }
 
     @Override
     public LoanResponseDTO create(LoanRequestDTO request) {
-        validateLoanRequestDTO(request);
+        validate(request);
         request.getInstallments().forEach(installment -> installment.setPaymentStatus(PaymentStatus.PENDING));
-        Loan loan = loanRequestMapper.toEntity(request, Loan.class);
+        Loan loan = requestMapper.toEntity(request, Loan.class);
         loan.getInstallments().forEach(installment -> {installment.setLoan(loan);});
-        Loan savedLoan = loanRepository.save(loan);
-        return loanResponseMapper.toDTO(savedLoan, LoanResponseDTO.class);
+        Loan savedLoan = repository.save(loan);
+        return responseMapper.toDTO(savedLoan, LoanResponseDTO.class);
     }
 
     @Override
@@ -68,51 +94,23 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
 
     @Override
     public void delete(Integer id) {
-        validadeId(id);
-        loanRepository.delete(searchLoanById(id));
+        validate(id);
+        repository.delete(searchLoanById(id));
     }
 
-    public Loan searchLoanById(Integer id) {
-        return loanRepository.findById(id).orElseThrow(
-            () -> new IllegalArgumentException("Nenhum empréstimo encontrado com o id: " + id)
+    private Loan searchLoanById(Integer id) {
+        return repository.findById(id).orElseThrow(
+            () -> new IllegalArgumentException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    /**
-     * Busca empréstimos por id do funcionário e especificações.
-     *
-     * @param employeeId id do funcionário
-     * @param requestDate data de solicitação
-     * @param approvalDate data de aprovação
-     * @param companyPaymentDate data de pagamento da empresa
-     * @param paymentStatus status do pagamento
-     * @return lista de empréstimos
-     */
-    public List<LoanResponseDTO> searchLoanByEmployeeIdAndSpecs(
-        Integer employeeId,
-        LocalDate requestDate,
-        LocalDate approvalDate,
-        LocalDate companyPaymentDate,
-        PaymentStatus paymentStatus
-    ) {
-        Employee employee = employeeService.getEmployeeById(employeeId);
-        LoanSpecification spec = new LoanSpecification(employee, requestDate, approvalDate, companyPaymentDate, paymentStatus);
-        return loanRepository
-            .findAll(spec)
-            .stream()
-            .map(loan -> loanResponseMapper.toDTO(loan, LoanResponseDTO.class))
-            .toList();
-    }
-
-    private void validadeId(Integer id) {
-        if (id == null || id <= 0) throw new IllegalArgumentException(getLocalizedMessage("loanService.validation.loanId"));
-    }
-
-    private void validateLoanRequestDTO(LoanRequestDTO request) {
-        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage("loanService.validation.employeeId"));
-        if (request.getLoanAmountValue() == null) throw new IllegalArgumentException(getLocalizedMessage("loanService.validation.loanAmountValue"));
-        if (request.getInstallmentQuantity() == null) throw new IllegalArgumentException(getLocalizedMessage("loanService.validation.installmentQuantity"));
-        if (request.getRequestDate() == null) throw new IllegalArgumentException(getLocalizedMessage("loanService.validation.requestDate"));
+    @Override
+    protected void validate(LoanRequestDTO request) {
+        super.validate(request);
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_EMPLOYEE_ID_VALIDATION_MESSAGE));
+        if (request.getLoanAmountValue() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_AMOUNT_VALUE_VALIDATION_MESSAGE));
+        if (request.getInstallmentQuantity() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_INSTALLMENT_QUANTITY_VALIDATION_MESSAGE));
+        if (request.getRequestDate() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_REQUEST_DATE_VALIDATION_MESSAGE));
         if (request.getPaymentStatus() == null) request.setPaymentStatus(PaymentStatus.PENDING);
     }
 }

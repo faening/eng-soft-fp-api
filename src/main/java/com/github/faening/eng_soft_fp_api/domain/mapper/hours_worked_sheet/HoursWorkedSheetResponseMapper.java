@@ -43,7 +43,7 @@ public class HoursWorkedSheetResponseMapper extends AbstractMapper<HoursWorkedSh
 
     @Override
     protected void createDestinationToSourceMapping() {
-        Converter<Integer, Employee> employeeIdToEmployee = context -> employeeService.getEmployeeById(context.getSource());
+        Converter<Integer, Employee> employeeIdToEmployee = context -> employeeService.getEmployeeEntityById(context.getSource());
 
         modelMapper.createTypeMap(HoursWorkedSheetResponseDTO.class, HoursWorkedSheet.class)
             .addMappings(mapper -> {
