@@ -13,7 +13,7 @@ public class EmployeeDependent implements Serializable {
     @Column(name = "id_employee_dependent")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
     private Employee employee;
 
