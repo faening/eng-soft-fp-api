@@ -1,70 +1,46 @@
-package com.github.faening.eng_soft_fp_api.data.model;
+package com.github.faening.eng_soft_fp_api.domain.model.absence_sheet;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.AbsenceType;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.ApprovalStatus;
-import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
-@Entity
-@Table(name = "absence_sheet")
-public class AbsenceSheet implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_absence_sheet")
+public class AbsenceSheetResponseDTO implements Serializable {
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
-    private Employee employee;
-
-    @Column(name = "type", nullable = false)
-    @Enumerated(EnumType.STRING)
+    private Integer employeeId;
     private AbsenceType type;
-
-    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
-
-    @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
-
-    @Column(name = "observation")
     private String observation;
-
-    @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
-    @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
-        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
-    })
-    private EntityMetadata entityMetadata;
-
-    public AbsenceSheet() {
+    public AbsenceSheetResponseDTO() {
     }
 
-    public AbsenceSheet(
+    public AbsenceSheetResponseDTO(
         Integer id,
-        Employee employee,
+        Integer employeeId,
         AbsenceType type,
         LocalDateTime startDate,
         LocalDateTime endDate,
         String observation,
         ApprovalStatus status,
-        EntityMetadata entityMetadata
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
         this.id = id;
-        this.employee = employee;
+        this.employeeId = employeeId;
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
         this.observation = observation;
         this.status = status;
-        this.entityMetadata = entityMetadata;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Integer getId() {
@@ -75,12 +51,12 @@ public class AbsenceSheet implements Serializable {
         this.id = id;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
     public AbsenceType getType() {
@@ -123,11 +99,34 @@ public class AbsenceSheet implements Serializable {
         this.status = status;
     }
 
-    public EntityMetadata getEntityMetadata() {
-        return entityMetadata;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setEntityMetadata(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "AbsenceSheetResponseDTO{" +
+            "id=" + id +
+            ", employeeId=" + employeeId +
+            ", type=" + type +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", observation='" + observation + '\'' +
+            ", status=" + status +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
     }
 }
