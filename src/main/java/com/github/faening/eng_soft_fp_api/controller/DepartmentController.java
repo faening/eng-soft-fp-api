@@ -4,75 +4,15 @@ import com.github.faening.eng_soft_fp_api.domain.model.department.DepartmentRequ
 import com.github.faening.eng_soft_fp_api.domain.model.department.DepartmentResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/departments")
-public class DepartmentController {
-    private final DepartmentService departmentService;
-
+public class DepartmentController extends AbstractController<DepartmentRequestDTO, DepartmentResponseDTO>{
     @Autowired
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
-
-    @GetMapping(
-        value = { "" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<List<DepartmentResponseDTO>> getAllDepartments() {
-        List<DepartmentResponseDTO> departmentResponseDTOList = departmentService.getAll();
-        return ResponseEntity.ok(departmentResponseDTOList);
-    }
-
-    @GetMapping(
-        value = { "/{id}" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<DepartmentResponseDTO> getDepartmentById(
-        @PathVariable(value = "id") Integer id
-    ) {
-        DepartmentResponseDTO departmentResponseDTO = departmentService.getById(id);
-        return ResponseEntity.ok(departmentResponseDTO);
-    }
-
-    @PostMapping(
-        value = { "" },
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<DepartmentResponseDTO> createDepartment(
-        @RequestBody DepartmentRequestDTO departmentRequestDTO
-    ) {
-        DepartmentResponseDTO createdDepartment = departmentService.create(departmentRequestDTO);
-        return ResponseEntity.ok(createdDepartment);
-    }
-
-    @PatchMapping(
-        value = { "/{id}" },
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<DepartmentResponseDTO> updateDepartment(
-        @PathVariable(value = "id") Integer id,
-        @RequestBody DepartmentRequestDTO departmentRequestDTO
-    ) {
-        DepartmentResponseDTO updatedDepartment = departmentService.update(id, departmentRequestDTO);
-        return ResponseEntity.ok(updatedDepartment);
-    }
-
-    @DeleteMapping(
-        value = { "/{id}" }
-    )
-    public ResponseEntity<Void> deleteDepartment(
-        @PathVariable(value = "id") Integer id
-    ) {
-        departmentService.delete(id);
-        return ResponseEntity.noContent().build();
+    public DepartmentController(DepartmentService service) {
+        super(service);
     }
 }

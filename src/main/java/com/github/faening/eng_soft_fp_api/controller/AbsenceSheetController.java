@@ -16,80 +16,23 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/v1/absence-sheets")
-public class AbsenceSheetController {
-    private final AbsenceSheetService absenceSheetService;
+public class AbsenceSheetController extends AbstractController<AbsenceSheetRequestDTO, AbsenceSheetResponseDTO> {
+    private final AbsenceSheetService service;
 
     @Autowired
-    public AbsenceSheetController(AbsenceSheetService absenceSheetService) {
-        this.absenceSheetService = absenceSheetService;
+    public AbsenceSheetController(AbsenceSheetService service) {
+        super(service);
+        this.service = service;
     }
 
-    @GetMapping(
-        value = { "" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<List<AbsenceSheetResponseDTO>> getAllAbsenceSheets() {
-        List<AbsenceSheetResponseDTO> absenceSheets = absenceSheetService.getAll();
-        return ResponseEntity.ok(absenceSheets);
-    }
-
-    @GetMapping(
-        value = { "/{id}" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<AbsenceSheetResponseDTO> getAbsenceSheetById(
-        @PathVariable(value = "id") Integer id
-    ) {
-        AbsenceSheetResponseDTO absenceSheet = absenceSheetService.getById(id);
-        return ResponseEntity.ok(absenceSheet);
-    }
-
-    @GetMapping(
-        value = { "/employee" },
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<List<AbsenceSheetResponseDTO>> getAbsenceSheetsByEmployeeIdAndTypeAndDateRange(
+    @GetMapping(value = { "/employee" }, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<AbsenceSheetResponseDTO>> getByEmployeeIdAndSpecs(
         @RequestParam Integer employeeId,
         @RequestParam AbsenceType type,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
     ) {
-        List<AbsenceSheetResponseDTO> absenceSheets = absenceSheetService.getAbsenceSheetsByEmployeeIdAndTypeAndDateRange(employeeId, type, startDate, endDate);
+        List<AbsenceSheetResponseDTO> absenceSheets = service.getAbsenceSheetsByEmployeeIdAndTypeAndDateRange(employeeId, type, startDate, endDate);
         return ResponseEntity.ok(absenceSheets);
-    }
-
-    @PostMapping(
-        value = { "" },
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<AbsenceSheetResponseDTO> createAbsenceSheet(
-        @RequestBody AbsenceSheetRequestDTO absenceSheetRequestDTO
-        ) {
-        AbsenceSheetResponseDTO createdSale = absenceSheetService.create(absenceSheetRequestDTO);
-        return ResponseEntity.ok(createdSale);
-    }
-
-    @PatchMapping(
-        value = { "/{id}" },
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<AbsenceSheetResponseDTO> updateAbsenceSheet(
-        @PathVariable(value = "id") Integer id,
-        @RequestBody AbsenceSheetRequestDTO absenceSheetRequestDTO
-    ) {
-        AbsenceSheetResponseDTO updatedSale = absenceSheetService.update(id, absenceSheetRequestDTO);
-        return ResponseEntity.ok(updatedSale);
-    }
-
-    @DeleteMapping(
-        value = { "/{id}" }
-    )
-    public ResponseEntity<Void> deleteAbsenceSheet(
-        @PathVariable(value = "id") Integer id
-    ) {
-        absenceSheetService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }
