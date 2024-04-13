@@ -2,20 +2,16 @@ package com.github.faening.eng_soft_fp_api.domain.model.payroll;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.Month;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
-import com.github.faening.eng_soft_fp_api.domain.model.company.CompanyResponseDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
-public class PayrollResponseDTO implements Serializable {
-    private Integer id;
-    private CompanyResponseDTO company;
-    private EmployeeSummaryDTO employee;
+public class PayrollRequestDTO implements Serializable {
+    private Integer companyId;
+    private Integer employeeId;
     private Month month;
     private Integer year;
     private BigDecimal grossSalary;
@@ -28,19 +24,16 @@ public class PayrollResponseDTO implements Serializable {
     private BigDecimal totalAdditions;
     private BigDecimal totalDiscounts;
     private BigDecimal totalLiquid;
-    private List<PayrollItemResponseDTO> items;
+    private List<PayrollItemRequestDTO> items;
     private PaymentStatus status;
     private String notes;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
-    public PayrollResponseDTO() {
+    public PayrollRequestDTO() {
     }
 
-    public PayrollResponseDTO(
-        Integer id,
-        CompanyResponseDTO company,
-        EmployeeSummaryDTO employee,
+    public PayrollRequestDTO(
+        Integer companyId,
+        Integer employeeId,
         Month month,
         Integer year,
         BigDecimal grossSalary,
@@ -53,15 +46,12 @@ public class PayrollResponseDTO implements Serializable {
         BigDecimal totalAdditions,
         BigDecimal totalDiscounts,
         BigDecimal totalLiquid,
-        List<PayrollItemResponseDTO> items,
+        List<PayrollItemRequestDTO> items,
         PaymentStatus status,
-        String notes,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        String notes
     ) {
-        this.id = id;
-        this.company = company;
-        this.employee = employee;
+        this.companyId = companyId;
+        this.employeeId = employeeId;
         this.month = month;
         this.year = year;
         this.grossSalary = grossSalary;
@@ -77,32 +67,22 @@ public class PayrollResponseDTO implements Serializable {
         this.items = items;
         this.status = status;
         this.notes = notes;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getCompanyId() {
+        return companyId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
-    public CompanyResponseDTO getCompany() {
-        return company;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setCompany(CompanyResponseDTO company) {
-        this.company = company;
-    }
-
-    public EmployeeSummaryDTO getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(EmployeeSummaryDTO employee) {
-        this.employee = employee;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
     public Month getMonth() {
@@ -201,11 +181,11 @@ public class PayrollResponseDTO implements Serializable {
         this.totalLiquid = totalLiquid;
     }
 
-    public List<PayrollItemResponseDTO> getItems() {
+    public List<PayrollItemRequestDTO> getItems() {
         return items;
     }
 
-    public void setItems(List<PayrollItemResponseDTO> items) {
+    public void setItems(List<PayrollItemRequestDTO> items) {
         this.items = items;
     }
 
@@ -225,19 +205,26 @@ public class PayrollResponseDTO implements Serializable {
         this.notes = notes;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    @Override
+    public String toString() {
+        return "PayrollRequestDTO{" +
+            "companyId=" + companyId +
+            ", employeeId=" + employeeId +
+            ", month=" + month +
+            ", year=" + year +
+            ", grossSalary=" + grossSalary +
+            ", inssBaseAmount=" + inssBaseAmount +
+            ", inssTaxRate=" + inssTaxRate +
+            ", irrfBaseAmount=" + irrfBaseAmount +
+            ", irrfTaxRate=" + irrfTaxRate +
+            ", fgtsBaseAmount=" + fgtsBaseAmount +
+            ", fgtsPayed=" + fgtsPayed +
+            ", totalAdditions=" + totalAdditions +
+            ", totalDiscounts=" + totalDiscounts +
+            ", totalLiquid=" + totalLiquid +
+            ", items=" + items +
+            ", status=" + status +
+            ", notes='" + notes + '\'' +
+            '}';
     }
 }

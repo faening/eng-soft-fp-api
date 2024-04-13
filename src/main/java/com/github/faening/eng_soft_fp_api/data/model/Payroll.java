@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Entity
 @Table(name = "payroll")
 public class Payroll implements Serializable {
@@ -45,7 +45,7 @@ public class Payroll implements Serializable {
     private BigDecimal irrfBaseAmount;
 
     @Column(name = "irrf_tax_rate", nullable = false, precision = 5, scale = 2)
-    private BigDecimal irrTaxRate;
+    private BigDecimal irrfTaxRate;
 
     @Column(name = "fgts_base_amout", nullable = false, precision = 10, scale = 2)
     private BigDecimal fgtsBaseAmount;
@@ -62,7 +62,7 @@ public class Payroll implements Serializable {
     @Column(name = "total_liquid", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalLiquid;
 
-    @OneToMany(mappedBy = "payroll", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "payroll", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<PayrollItem> items;
 
     @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
@@ -92,7 +92,7 @@ public class Payroll implements Serializable {
         BigDecimal inssBaseAmount,
         BigDecimal inssTaxRate,
         BigDecimal irrfBaseAmount,
-        BigDecimal irrTaxRate,
+        BigDecimal irrfTaxRate,
         BigDecimal fgtsBaseAmount,
         BigDecimal fgtsPayed,
         BigDecimal totalAdditions,
@@ -112,7 +112,7 @@ public class Payroll implements Serializable {
         this.inssBaseAmount = inssBaseAmount;
         this.inssTaxRate = inssTaxRate;
         this.irrfBaseAmount = irrfBaseAmount;
-        this.irrTaxRate = irrTaxRate;
+        this.irrfTaxRate = irrfTaxRate;
         this.fgtsBaseAmount = fgtsBaseAmount;
         this.fgtsPayed = fgtsPayed;
         this.totalAdditions = totalAdditions;
@@ -196,12 +196,12 @@ public class Payroll implements Serializable {
         this.irrfBaseAmount = irrfBaseAmount;
     }
 
-    public BigDecimal getIrrTaxRate() {
-        return irrTaxRate;
+    public BigDecimal getIrrfTaxRate() {
+        return irrfTaxRate;
     }
 
-    public void setIrrTaxRate(BigDecimal irrTaxRate) {
-        this.irrTaxRate = irrTaxRate;
+    public void setIrrfTaxRate(BigDecimal irrfTaxRate) {
+        this.irrfTaxRate = irrfTaxRate;
     }
 
     public BigDecimal getFgtsBaseAmount() {

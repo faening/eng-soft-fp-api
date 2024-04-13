@@ -1,8 +1,7 @@
 package com.github.faening.eng_soft_fp_api.domain.model.payroll_item;
 
-import com.github.faening.eng_soft_fp_api.data.model.Payroll;
-import com.github.faening.eng_soft_fp_api.data.model.Rubric;
-import com.github.faening.eng_soft_fp_api.data.model.TaxOrValue;
+import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.tax_or_value.TaxOrValueResponseDTO;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,10 +10,9 @@ import java.time.LocalDateTime;
 @SuppressWarnings("unused")
 public class PayrollItemResponseDTO implements Serializable {
     private Integer id;
-    private Payroll payroll;
-    private Rubric rubric;
-    private TaxOrValue taxOrValue;
-    private Integer financialEventId;
+    private Integer payrollId;
+    private RubricResponseDTO rubric;
+    private TaxOrValueResponseDTO taxOrValue;
     private BigDecimal baseValue;
     private BigDecimal calculatedValue;
     private LocalDateTime createdAt;
@@ -25,20 +23,18 @@ public class PayrollItemResponseDTO implements Serializable {
 
     public PayrollItemResponseDTO(
         Integer id,
-        Payroll payroll,
-        Rubric rubric,
-        TaxOrValue taxOrValue,
-        Integer financialEventId,
+        Integer payrollId,
+        RubricResponseDTO rubric,
+        TaxOrValueResponseDTO taxOrValue,
         BigDecimal baseValue,
         BigDecimal calculatedValue,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
     ) {
         this.id = id;
-        this.payroll = payroll;
+        this.payrollId = payrollId;
         this.rubric = rubric;
         this.taxOrValue = taxOrValue;
-        this.financialEventId = financialEventId;
         this.baseValue = baseValue;
         this.calculatedValue = calculatedValue;
         this.createdAt = createdAt;
@@ -53,36 +49,28 @@ public class PayrollItemResponseDTO implements Serializable {
         this.id = id;
     }
 
-    public Payroll getPayroll() {
-        return payroll;
+    public Integer getPayrollId() {
+        return payrollId;
     }
 
-    public void setPayroll(Payroll payroll) {
-        this.payroll = payroll;
+    public void setPayrollId(Integer payrollId) {
+        this.payrollId = payrollId;
     }
 
-    public Rubric getRubric() {
+    public RubricResponseDTO getRubric() {
         return rubric;
     }
 
-    public void setRubric(Rubric rubric) {
+    public void setRubric(RubricResponseDTO rubric) {
         this.rubric = rubric;
     }
 
-    public TaxOrValue getTaxOrValue() {
+    public TaxOrValueResponseDTO getTaxOrValue() {
         return taxOrValue;
     }
 
-    public void setTaxOrValue(TaxOrValue taxOrValue) {
+    public void setTaxOrValue(TaxOrValueResponseDTO taxOrValue) {
         this.taxOrValue = taxOrValue;
-    }
-
-    public Integer getFinancialEventId() {
-        return financialEventId;
-    }
-
-    public void setFinancialEventId(Integer financialEventId) {
-        this.financialEventId = financialEventId;
     }
 
     public BigDecimal getBaseValue() {
@@ -115,5 +103,19 @@ public class PayrollItemResponseDTO implements Serializable {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "PayrollItemResponseDTO{" +
+            "id=" + id +
+            ", payrollId=" + payrollId +
+            ", rubric=" + rubric +
+            ", taxOrValue=" + taxOrValue +
+            ", baseValue=" + baseValue +
+            ", calculatedValue=" + calculatedValue +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
     }
 }
