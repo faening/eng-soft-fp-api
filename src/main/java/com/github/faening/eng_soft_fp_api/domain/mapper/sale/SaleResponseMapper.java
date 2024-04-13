@@ -39,7 +39,7 @@ public class SaleResponseMapper extends AbstractMapper<Sale, SaleResponseDTO> {
 
     @Override
     protected void createDestinationToSourceMapping() {
-        Converter<Integer, Employee> employeeIdToEmployee = context -> employeeService.getEmployeeEntityById(context.getSource());
+        Converter<Integer, Employee> employeeIdToEmployee = context -> employeeService.getEntityById(context.getSource());
 
         modelMapper.createTypeMap(SaleResponseDTO.class, Sale.class)
             .addMappings(mapper -> {

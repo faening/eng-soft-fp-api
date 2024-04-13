@@ -59,7 +59,7 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
     }
 
     public List<SaleResponseDTO> getSalesByEmployeeIdAndDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
-        Employee employee = employeeService.getEmployeeEntityById(employeeId);
+        Employee employee = employeeService.getEntityById(employeeId);
         return repository
             .findByEmployeeAndDateBetween(employee, startDate, endDate)
             .stream()

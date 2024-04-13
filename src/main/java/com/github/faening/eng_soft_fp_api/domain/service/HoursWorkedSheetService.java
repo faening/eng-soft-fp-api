@@ -60,7 +60,7 @@ public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetReq
     }
 
     public List<HoursWorkedSheetResponseDTO> getWorkedHoursByEmployeeIdAndDateRange(Integer employeId, LocalDate startDate, LocalDate endDate) {
-        Employee employee = employeeService.getEmployeeEntityById(employeId);
+        Employee employee = employeeService.getEntityById(employeId);
         return repository
             .findByEmployeeAndDateBetween(employee, startDate, endDate)
             .stream()

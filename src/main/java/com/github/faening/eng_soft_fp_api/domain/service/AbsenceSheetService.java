@@ -69,7 +69,7 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
         LocalDateTime startDate,
         LocalDateTime endDate
     ) {
-        Employee employee = employeeService.getEmployeeEntityById(employeeId);
+        Employee employee = employeeService.getEntityById(employeeId);
         AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDate, endDate);
         return repository
             .findAll(spec)

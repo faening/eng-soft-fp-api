@@ -22,11 +22,11 @@ public class EmployeeService {
         this.employeeSummaryMapper = employeeSummaryMapper;
     }
 
-    public Employee getEmployeeEntityById(Integer id) {
+    public Employee getEntityById(Integer id) {
         return searchEmployeeById(id);
     }
 
-    public EmployeeSummaryDTO getEmployeeSummaryById(Integer id) {
+    public EmployeeSummaryDTO getSummaryById(Integer id) {
         Employee employee = searchEmployeeById(id);
         return employeeSummaryMapper.toDTO(employee, EmployeeSummaryDTO.class);
     }

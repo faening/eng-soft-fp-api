@@ -28,7 +28,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeSummaryDTO> getEmployeeSummaryById(
         @PathVariable(value = "id") Integer id
     ) {
-        EmployeeSummaryDTO departmentResponseDTO = employeeService.getEmployeeSummaryById(id);
+        EmployeeSummaryDTO departmentResponseDTO = employeeService.getSummaryById(id);
         return ResponseEntity.ok(departmentResponseDTO);
     }
 
