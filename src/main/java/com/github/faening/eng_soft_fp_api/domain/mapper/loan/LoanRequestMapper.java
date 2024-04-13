@@ -38,7 +38,7 @@ public class LoanRequestMapper extends AbstractMapper<Loan, LoanRequestDTO> {
 
     @Override
     protected void createDestinationToSourceMapping() {
-        Converter<Integer, Employee> employeeIdToEmployeeConverter = context -> employeeService.getEmployeeEntityById(context.getSource());
+        Converter<Integer, Employee> employeeIdToEmployeeConverter = context -> employeeService.getEntityById(context.getSource());
 
         modelMapper.createTypeMap(LoanRequestDTO.class, Loan.class)
             .addMappings(mapper -> {

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO, AbsenceSheetResponseDTO> {
     private final AbsenceSheetRepository repository;
@@ -69,7 +69,7 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
         LocalDateTime startDate,
         LocalDateTime endDate
     ) {
-        Employee employee = employeeService.getEmployeeEntityById(employeeId);
+        Employee employee = employeeService.getEntityById(employeeId);
         AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDate, endDate);
         return repository
             .findAll(spec)

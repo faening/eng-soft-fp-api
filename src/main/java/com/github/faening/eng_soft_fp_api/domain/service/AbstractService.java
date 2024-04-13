@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("unused")
 @Service
 public abstract class AbstractService<REQ, RES> {
     @Autowired

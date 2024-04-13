@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, TaxOrValueResponseDTO> {
     private final TaxOrValueRepository repository;
@@ -95,6 +95,7 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
 
     @Override
     protected void validate(TaxOrValueRequestDTO request) {
+        super.validate(request);
         if (request.getType() == null) throw new IllegalArgumentException(getLocalizedMessage(TOV_TYPE_VALIDATION_MESSAGE));
         if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(TOV_DESCRIPTION_VALIDATION_MESSAGE));
     }

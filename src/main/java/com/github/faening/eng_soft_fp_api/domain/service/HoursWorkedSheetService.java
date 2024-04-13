@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetRequestDTO, HoursWorkedSheetResponseDTO> {
     private final HoursWorkedSheetRepository repository;
@@ -60,7 +60,7 @@ public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetReq
     }
 
     public List<HoursWorkedSheetResponseDTO> getWorkedHoursByEmployeeIdAndDateRange(Integer employeId, LocalDate startDate, LocalDate endDate) {
-        Employee employee = employeeService.getEmployeeEntityById(employeId);
+        Employee employee = employeeService.getEntityById(employeId);
         return repository
             .findByEmployeeAndDateBetween(employee, startDate, endDate)
             .stream()

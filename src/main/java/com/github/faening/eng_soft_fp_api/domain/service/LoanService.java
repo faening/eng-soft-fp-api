@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO> {
     private final LoanRepository repository;
@@ -68,7 +68,7 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
         LocalDate companyPaymentDate,
         PaymentStatus paymentStatus
     ) {
-        Employee employee = employeeService.getEmployeeEntityById(employeeId);
+        Employee employee = employeeService.getEntityById(employeeId);
         LoanSpecification spec = new LoanSpecification(employee, requestDate, approvalDate, companyPaymentDate, paymentStatus);
         return repository
             .findAll(spec)

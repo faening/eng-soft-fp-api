@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class LoanInstallmentService extends AbstractService<LoanInstallmentRequestDTO, LoanInstallmentResponseDTO> {
     private final LoanInstallmentRepository repository;
@@ -105,6 +105,7 @@ public class LoanInstallmentService extends AbstractService<LoanInstallmentReque
 
     @Override
     protected void validate(LoanInstallmentRequestDTO request) {
+        super.validate(request);
         if (request.getInstallmentNumber() == null)  throw new IllegalArgumentException(getLocalizedMessage(LOAN_INSTALLMENT_NUMBER_VALIDATION_MESSAGE));
         if (request.getInstallmentValue() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_INSTALLMENT_VALUE_VALIDATION_MESSAGE));
         if (request.getDiscountMonth() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_INSTALLMENT_MONTH_VALIDATION_MESSAGE));

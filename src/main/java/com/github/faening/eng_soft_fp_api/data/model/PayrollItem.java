@@ -22,7 +22,7 @@ public class PayrollItem implements Serializable {
     @JoinColumn(name = "rubric_id", referencedColumnName = "id_rubric", nullable = false)
     private Rubric rubric;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tax_or_value_id", referencedColumnName = "id_tax_or_value")
     private TaxOrValue taxOrValue;
 
