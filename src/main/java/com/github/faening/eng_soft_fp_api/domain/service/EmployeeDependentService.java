@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class EmployeeDependentService extends AbstractService<EmployeeDependentRequestDTO, EmployeeDependentResponseDTO>{
     private final EmployeeDependentRepository repository;

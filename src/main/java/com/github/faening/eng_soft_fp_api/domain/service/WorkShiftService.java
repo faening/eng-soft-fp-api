@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class WorkShiftService extends AbstractService<WorkShiftRequestDTO, WorkShiftResponseDTO> {
     private final WorkShiftRepository repository;
@@ -88,13 +88,14 @@ public class WorkShiftService extends AbstractService<WorkShiftRequestDTO, WorkS
     }
 
     @Override
-    protected void validate(WorkShiftRequestDTO workShiftRequestDTO) {
-        if (workShiftRequestDTO.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_DESCRIPTION_VALIDATION_MESSAGE));
-        if (workShiftRequestDTO.getStartOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_WORKDAY_VALIDATION_MESSAGE));
-        if (workShiftRequestDTO.getStartOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_BREAK_VALIDATION_MESSAGE));
-        if (workShiftRequestDTO.getEndOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_BREAK_VALIDATION_MESSAGE));
-        if (workShiftRequestDTO.getEndOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_WORKDAY_VALIDATION_MESSAGE));
-        if (workShiftRequestDTO.getNightShiftAllowance() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_NIGHT_SHIFT_ALLOWANCE_VALIDATION_MESSAGE));
-        if (workShiftRequestDTO.getEnabled() == null) workShiftRequestDTO.setEnabled(true);
+    protected void validate(WorkShiftRequestDTO request) {
+        super.validate(request);
+        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_DESCRIPTION_VALIDATION_MESSAGE));
+        if (request.getStartOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_WORKDAY_VALIDATION_MESSAGE));
+        if (request.getStartOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_BREAK_VALIDATION_MESSAGE));
+        if (request.getEndOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_BREAK_VALIDATION_MESSAGE));
+        if (request.getEndOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_WORKDAY_VALIDATION_MESSAGE));
+        if (request.getNightShiftAllowance() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_NIGHT_SHIFT_ALLOWANCE_VALIDATION_MESSAGE));
+        if (request.getEnabled() == null) request.setEnabled(true);
     }
 }

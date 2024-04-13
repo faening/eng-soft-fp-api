@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class RubricService extends AbstractService<RubricRequestDTO, RubricResponseDTO> {
     private final RubricRepository repository;

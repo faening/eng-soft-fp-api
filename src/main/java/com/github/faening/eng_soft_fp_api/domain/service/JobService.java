@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
     private final JobRepository repository;
@@ -54,6 +54,11 @@ public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
         return responseMapper.toDTO(searchJobEntityById(id), JobResponseDTO.class);
     }
 
+    public Job getEntityById(Integer id) {
+        validate(id);
+        return searchJobEntityById(id);
+    }
+
     @Override
     public JobResponseDTO create(JobRequestDTO request) {
         validate(request);
@@ -85,15 +90,15 @@ public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
     }
 
     @Override
-    protected void validate(JobRequestDTO jobRequestDTO) {
-        super.validate(jobRequestDTO);
-        if (jobRequestDTO.getDescription() == null || jobRequestDTO.getDescription().isEmpty()) throw new IllegalArgumentException(getLocalizedMessage(JOB_DESCRIPTION_VALIDATION_MESSAGE));
-        if (jobRequestDTO.getExperienceLevel() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_EXPERIENCE_LEVEL_VALIDATION_MESSAGE));
-        if (jobRequestDTO.getDepartmentId() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_DEPARTMENT_ID_VALIDATION_MESSAGE));
-        if (jobRequestDTO.getDangerousness() == null) jobRequestDTO.setDangerousness(false);
-        if (jobRequestDTO.getUnhealthiness() == null) jobRequestDTO.setUnhealthiness(false);
-        if (jobRequestDTO.getEnabled() == null) jobRequestDTO.setEnabled(true);
-        if (jobRequestDTO.getBaseSalary() == null) jobRequestDTO.setBaseSalary(
+    protected void validate(JobRequestDTO request) {
+        super.validate(request);
+        if (request.getDescription() == null || request.getDescription().isEmpty()) throw new IllegalArgumentException(getLocalizedMessage(JOB_DESCRIPTION_VALIDATION_MESSAGE));
+        if (request.getExperienceLevel() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_EXPERIENCE_LEVEL_VALIDATION_MESSAGE));
+        if (request.getDepartmentId() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_DEPARTMENT_ID_VALIDATION_MESSAGE));
+        if (request.getDangerousness() == null) request.setDangerousness(false);
+        if (request.getUnhealthiness() == null) request.setUnhealthiness(false);
+        if (request.getEnabled() == null) request.setEnabled(true);
+        if (request.getBaseSalary() == null) request.setBaseSalary(
             taxOrValueService.getByType(TaxOrValueType.MINIMUM_WAGE).get(0).getFixedValue()
         );
     }

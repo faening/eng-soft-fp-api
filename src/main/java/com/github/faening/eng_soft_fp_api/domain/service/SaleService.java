@@ -9,105 +9,99 @@ import com.github.faening.eng_soft_fp_api.domain.model.sale.SaleRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.sale.SaleResponseDTO;
 import com.github.faening.eng_soft_fp_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO> {
-    private final SaleRepository saleRepository;
-    private final SaleRequestMapper saleRequestMapper;
-    private final SaleResponseMapper saleResponseMapper;
+    private final SaleRepository repository;
+    private final SaleRequestMapper requestMapper;
+    private final SaleResponseMapper responseMapper;
     private final EmployeeService employeeService;
+
+    private static final String SALE_EMPLOYEE_ID_VALIDATION_MESSAGE = "saleService.validation.employeeId";
+    private static final String SALE_DATE_VALIDATION_MESSAGE = "saleService.validation.date";
+    private static final String SALE_AMOUNT_VALIDATION_MESSAGE = "saleService.validation.amount";
 
     @Autowired
     public SaleService(
-        SaleRepository saleRepository,
-        SaleRequestMapper saleRequestMapper,
-        SaleResponseMapper saleResponseMapper,
-        EmployeeService employeeService,
-        MessageSource messageSource
+        SaleRepository repository,
+        SaleRequestMapper requestMapper,
+        SaleResponseMapper responseMapper,
+        EmployeeService employeeService
     ) {
-        this.saleRepository = saleRepository;
-        this.saleRequestMapper = saleRequestMapper;
-        this.saleResponseMapper = saleResponseMapper;
+        this.repository = repository;
+        this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
         this.employeeService = employeeService;
-        this.messageSource = messageSource;
     }
 
     @Override
     public List<SaleResponseDTO> getAll() {
-        return saleRepository
+        return repository
             .findAll()
             .stream()
-            .map(sale -> saleResponseMapper.toDTO(sale, SaleResponseDTO.class))
+            .map(sale -> responseMapper.toDTO(sale, SaleResponseDTO.class))
             .collect(Collectors.toList());
     }
 
     @Override
     public SaleResponseDTO getById(Integer id) {
-        return saleResponseMapper.toDTO(searchSaleById(id), SaleResponseDTO.class);
+        return responseMapper.toDTO(searchSaleById(id), SaleResponseDTO.class);
+    }
+
+    public Sale getEntityById(Integer id) {
+        return searchSaleById(id);
+    }
+
+    public List<SaleResponseDTO> getSalesByEmployeeIdAndDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
+        Employee employee = employeeService.getEmployeeEntityById(employeeId);
+        return repository
+            .findByEmployeeAndDateBetween(employee, startDate, endDate)
+            .stream()
+            .map(sales -> responseMapper.toDTO(sales, SaleResponseDTO.class))
+            .collect(Collectors.toList());
     }
 
     @Override
     public SaleResponseDTO create(SaleRequestDTO request) {
-        validateSaleRequestDTO(request);
-        Sale sale = saleRequestMapper.toEntity(request, Sale.class);
-        return saleResponseMapper.toDTO(saleRepository.save(sale), SaleResponseDTO.class);
+        validate(request);
+        Sale sale = requestMapper.toEntity(request, Sale.class);
+        return responseMapper.toDTO(repository.save(sale), SaleResponseDTO.class);
     }
 
     @Override
     public SaleResponseDTO update(Integer id, SaleRequestDTO request) {
-        validateId(id);
-        validateSaleRequestDTO(request);
+        validate(id);
+        validate(request);
         Sale sale = searchSaleById(id);
-        saleRequestMapper.updateSourceFromDestination(sale, request);
-        return saleResponseMapper.toDTO(saleRepository.save(sale), SaleResponseDTO.class);
+        requestMapper.updateSourceFromDestination(sale, request);
+        return responseMapper.toDTO(repository.save(sale), SaleResponseDTO.class);
     }
 
     @Override
     public void delete(Integer id) {
-        validateId(id);
+        validate(id);
         Sale sale = searchSaleById(id);
-        saleRepository.delete(sale);
+        repository.delete(sale);
     }
 
-    /**
-     * Busca as vendas de um funcionário em um intervalo de datas.
-     *
-     * @param employeId Id do funcionário
-     * @param startDate Data de início do intervalo
-     * @param endDate Data de fim do intervalo
-     *
-     * @return Lista de vendas
-     */
-    public List<SaleResponseDTO> getSalesByEmployeeIdAndDateRange(Integer employeId, LocalDate startDate, LocalDate endDate) {
-        Employee employee = employeeService.getEmployeeEntityById(employeId);
-        return saleRepository
-            .findByEmployeeAndDateBetween(employee, startDate, endDate)
-            .stream()
-            .map(sales -> saleResponseMapper.toDTO(sales, SaleResponseDTO.class))
-            .collect(Collectors.toList());
-    }
-
-    public Sale searchSaleById(Integer id) {
-        validateId(id);
-        return saleRepository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException("Nenhuma venda encontrada com o id: " + id)
+    private Sale searchSaleById(Integer id) {
+        validate(id);
+        return repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
     }
 
-    private void validateId(Integer id) {
-        if (id == null) throw new IllegalArgumentException(getLocalizedMessage("saleService.validation.saleId"));
-    }
-
-    private void validateSaleRequestDTO(SaleRequestDTO saleRequestDTO) {
-        if (saleRequestDTO.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage("saleService.validation.employeeId"));
-        if (saleRequestDTO.getDate() == null)  throw new IllegalArgumentException(getLocalizedMessage("saleService.validation.date"));
-        if (saleRequestDTO.getAmount() == null) throw new IllegalArgumentException(getLocalizedMessage("saleService.validation.amount"));
+    @Override
+    protected void validate(SaleRequestDTO request) {
+        super.validate(request);
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(SALE_EMPLOYEE_ID_VALIDATION_MESSAGE));
+        if (request.getDate() == null) throw new IllegalArgumentException(getLocalizedMessage(SALE_DATE_VALIDATION_MESSAGE));
+        if (request.getAmount() == null) throw new IllegalArgumentException(getLocalizedMessage(SALE_AMOUNT_VALIDATION_MESSAGE));
     }
 }

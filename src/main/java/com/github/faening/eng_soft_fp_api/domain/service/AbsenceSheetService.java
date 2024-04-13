@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO, AbsenceSheetResponseDTO> {
     private final AbsenceSheetRepository repository;
