@@ -71,10 +71,9 @@ public class BenefitVoucherService extends AbstractService<BenefitVoucherRequest
         Boolean payrollDeductible
 
     ) {
-        List<BenefitVoucher> benefitVoucher = searchBenefitVoucherByEmployeeAndSpecs(employeeId, releaseDate, benefitType, paymentStatus, payrollDeductible);
-        return benefitVoucher
+        return searchBenefitVoucherByEmployeeAndSpecs(employeeId, releaseDate, benefitType, paymentStatus, payrollDeductible)
             .stream()
-            .map(benefit -> responseMapper.toDTO(benefit, BenefitVoucherResponseDTO.class))
+            .map(benefitVoucher -> responseMapper.toDTO(benefitVoucher, BenefitVoucherResponseDTO.class))
             .toList();
     }
 
@@ -130,12 +129,18 @@ public class BenefitVoucherService extends AbstractService<BenefitVoucherRequest
     @Override
     protected void validate(BenefitVoucherRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_EMPLOYEE_ID_VALIDATION_MESSAGE));
-        if (request.getPaidValue() == null) throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_PAID_VALUE_VALIDATION_MESSAGE));
-        if (request.getReleaseDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_RELEASE_DATE_VALIDATION_MESSAGE));
-        if (request.getDescription() == null) throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_DESCRIPTION_VALIDATION_MESSAGE));
-        if (request.getBenefitType() == null) throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_BENEFIT_TYPE_VALIDATION_MESSAGE));
+        if (request.getEmployeeId() == null)
+            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_EMPLOYEE_ID_VALIDATION_MESSAGE));
+        if (request.getPaidValue() == null)
+            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_PAID_VALUE_VALIDATION_MESSAGE));
+        if (request.getReleaseDate() == null)
+            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_RELEASE_DATE_VALIDATION_MESSAGE));
+        if (request.getDescription() == null)
+            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_DESCRIPTION_VALIDATION_MESSAGE));
+        if (request.getBenefitType() == null)
+            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_BENEFIT_TYPE_VALIDATION_MESSAGE));
         if (request.getPaymentStatus() == null) request.setPaymentStatus(PaymentStatus.PENDING);
-        if (request.getPayrollDeductible() == null) throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_PAYMENT_DEDUCTIBLE_VALIDATION_MESSAGE));
+        if (request.getPayrollDeductible() == null)
+            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_PAYMENT_DEDUCTIBLE_VALIDATION_MESSAGE));
     }
 }
