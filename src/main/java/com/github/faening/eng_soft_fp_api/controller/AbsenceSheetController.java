@@ -32,7 +32,7 @@ public class AbsenceSheetController extends AbstractController<AbsenceSheetReque
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
     ) {
-        List<AbsenceSheetResponseDTO> absenceSheets = service.getAbsenceSheetsByEmployeeIdAndTypeAndDateRange(employeeId, type, startDate, endDate);
+        List<AbsenceSheetResponseDTO> absenceSheets = service.getAbsenceSheetByEmployeeIdAndSpecs(employeeId, type, startDate, endDate);
         return ResponseEntity.ok(absenceSheets);
     }
 }
