@@ -23,7 +23,6 @@ public class LegalChargeService extends AbstractService<LegalChargeRequestDTO, L
     private final LegalChargeRequestMapper requestMapper;
     private final LegalChargeResponseMapper responseMapper;
     private final EmployeeService employeeService;
-
     private static final String LEGAL_CHARGE_EMPLOYEE_ID_VALIDATION_MESSAGE = "legalChargeService.validation.employeeId";
     private static final String LEGAL_CHARGE_AMOUNT_VALIDATION_MESSAGE = "legalChargeService.validation.amount";
     private static final String LEGAL_CHARGE_PERCENTAGE_VALIDATION_MESSAGE = "legalChargeService.validation.percentage";
@@ -62,20 +61,27 @@ public class LegalChargeService extends AbstractService<LegalChargeRequestDTO, L
         return searchLegalChargeById(id);
     }
 
-    public List<LegalChargeResponseDTO> searchLoanByEmployeeIdAndSpecs(
+    public List<LegalChargeResponseDTO> getLegalChargeByEmployeeIdAndSpecs(
         Integer employeeId,
         BigDecimal legalChargeAmount,
         BigDecimal percentage,
         LocalDate releaseDate,
         Boolean isRecurring
     ) {
-        Employee employee = employeeService.getEntityById(employeeId);
-        LegalChargeSpecification spec = new LegalChargeSpecification(employee, legalChargeAmount, percentage, releaseDate, isRecurring);
-        return repository
-            .findAll(spec)
+        return searchLegalChargeByEmployeeIdAndSpecs(employeeId, legalChargeAmount, percentage, releaseDate, isRecurring)
             .stream()
-            .map(LegalCharge -> responseMapper.toDTO(LegalCharge, LegalChargeResponseDTO.class))
+            .map(legalCharge -> responseMapper.toDTO(legalCharge, LegalChargeResponseDTO.class))
             .toList();
+    }
+
+    public List<LegalCharge> getLegalChargeEntityByEmployeeIdAndSpecs(
+        Integer employeeId,
+        BigDecimal legalChargeAmount,
+        BigDecimal percentage,
+        LocalDate releaseDate,
+        Boolean isRecurring
+    ) {
+        return searchLegalChargeByEmployeeIdAndSpecs(employeeId, legalChargeAmount, percentage, releaseDate, isRecurring);
     }
 
     @Override
@@ -83,9 +89,7 @@ public class LegalChargeService extends AbstractService<LegalChargeRequestDTO, L
         validate(request);
         request.getInstallments().forEach(installment -> installment.setPaymentStatus(PaymentStatus.PENDING));
         LegalCharge legalCharge = requestMapper.toEntity(request, LegalCharge.class);
-        legalCharge.getInstallments().forEach(installment -> {
-            installment.setLegalCharge(legalCharge);
-        });
+        legalCharge.getInstallments().forEach(installment -> installment.setLegalCharge(legalCharge));
         LegalCharge savedLegalCharge = repository.save(legalCharge);
         return responseMapper.toDTO(savedLegalCharge, LegalChargeResponseDTO.class);
     }
@@ -103,6 +107,21 @@ public class LegalChargeService extends AbstractService<LegalChargeRequestDTO, L
 
     private LegalCharge searchLegalChargeById(Integer id) {
         return repository.findById(id).orElseThrow();
+    }
+
+    private List<LegalCharge> searchLegalChargeByEmployeeIdAndSpecs(
+        Integer employeeId,
+        BigDecimal legalChargeAmount,
+        BigDecimal percentage,
+        LocalDate releaseDate,
+        Boolean isRecurring
+    ) {
+        Employee employee = employeeService.getEntityById(employeeId);
+        LegalChargeSpecification spec = new LegalChargeSpecification(employee, legalChargeAmount, percentage, releaseDate, isRecurring);
+        return repository
+            .findAll(spec)
+            .stream()
+            .toList();
     }
 
     @Override
