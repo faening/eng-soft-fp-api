@@ -22,7 +22,6 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
     private final LoanRequestMapper requestMapper;
     private final LoanResponseMapper responseMapper;
     private final EmployeeService employeeService;
-
     private static final String LOAN_EMPLOYEE_ID_VALIDATION_MESSAGE = "loanService.validation.employeeId";
     private static final String LOAN_AMOUNT_VALUE_VALIDATION_MESSAGE = "loanService.validation.loanAmountValue";
     private static final String LOAN_INSTALLMENT_QUANTITY_VALIDATION_MESSAGE = "loanService.validation.installmentQuantity";
@@ -61,20 +60,27 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
         return searchLoanById(id);
     }
 
-    public List<LoanResponseDTO> searchLoanByEmployeeIdAndSpecs(
+    public List<LoanResponseDTO> getLoanByEmployeeIdAndSpecs(
         Integer employeeId,
         LocalDate requestDate,
         LocalDate approvalDate,
         LocalDate companyPaymentDate,
         PaymentStatus paymentStatus
     ) {
-        Employee employee = employeeService.getEntityById(employeeId);
-        LoanSpecification spec = new LoanSpecification(employee, requestDate, approvalDate, companyPaymentDate, paymentStatus);
-        return repository
-            .findAll(spec)
+        return searchLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, paymentStatus)
             .stream()
             .map(loan -> responseMapper.toDTO(loan, LoanResponseDTO.class))
             .toList();
+    }
+
+    public List<Loan> getLoanEntityByEmployeeIdAndSpecs(
+        Integer employeeId,
+        LocalDate requestDate,
+        LocalDate approvalDate,
+        LocalDate companyPaymentDate,
+        PaymentStatus paymentStatus
+    ) {
+        return searchLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, paymentStatus);
     }
 
     @Override
@@ -82,7 +88,7 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
         validate(request);
         request.getInstallments().forEach(installment -> installment.setPaymentStatus(PaymentStatus.PENDING));
         Loan loan = requestMapper.toEntity(request, Loan.class);
-        loan.getInstallments().forEach(installment -> {installment.setLoan(loan);});
+        loan.getInstallments().forEach(installment -> installment.setLoan(loan));
         Loan savedLoan = repository.save(loan);
         return responseMapper.toDTO(savedLoan, LoanResponseDTO.class);
     }
@@ -99,9 +105,22 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
     }
 
     private Loan searchLoanById(Integer id) {
-        return repository.findById(id).orElseThrow(
-            () -> new IllegalArgumentException(ID_VALIDATION_MESSAGE)
-        );
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException(ID_VALIDATION_MESSAGE));
+    }
+
+    private List<Loan> searchLoanByEmployeeIdAndSpecs(
+        Integer employeeId,
+        LocalDate requestDate,
+        LocalDate approvalDate,
+        LocalDate companyPaymentDate,
+        PaymentStatus paymentStatus
+    ) {
+        Employee employee = employeeService.getEntityById(employeeId);
+        LoanSpecification spec = new LoanSpecification(employee, requestDate, approvalDate, companyPaymentDate, paymentStatus);
+        return repository
+            .findAll(spec)
+            .stream()
+            .toList();
     }
 
     @Override
