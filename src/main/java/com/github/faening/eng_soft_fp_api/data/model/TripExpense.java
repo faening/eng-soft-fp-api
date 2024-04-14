@@ -26,7 +26,7 @@ public class TripExpense implements Serializable {
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Column(name = "description", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
+    @Column(name = "status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
 

@@ -1,75 +1,50 @@
-package com.github.faening.eng_soft_fp_api.data.model;
+package com.github.faening.eng_soft_fp_api.domain.model.benefit_voucher;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.BenefitVoucherType;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.PaymentStatus;
-import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
-@Entity
-@Table(name = "benefit_voucher")
-public class BenefitVoucher implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_benefit_voucher")
+public class BenefitVoucherResponseDTO implements Serializable {
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id_employee", nullable = false)
-    private Employee employee;
-
-    @Column(name = "paid_value", nullable = false)
+    private Integer employeeId;
     private Double paidValue;
-
-    @Column(name = "release_date", nullable = false)
     private LocalDate releaseDate;
-
-    @Column(name = "description", length = 120, nullable = false)
     private String description;
-
-    @Column(name = "benefit_type", nullable = false)
-    @Enumerated(EnumType.STRING)
     private BenefitVoucherType benefitType;
-
-    @Column(name = "payment_status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
-    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
-
-    @Column(name = "payroll_deductible", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean payrollDeductible;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at")),
-        @AttributeOverride(name = "updatedAt", column = @Column(name = "updated_at")),
-    })
-    private EntityMetadata entityMetadata;
-
-    public BenefitVoucher() {
+    public BenefitVoucherResponseDTO() {
     }
 
-    public BenefitVoucher(
+    public BenefitVoucherResponseDTO(
         Integer id,
-        Employee employee,
+        Integer employeeId,
         Double paidValue,
         LocalDate releaseDate,
         String description,
         BenefitVoucherType benefitType,
         PaymentStatus paymentStatus,
         Boolean payrollDeductible,
-        EntityMetadata entityMetadata
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
     ) {
         this.id = id;
-        this.employee = employee;
+        this.employeeId = employeeId;
         this.paidValue = paidValue;
         this.releaseDate = releaseDate;
         this.description = description;
         this.benefitType = benefitType;
         this.paymentStatus = paymentStatus;
         this.payrollDeductible = payrollDeductible;
-        this.entityMetadata = entityMetadata;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public Integer getId() {
@@ -80,12 +55,12 @@ public class BenefitVoucher implements Serializable {
         this.id = id;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public Integer getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
     }
 
     public Double getPaidValue() {
@@ -136,11 +111,35 @@ public class BenefitVoucher implements Serializable {
         this.payrollDeductible = payrollDeductible;
     }
 
-    public EntityMetadata getEntityMetadata() {
-        return entityMetadata;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setEntityMetadata(EntityMetadata entityMetadata) {
-        this.entityMetadata = entityMetadata;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "BenefitVoucherResponseDTO{" +
+            "id=" + id +
+            ", employeeId=" + employeeId +
+            ", paidValue=" + paidValue +
+            ", releaseDate=" + releaseDate +
+            ", description='" + description + '\'' +
+            ", benefitType=" + benefitType +
+            ", paymentStatus=" + paymentStatus +
+            ", payrollDeductible=" + payrollDeductible +
+            ", createdAt=" + createdAt +
+            ", updatedAt=" + updatedAt +
+            '}';
     }
 }
