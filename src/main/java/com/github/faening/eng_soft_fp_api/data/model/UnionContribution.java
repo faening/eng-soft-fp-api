@@ -74,8 +74,8 @@ public class UnionContribution implements Serializable {
         return releaseYear;
     }
 
-    public void setReleaseYear(Integer year) {
-        this.releaseYear = year;
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
     }
 
     public Boolean getOptedOut() {
@@ -86,11 +86,11 @@ public class UnionContribution implements Serializable {
         this.optedOut = optedOut;
     }
 
-    public PaymentStatus getPaid() {
+    public PaymentStatus getPaymentStatus() {
         return paymentStatus;
     }
 
-    public void setPaid(PaymentStatus paymentStatus) {
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
