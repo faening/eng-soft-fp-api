@@ -27,7 +27,6 @@ public class WorkShiftResponseMapper extends AbstractMapper<WorkShift, WorkShift
                 mapper.when(notNull).map(WorkShift::getEndOfWorkday, WorkShiftResponseDTO::setEndOfWorkday);
                 mapper.when(notNull).map(WorkShift::getNightShiftAllowance, WorkShiftResponseDTO::setNightShiftAllowance);
                 mapper.when(notNull).map(WorkShift::getEnabled, WorkShiftResponseDTO::setEnabled);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), WorkShiftResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), WorkShiftResponseDTO::setUpdatedAt);
             });
@@ -45,7 +44,6 @@ public class WorkShiftResponseMapper extends AbstractMapper<WorkShift, WorkShift
                 mapper.when(notNull).map(WorkShiftResponseDTO::getEndOfWorkday, WorkShift::setEndOfWorkday);
                 mapper.when(notNull).map(WorkShiftResponseDTO::getNightShiftAllowance, WorkShift::setNightShiftAllowance);
                 mapper.when(notNull).map(WorkShiftResponseDTO::getEnabled, WorkShift::setEnabled);
-
                 mapper.when(notNull).<LocalDateTime>map(WorkShiftResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(WorkShiftResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

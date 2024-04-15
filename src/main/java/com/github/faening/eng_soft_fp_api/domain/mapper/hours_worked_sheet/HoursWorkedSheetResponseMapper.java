@@ -35,7 +35,6 @@ public class HoursWorkedSheetResponseMapper extends AbstractMapper<HoursWorkedSh
                 mapper.when(notNull).map(HoursWorkedSheet::getOvertime50, HoursWorkedSheetResponseDTO::setOvertime50);
                 mapper.when(notNull).map(HoursWorkedSheet::getOvertime100, HoursWorkedSheetResponseDTO::setOvertime100);
                 mapper.when(notNull).map(HoursWorkedSheet::getTimeBank, HoursWorkedSheetResponseDTO::setTimeBank);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), HoursWorkedSheetResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), HoursWorkedSheetResponseDTO::setUpdatedAt);
             });
@@ -55,7 +54,6 @@ public class HoursWorkedSheetResponseMapper extends AbstractMapper<HoursWorkedSh
                 mapper.when(notNull).map(HoursWorkedSheetResponseDTO::getOvertime50, HoursWorkedSheet::setOvertime50);
                 mapper.when(notNull).map(HoursWorkedSheetResponseDTO::getOvertime100, HoursWorkedSheet::setOvertime100);
                 mapper.when(notNull).map(HoursWorkedSheetResponseDTO::getTimeBank, HoursWorkedSheet::setTimeBank);
-
                 mapper.when(notNull).<LocalDateTime>map(HoursWorkedSheetResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(HoursWorkedSheetResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

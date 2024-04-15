@@ -28,7 +28,6 @@ public class AbsenceSheetResponseMapper extends AbstractMapper<AbsenceSheet, Abs
                 mapper.when(notNull).map(AbsenceSheet::getEndDate, AbsenceSheetResponseDTO::setEndDate);
                 mapper.when(notNull).map(AbsenceSheet::getObservation, AbsenceSheetResponseDTO::setObservation);
                 mapper.when(notNull).map(AbsenceSheet::getStatus, AbsenceSheetResponseDTO::setStatus);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), AbsenceSheetResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), AbsenceSheetResponseDTO::setUpdatedAt);
             });
@@ -45,7 +44,6 @@ public class AbsenceSheetResponseMapper extends AbstractMapper<AbsenceSheet, Abs
                 mapper.when(notNull).map(AbsenceSheetResponseDTO::getEndDate, AbsenceSheet::setEndDate);
                 mapper.when(notNull).map(AbsenceSheetResponseDTO::getObservation, AbsenceSheet::setObservation);
                 mapper.when(notNull).map(AbsenceSheetResponseDTO::getStatus, AbsenceSheet::setStatus);
-
                 mapper.when(notNull).<LocalDateTime>map(AbsenceSheetResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(AbsenceSheetResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

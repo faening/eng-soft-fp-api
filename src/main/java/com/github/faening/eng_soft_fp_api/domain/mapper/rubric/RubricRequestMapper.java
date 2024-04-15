@@ -7,7 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class RubricRequestMapper extends AbstractMapper<Rubric, RubricRequestDTO> {
     @Autowired
@@ -34,7 +34,6 @@ public class RubricRequestMapper extends AbstractMapper<Rubric, RubricRequestDTO
             .addMappings(mapper -> {
                 mapper.skip(Rubric::setId);
                 mapper.skip(Rubric::setEntityMetadata);
-
                 mapper.when(notNull).map(RubricRequestDTO::getCode, Rubric::setCode);
                 mapper.when(notNull).map(RubricRequestDTO::getName, Rubric::setName);
                 mapper.when(notNull).map(RubricRequestDTO::getKind, Rubric::setKind);

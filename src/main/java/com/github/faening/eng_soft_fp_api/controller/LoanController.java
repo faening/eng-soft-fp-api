@@ -39,7 +39,7 @@ public class LoanController extends AbstractController<LoanRequestDTO, LoanRespo
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate companyPaymentDate,
         @RequestParam(required = false) PaymentStatus paymentStatus
     ) {
-        List<LoanResponseDTO> hoursWorkedSheets = service.searchLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, paymentStatus);
+        List<LoanResponseDTO> hoursWorkedSheets = service.getLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, paymentStatus);
         return ResponseEntity.ok(hoursWorkedSheets);
     }
 

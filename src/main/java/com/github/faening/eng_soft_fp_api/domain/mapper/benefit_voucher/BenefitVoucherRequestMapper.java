@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@SuppressWarnings("unused")
 @Service
 public class BenefitVoucherRequestMapper extends AbstractMapper<BenefitVoucher, BenefitVoucherRequestDTO> {
     private final EmployeeService employeeService;

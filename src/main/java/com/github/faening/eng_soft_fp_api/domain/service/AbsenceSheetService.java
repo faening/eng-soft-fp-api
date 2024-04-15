@@ -63,19 +63,25 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
         return searchAbsenceSheetEntityById(id);
     }
 
-    public List<AbsenceSheetResponseDTO> getAbsenceSheetsByEmployeeIdAndTypeAndDateRange(
+    public List<AbsenceSheetResponseDTO> getAbsenceSheetByEmployeeIdAndSpecs(
         Integer employeeId,
         AbsenceType type,
         LocalDateTime startDate,
         LocalDateTime endDate
     ) {
-        Employee employee = employeeService.getEntityById(employeeId);
-        AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDate, endDate);
-        return repository
-            .findAll(spec)
+        return searchAbsenceSheetsByEmployeeIdAndSpecs(employeeId, type, startDate, endDate)
             .stream()
             .map(absenceSheet -> responseMapper.toDTO(absenceSheet, AbsenceSheetResponseDTO.class))
             .toList();
+    }
+
+    public List<AbsenceSheet> getAbsenceSheetEntityByEmployeeIdAndSpecs(
+        Integer employeeId,
+        AbsenceType type,
+        LocalDateTime startDate,
+        LocalDateTime endDate
+    ) {
+       return searchAbsenceSheetsByEmployeeIdAndSpecs(employeeId, type, startDate, endDate);
     }
 
     @Override
@@ -105,6 +111,20 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
         return repository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
         );
+    }
+
+    private List<AbsenceSheet> searchAbsenceSheetsByEmployeeIdAndSpecs(
+        Integer employeeId,
+        AbsenceType type,
+        LocalDateTime startDate,
+        LocalDateTime endDate
+    ) {
+        Employee employee = employeeService.getEntityById(employeeId);
+        AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDate, endDate);
+        return repository
+            .findAll(spec)
+            .stream()
+            .toList();
     }
 
     @Override

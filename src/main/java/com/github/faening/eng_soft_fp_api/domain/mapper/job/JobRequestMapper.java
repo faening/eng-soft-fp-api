@@ -43,7 +43,6 @@ public class JobRequestMapper extends AbstractMapper<Job, JobRequestDTO> {
             .addMappings(mapper -> {
                 mapper.skip(Job::setId);
                 mapper.skip(Job::setEntityMetadata);
-
                 mapper.when(notNull).map(JobRequestDTO::getDescription, Job::setDescription);
                 mapper.when(notNull).map(JobRequestDTO::getExperienceLevel, Job::setExperienceLevel);
                 mapper.when(notNull).map(JobRequestDTO::getBaseSalary, Job::setBaseSalary);

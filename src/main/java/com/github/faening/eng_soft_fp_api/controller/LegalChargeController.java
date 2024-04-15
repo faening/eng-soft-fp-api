@@ -39,7 +39,7 @@ public class LegalChargeController extends AbstractController<LegalChargeRequest
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate releaseDate,
         @RequestParam(required = false) Boolean isRecurring
     ) {
-        List<LegalChargeResponseDTO> legalCharge = service.searchLoanByEmployeeIdAndSpecs(employeeId, legalChargeAmount, percentage, releaseDate, isRecurring);
+        List<LegalChargeResponseDTO> legalCharge = service.getLegalChargeByEmployeeIdAndSpecs(employeeId, legalChargeAmount, percentage, releaseDate, isRecurring);
         return ResponseEntity.ok(legalCharge);
     }
 

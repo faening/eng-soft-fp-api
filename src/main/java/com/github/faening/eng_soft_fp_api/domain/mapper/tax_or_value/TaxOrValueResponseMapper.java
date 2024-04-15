@@ -29,7 +29,6 @@ public class TaxOrValueResponseMapper extends AbstractMapper<TaxOrValue, TaxOrVa
                 mapper.when(notNull).map(TaxOrValue::getFixedValue, TaxOrValueResponseDTO::setFixedValue);
                 mapper.when(notNull).map(TaxOrValue::getTaxPercentage, TaxOrValueResponseDTO::setTaxPercentage);
                 mapper.when(notNull).map(TaxOrValue::getDescription, TaxOrValueResponseDTO::setDescription);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), TaxOrValueResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), TaxOrValueResponseDTO::setUpdatedAt);
             });
@@ -47,7 +46,6 @@ public class TaxOrValueResponseMapper extends AbstractMapper<TaxOrValue, TaxOrVa
                 mapper.when(notNull).map(TaxOrValueResponseDTO::getFixedValue, TaxOrValue::setFixedValue);
                 mapper.when(notNull).map(TaxOrValueResponseDTO::getTaxPercentage, TaxOrValue::setTaxPercentage);
                 mapper.when(notNull).map(TaxOrValueResponseDTO::getDescription, TaxOrValue::setDescription);
-
                 mapper.when(notNull).<LocalDateTime>map(TaxOrValueResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(TaxOrValueResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

@@ -39,7 +39,6 @@ public class SaleRequestMapper extends AbstractMapper<Sale, SaleRequestDTO> {
             .addMappings(mapper -> {
                 mapper.skip(Sale::setId);
                 mapper.skip(Sale::setEntityMetadata);
-
                 mapper.when(notNull).map(SaleRequestDTO::getDate, Sale::setDate);
                 mapper.when(notNull).using(employeeIdToEmployee).map(SaleRequestDTO::getEmployeeId, Sale::setEmployee);
                 mapper.when(notNull).map(SaleRequestDTO::getAmount, Sale::setAmount);
