@@ -23,9 +23,9 @@ public class TripExpenseService extends AbstractService<TripExpenseRequestDTO, T
     private final TripExpenseResponseMapper responseMapper;
     private final EmployeeService employeeService;
 
-    private static final String TE_EMPLOYEE_ID_VALIDATION_MESSAGE = "tripExpenseService.validation.employeeId";
-    private static final String TE_DATE_VALIDATION_MESSAGE = "tripExpenseService.validation.date";
-    private static final String TE_AMOUNT_VALIDATION_MESSAGE = "tripExpenseService.validation.amount";
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "tripExpenseService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_DATE = "tripExpenseService.validation.date";
+    private static final String VALIDATION_MESSAGE_AMOUNT = "tripExpenseService.validation.amount";
 
     @Autowired
     public TripExpenseService(
@@ -95,9 +95,9 @@ public class TripExpenseService extends AbstractService<TripExpenseRequestDTO, T
     @Override
     protected void validate(TripExpenseRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new IllegalArgumentException(TE_EMPLOYEE_ID_VALIDATION_MESSAGE);
-        if (request.getDate() == null) throw new IllegalArgumentException(TE_DATE_VALIDATION_MESSAGE);
-        if (request.getAmount() == null) throw new IllegalArgumentException(TE_AMOUNT_VALIDATION_MESSAGE);
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(VALIDATION_MESSAGE_EMPLOYEE_ID);
+        if (request.getDate() == null) throw new IllegalArgumentException(VALIDATION_MESSAGE_DATE);
+        if (request.getAmount() == null) throw new IllegalArgumentException(VALIDATION_MESSAGE_AMOUNT);
         if (request.getStatus() == null) request.setStatus(ApprovalStatus.PENDING);
     }
 }

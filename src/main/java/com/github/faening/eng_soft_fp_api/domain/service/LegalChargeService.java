@@ -23,11 +23,12 @@ public class LegalChargeService extends AbstractService<LegalChargeRequestDTO, L
     private final LegalChargeRequestMapper requestMapper;
     private final LegalChargeResponseMapper responseMapper;
     private final EmployeeService employeeService;
-    private static final String LEGAL_CHARGE_EMPLOYEE_ID_VALIDATION_MESSAGE = "legalChargeService.validation.employeeId";
-    private static final String LEGAL_CHARGE_AMOUNT_VALIDATION_MESSAGE = "legalChargeService.validation.amount";
-    private static final String LEGAL_CHARGE_PERCENTAGE_VALIDATION_MESSAGE = "legalChargeService.validation.percentage";
-    private static final String LEGAL_CHARGE_RELEASE_DATE_VALIDATION_MESSAGE = "legalChargeService.validation.releaseDate";
-    private static final String LEGAL_CHARGE_RECURRING_VALIDATION_MESSAGE = "legalChargeService.validation.recurring";
+
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "legalChargeService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_AMOUNT = "legalChargeService.validation.amount";
+    private static final String VALIDATION_MESSAGE_PERCENTAGE = "legalChargeService.validation.percentage";
+    private static final String VALIDATION_MESSAGE_RELEASE_DATE = "legalChargeService.validation.releaseDate";
+    private static final String VALIDATION_MESSAGE_RECURRING = "legalChargeService.validation.recurring";
 
     @Autowired
     public LegalChargeService(
@@ -127,10 +128,10 @@ public class LegalChargeService extends AbstractService<LegalChargeRequestDTO, L
     @Override
     protected void validate(LegalChargeRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_EMPLOYEE_ID_VALIDATION_MESSAGE));
-        if (request.getLegalChargeAmount() == null) throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_AMOUNT_VALIDATION_MESSAGE));
-        if (request.getPercentage() == null) throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_PERCENTAGE_VALIDATION_MESSAGE));
-        if (request.getReleaseDate() == null) throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_RELEASE_DATE_VALIDATION_MESSAGE));
-        if (request.getRecurring() == null) throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_RECURRING_VALIDATION_MESSAGE));
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_EMPLOYEE_ID));
+        if (request.getLegalChargeAmount() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_AMOUNT));
+        if (request.getPercentage() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_PERCENTAGE));
+        if (request.getReleaseDate() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_RELEASE_DATE));
+        if (request.getRecurring() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_RECURRING));
     }
 }

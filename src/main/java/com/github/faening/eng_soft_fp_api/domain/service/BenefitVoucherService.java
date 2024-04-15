@@ -24,12 +24,13 @@ public class BenefitVoucherService extends AbstractService<BenefitVoucherRequest
     private final BenefitVoucherRequestMapper requestMapper;
     private final BenefitVoucherResponseMapper responseMapper;
     private final EmployeeService employeeService;
-    private static final String BENEFIT_VOUCHER_EMPLOYEE_ID_VALIDATION_MESSAGE = "benefitVoucherService.validation.employeeId";
-    private static final String BENEFIT_VOUCHER_PAID_VALUE_VALIDATION_MESSAGE = "benefitVoucherService.validation.paidValue";
-    private static final String BENEFIT_VOUCHER_RELEASE_DATE_VALIDATION_MESSAGE = "benefitVoucherService.validation.releaseDate";
-    private static final String BENEFIT_VOUCHER_DESCRIPTION_VALIDATION_MESSAGE = "benefitVoucherService.validation.description";
-    private static final String BENEFIT_VOUCHER_BENEFIT_TYPE_VALIDATION_MESSAGE = "benefitVoucherService.validation.benefitType";
-    private static final String BENEFIT_VOUCHER_PAYMENT_DEDUCTIBLE_VALIDATION_MESSAGE = "benefitVoucherService.validation.paymentDeductible";
+
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "benefitVoucherService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_PAID_VALUE = "benefitVoucherService.validation.paidValue";
+    private static final String VALIDATION_MESSAGE_RELEASE_DATE = "benefitVoucherService.validation.releaseDate";
+    private static final String VALIDATION_MESSAGE_DESCRIPTION = "benefitVoucherService.validation.description";
+    private static final String VALIDATION_MESSAGE_BENEFIT_TYPE = "benefitVoucherService.validation.benefitType";
+    private static final String VALIDATION_MESSAGE_PAYMENT_DEDUCTIBLE = "benefitVoucherService.validation.paymentDeductible";
 
     @Autowired
     public BenefitVoucherService(
@@ -130,17 +131,17 @@ public class BenefitVoucherService extends AbstractService<BenefitVoucherRequest
     protected void validate(BenefitVoucherRequestDTO request) {
         super.validate(request);
         if (request.getEmployeeId() == null)
-            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_EMPLOYEE_ID_VALIDATION_MESSAGE));
+            throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_EMPLOYEE_ID));
         if (request.getPaidValue() == null)
-            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_PAID_VALUE_VALIDATION_MESSAGE));
+            throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_PAID_VALUE));
         if (request.getReleaseDate() == null)
-            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_RELEASE_DATE_VALIDATION_MESSAGE));
+            throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_RELEASE_DATE));
         if (request.getDescription() == null)
-            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_DESCRIPTION_VALIDATION_MESSAGE));
+            throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_DESCRIPTION));
         if (request.getBenefitType() == null)
-            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_BENEFIT_TYPE_VALIDATION_MESSAGE));
+            throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_BENEFIT_TYPE));
         if (request.getPaymentStatus() == null) request.setPaymentStatus(PaymentStatus.PENDING);
         if (request.getPayrollDeductible() == null)
-            throw new ResourceNotFoundException(getLocalizedMessage(BENEFIT_VOUCHER_PAYMENT_DEDUCTIBLE_VALIDATION_MESSAGE));
+            throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_PAYMENT_DEDUCTIBLE));
     }
 }

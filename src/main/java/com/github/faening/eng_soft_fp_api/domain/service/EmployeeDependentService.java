@@ -19,12 +19,12 @@ public class EmployeeDependentService extends AbstractService<EmployeeDependentR
     private final EmployeeDependentRequestMapper requestMapper;
     private final EmployeeDependentResponseMapper responseMapper;
 
-    private static final String EMPLOYEE_DEPENDENT_EMPLOYEE_ID_VALIDATION_MESSAGE = "employeeDependentService.validation.employeeId";
-    private static final String EMPLOYEE_DEPENDENT_NAME_VALIDATION_MESSAGE = "employeeDependentService.validation.name";
-    private static final String EMPLOYEE_DEPENDENT_RG_VALIDATION_MESSAGE = "employeeDependentService.validation.rg";
-    private static final String EMPLOYEE_DEPENDENT_CPF_VALIDATION_MESSAGE = "employeeDependentService.validation.cpf";
-    private static final String EMPLOYEE_DEPENDENT_BIRTH_DATE_VALIDATION_MESSAGE = "employeeDependentService.validation.birthDate";
-    private static final String EMPLOYEE_DEPENDENT_GENDER_VALIDATION_MESSAGE = "employeeDependentService.validation.gender";
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "employeeDependentService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_NAME = "employeeDependentService.validation.name";
+    private static final String VALIDATION_MESSAGE_RG = "employeeDependentService.validation.rg";
+    private static final String VALIDATION_MESSAGE_CPF = "employeeDependentService.validation.cpf";
+    private static final String VALIDATION_MESSAGE_BIRTH_DATE = "employeeDependentService.validation.birthDate";
+    private static final String VALIDATION_MESSAGE_GENDER = "employeeDependentService.validation.gender";
 
     @Autowired
     public EmployeeDependentService(
@@ -89,12 +89,12 @@ public class EmployeeDependentService extends AbstractService<EmployeeDependentR
     @Override
     protected void validate(EmployeeDependentRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_EMPLOYEE_ID_VALIDATION_MESSAGE));
-        if (request.getName() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_NAME_VALIDATION_MESSAGE));
-        if (request.getRg() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_RG_VALIDATION_MESSAGE));
-        if (request.getCpf() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_CPF_VALIDATION_MESSAGE));
-        if (request.getBirthDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_BIRTH_DATE_VALIDATION_MESSAGE));
-        if (request.getGender() == null) throw new ResourceNotFoundException(getLocalizedMessage(EMPLOYEE_DEPENDENT_GENDER_VALIDATION_MESSAGE));
+        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_EMPLOYEE_ID));
+        if (request.getName() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_NAME));
+        if (request.getRg() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_RG));
+        if (request.getCpf() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_CPF));
+        if (request.getBirthDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_BIRTH_DATE));
+        if (request.getGender() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_GENDER));
         if (request.getSpecialNeeds() == null) request.setSpecialNeeds(false);
         if (request.getFamilyAllowance() == null) request.setSpecialNeeds(false);
         if (request.getDaycareAllowance() == null) request.setSpecialNeeds(false);

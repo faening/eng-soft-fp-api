@@ -23,9 +23,9 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
     private final SaleResponseMapper responseMapper;
     private final EmployeeService employeeService;
 
-    private static final String SALE_EMPLOYEE_ID_VALIDATION_MESSAGE = "saleService.validation.employeeId";
-    private static final String SALE_DATE_VALIDATION_MESSAGE = "saleService.validation.date";
-    private static final String SALE_AMOUNT_VALIDATION_MESSAGE = "saleService.validation.amount";
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "saleService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_DATE = "saleService.validation.date";
+    private static final String VALIDATION_MESSAGE_AMOUNT = "saleService.validation.amount";
 
     @Autowired
     public SaleService(
@@ -100,8 +100,8 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
     @Override
     protected void validate(SaleRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(SALE_EMPLOYEE_ID_VALIDATION_MESSAGE));
-        if (request.getDate() == null) throw new IllegalArgumentException(getLocalizedMessage(SALE_DATE_VALIDATION_MESSAGE));
-        if (request.getAmount() == null) throw new IllegalArgumentException(getLocalizedMessage(SALE_AMOUNT_VALIDATION_MESSAGE));
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_EMPLOYEE_ID));
+        if (request.getDate() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DATE));
+        if (request.getAmount() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_AMOUNT));
     }
 }

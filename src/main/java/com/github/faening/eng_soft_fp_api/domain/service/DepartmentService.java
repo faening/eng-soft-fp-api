@@ -19,8 +19,8 @@ public class DepartmentService extends AbstractService<DepartmentRequestDTO, Dep
     private final DepartmentRequestMapper requestMapper;
     private final DepartmentResponseMapper responseMapper;
 
-    private static final String DEPARTMENT_DESCRIPTION_VALIDATION_MESSAGE = "departmentService.validation.description";
-    private static final String DEPARTMENT_MANAGER_ID_VALIDATION_MESSAGE = "departmentService.validation.managerId";
+    private static final String VALIDATION_MESSAGE_DESCRIPTION = "departmentService.validation.description";
+    private static final String VALIDATION_MESSAGE_MANAGER_ID = "departmentService.validation.managerId";
 
     @Autowired
     public DepartmentService(
@@ -86,8 +86,8 @@ public class DepartmentService extends AbstractService<DepartmentRequestDTO, Dep
     @Override
     protected void validate(DepartmentRequestDTO request) {
         super.validate(request);
-        if (request.getDescription() == null || request.getDescription().isEmpty())  throw new IllegalArgumentException(getLocalizedMessage(DEPARTMENT_DESCRIPTION_VALIDATION_MESSAGE));
-        if (request.getManagerId() == null) throw new IllegalArgumentException(getLocalizedMessage(DEPARTMENT_MANAGER_ID_VALIDATION_MESSAGE));
+        if (request.getDescription() == null || request.getDescription().isEmpty())  throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DESCRIPTION));
+        if (request.getManagerId() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_MANAGER_ID));
         if (request.getEnabled() == null) request.setEnabled(true);
     }
 }

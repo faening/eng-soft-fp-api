@@ -22,10 +22,11 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
     private final LoanRequestMapper requestMapper;
     private final LoanResponseMapper responseMapper;
     private final EmployeeService employeeService;
-    private static final String LOAN_EMPLOYEE_ID_VALIDATION_MESSAGE = "loanService.validation.employeeId";
-    private static final String LOAN_AMOUNT_VALUE_VALIDATION_MESSAGE = "loanService.validation.loanAmountValue";
-    private static final String LOAN_INSTALLMENT_QUANTITY_VALIDATION_MESSAGE = "loanService.validation.installmentQuantity";
-    private static final String LOAN_REQUEST_DATE_VALIDATION_MESSAGE = "loanService.validation.requestDate";
+
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "loanService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_AMOUNT_VALUE = "loanService.validation.loanAmountValue";
+    private static final String VALIDATION_MESSAGE_INSTALLMENT_QUANTITY = "loanService.validation.installmentQuantity";
+    private static final String VALIDATION_MESSAGE_REQUEST_DATE = "loanService.validation.requestDate";
 
     @Autowired
     public LoanService(
@@ -126,10 +127,10 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
     @Override
     protected void validate(LoanRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_EMPLOYEE_ID_VALIDATION_MESSAGE));
-        if (request.getLoanAmountValue() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_AMOUNT_VALUE_VALIDATION_MESSAGE));
-        if (request.getInstallmentQuantity() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_INSTALLMENT_QUANTITY_VALIDATION_MESSAGE));
-        if (request.getRequestDate() == null) throw new IllegalArgumentException(getLocalizedMessage(LOAN_REQUEST_DATE_VALIDATION_MESSAGE));
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_EMPLOYEE_ID));
+        if (request.getLoanAmountValue() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_AMOUNT_VALUE));
+        if (request.getInstallmentQuantity() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_INSTALLMENT_QUANTITY));
+        if (request.getRequestDate() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_REQUEST_DATE));
         if (request.getPaymentStatus() == null) request.setPaymentStatus(PaymentStatus.PENDING);
     }
 }

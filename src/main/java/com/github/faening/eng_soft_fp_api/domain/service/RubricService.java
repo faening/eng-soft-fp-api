@@ -19,11 +19,11 @@ public class RubricService extends AbstractService<RubricRequestDTO, RubricRespo
     private final RubricRequestMapper requestMapper;
     private final RubricResponseMapper responseMapper;
 
-    private static final String RUBRIC_CODE_VALIDATION_MESSAGE = "rubricService.validation.code";
-    private static final String RUBRIC_NAME_VALIDATION_MESSAGE = "rubricService.validation.name";
-    private static final String RUBRIC_KIND_VALIDATION_MESSAGE = "rubricService.validation.kind";
-    private static final String RUBRIC_DESCRIPTION_VALIDATION_MESSAGE = "rubricService.validation.description";
-    private static final String RUBRIC_TYPE_VALIDATION_MESSAGE = "rubricService.validation.type";
+    private static final String VALIDATION_MESSAGE_CODE = "rubricService.validation.code";
+    private static final String VALIDATION_MESSAGE_NAME = "rubricService.validation.name";
+    private static final String VALIDATION_MESSAGE_KIND = "rubricService.validation.kind";
+    private static final String VALIDATION_MESSAGE_DESCRIPTION = "rubricService.validation.description";
+    private static final String VALIDATION_MESSAGE_TYPE = "rubricService.validation.type";
 
     @Autowired
     public RubricService(
@@ -103,10 +103,10 @@ public class RubricService extends AbstractService<RubricRequestDTO, RubricRespo
     @Override
     public void validate(RubricRequestDTO request) {
         super.validate(request);
-        if (request.getCode() == null) throw new IllegalArgumentException(getLocalizedMessage(RUBRIC_CODE_VALIDATION_MESSAGE));
-        if (request.getName() == null) throw new IllegalArgumentException(getLocalizedMessage(RUBRIC_NAME_VALIDATION_MESSAGE));
-        if (request.getKind() == null) throw new IllegalArgumentException(getLocalizedMessage(RUBRIC_KIND_VALIDATION_MESSAGE));
-        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(RUBRIC_DESCRIPTION_VALIDATION_MESSAGE));
-        if (request.getType() == null) throw new IllegalArgumentException(getLocalizedMessage(RUBRIC_TYPE_VALIDATION_MESSAGE));
+        if (request.getCode() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_CODE));
+        if (request.getName() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_NAME));
+        if (request.getKind() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_KIND));
+        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DESCRIPTION));
+        if (request.getType() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_TYPE));
     }
 }

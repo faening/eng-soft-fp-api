@@ -20,8 +20,8 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
     private final TaxOrValueRequestMapper requestMapper;
     private final TaxOrValueResponseMapper responseMapper;
 
-    private static final String TOV_TYPE_VALIDATION_MESSAGE = "taxOrValueService.validation.type";
-    private static final String TOV_DESCRIPTION_VALIDATION_MESSAGE = "taxOrValueService.validation.description";
+    private static final String VALIDATION_MESSAGE_TYPE = "taxOrValueService.validation.type";
+    private static final String VALIDATION_MESSAGE_DESCRIPTION = "taxOrValueService.validation.description";
 
     @Autowired
     public TaxOrValueService(
@@ -96,7 +96,7 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
     @Override
     protected void validate(TaxOrValueRequestDTO request) {
         super.validate(request);
-        if (request.getType() == null) throw new IllegalArgumentException(getLocalizedMessage(TOV_TYPE_VALIDATION_MESSAGE));
-        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(TOV_DESCRIPTION_VALIDATION_MESSAGE));
+        if (request.getType() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_TYPE));
+        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DESCRIPTION));
     }
 }
