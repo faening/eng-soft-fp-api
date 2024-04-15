@@ -37,32 +37,33 @@ public class CalculateDangerousnessAllowance implements PayrollCalculation {
 
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        JobResponseDTO job = getJobByEmployeeJobId(parameters.getEmployee().getJobId());
+        if (parameters != null) {
+            JobResponseDTO job = getJobByEmployeeJobId(parameters.getEmployee().getJobId());
 
-        if (job != null && job.getDangerousness()) {
-            RubricResponseDTO rubric = getRubricByCode();
-            TaxOrValueResponseDTO taxOrValue = getTaxOrValueByType();
-            BigDecimal calculatedValue = calculateDangerousnessAllowance(parameters.getEmployee(), taxOrValue);
-            return new PayrollItemRequestDTO(rubric, taxOrValue, parameters.getEmployee().getSalary(), calculatedValue);
+            if (job != null && job.getDangerousness()) {
+                RubricResponseDTO rubric = getRubricByCode();
+                TaxOrValueResponseDTO taxOrValue = getTaxOrValueByType();
+                BigDecimal calculatedValue = calculateDangerousnessAllowance(parameters.getEmployee(), taxOrValue);
+                return new PayrollItemRequestDTO(rubric, taxOrValue, parameters.getEmployee().getSalary(), calculatedValue);
+            }
         }
-
         return null;
     }
 
-    private JobResponseDTO getJobByEmployeeJobId(Integer jobId) {
+    protected JobResponseDTO getJobByEmployeeJobId(Integer jobId) {
         return jobService.getById(jobId);
     }
 
-    private RubricResponseDTO getRubricByCode() {
+    protected RubricResponseDTO getRubricByCode() {
         return rubricService.getByCode(RUBRIC_CODE);
     }
 
-    private TaxOrValueResponseDTO getTaxOrValueByType() {
+    protected TaxOrValueResponseDTO getTaxOrValueByType() {
         return taxOrValueService.getByType(TaxOrValueType.DANGEROUSNESS_ALLOWANCE).get(0);
     }
 
     @SuppressWarnings("BigDecimalMethodWithoutRoundingCalled")
-    private BigDecimal calculateDangerousnessAllowance(EmployeeSummaryDTO employee, TaxOrValueResponseDTO taxOrValue) {
+    protected BigDecimal calculateDangerousnessAllowance(EmployeeSummaryDTO employee, TaxOrValueResponseDTO taxOrValue) {
         BigDecimal salary = employee.getSalary();
         BigDecimal taxPercentage = taxOrValue.getTaxPercentage().divide(BigDecimal.valueOf(100));
         return salary.multiply(taxPercentage);
