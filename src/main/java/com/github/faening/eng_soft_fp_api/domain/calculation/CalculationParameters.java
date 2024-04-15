@@ -9,6 +9,9 @@ public class CalculationParameters {
     private Month month;
     private Integer year;
 
+    public CalculationParameters() {
+    }
+
     public CalculationParameters(EmployeeSummaryDTO employee, Month month, Integer year) {
         this.employee = employee;
         this.month = month;
