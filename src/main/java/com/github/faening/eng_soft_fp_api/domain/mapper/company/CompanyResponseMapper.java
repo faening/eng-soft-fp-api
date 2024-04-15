@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
@@ -31,7 +30,6 @@ public class CompanyResponseMapper extends AbstractMapper<Company, CompanyRespon
                 mapper.when(notNull).map(Company::getOpeningDate, CompanyResponseDTO::setOpeningDate);
                 mapper.when(notNull).map(Company::getPhone, CompanyResponseDTO::setPhone);
                 mapper.when(notNull).map(Company::getEmail, CompanyResponseDTO::setEmail);
-
                 mapper.when(notNull).map(src -> src.getAddress().getAddressStreet(), CompanyResponseDTO::setAddressStreet);
                 mapper.when(notNull).map(src -> src.getAddress().getAddressNumber(), CompanyResponseDTO::setAddressNumber);
                 mapper.when(notNull).map(src -> src.getAddress().getAddressNeighborhood(), CompanyResponseDTO::setAddressNeighborhood);
@@ -39,7 +37,6 @@ public class CompanyResponseMapper extends AbstractMapper<Company, CompanyRespon
                 mapper.when(notNull).map(src -> src.getAddress().getAddressCity(), CompanyResponseDTO::setAddressCity);
                 mapper.when(notNull).map(src -> src.getAddress().getAddressUF(), CompanyResponseDTO::setAddressUF);
                 mapper.when(notNull).map(src -> src.getAddress().getAddressZipCode(), CompanyResponseDTO::setAddressZipCode);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), CompanyResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), CompanyResponseDTO::setUpdatedAt);
             });
@@ -57,7 +54,6 @@ public class CompanyResponseMapper extends AbstractMapper<Company, CompanyRespon
                 mapper.when(notNull).map(CompanyResponseDTO::getOpeningDate, Company::setOpeningDate);
                 mapper.when(notNull).map(CompanyResponseDTO::getPhone, Company::setPhone);
                 mapper.when(notNull).map(CompanyResponseDTO::getEmail, Company::setEmail);
-
                 mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressStreet, (dest, v) -> dest.getAddress().setAddressStreet(v));
                 mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressNumber, (dest, v) -> dest.getAddress().setAddressNumber(v));
                 mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressNeighborhood, (dest, v) -> dest.getAddress().setAddressNeighborhood(v));
@@ -65,7 +61,6 @@ public class CompanyResponseMapper extends AbstractMapper<Company, CompanyRespon
                 mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressCity, (dest, v) -> dest.getAddress().setAddressCity(v));
                 mapper.when(notNull).<BrazilianState>map(CompanyResponseDTO::getAddressUF, (dest, v) -> dest.getAddress().setAddressUF(v));
                 mapper.when(notNull).<String>map(CompanyResponseDTO::getAddressZipCode, (dest, v) -> dest.getAddress().setAddressZipCode(v));
-
                 mapper.when(notNull).<LocalDateTime>map(CompanyResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(CompanyResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

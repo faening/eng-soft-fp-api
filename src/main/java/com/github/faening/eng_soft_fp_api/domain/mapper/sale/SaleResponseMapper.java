@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class SaleResponseMapper extends AbstractMapper<Sale, SaleResponseDTO> {
     private final EmployeeService employeeService;
@@ -31,7 +31,6 @@ public class SaleResponseMapper extends AbstractMapper<Sale, SaleResponseDTO> {
                 mapper.when(notNull).map(src -> src.getEmployee().getId(), SaleResponseDTO::setEmployeeId);
                 mapper.when(notNull).map(Sale::getDate, SaleResponseDTO::setDate);
                 mapper.when(notNull).map(Sale::getAmount, SaleResponseDTO::setAmount);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), SaleResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), SaleResponseDTO::setUpdatedAt);
             });
@@ -47,7 +46,6 @@ public class SaleResponseMapper extends AbstractMapper<Sale, SaleResponseDTO> {
                 mapper.when(notNull).using(employeeIdToEmployee).map(SaleResponseDTO::getEmployeeId, Sale::setEmployee);
                 mapper.when(notNull).map(SaleResponseDTO::getDate, Sale::setDate);
                 mapper.when(notNull).map(SaleResponseDTO::getAmount, Sale::setAmount);
-
                 mapper.when(notNull).<LocalDateTime>map(SaleResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(SaleResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

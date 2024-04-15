@@ -35,7 +35,6 @@ public class TaxOrValueRequestMapper extends AbstractMapper<TaxOrValue, TaxOrVal
             .addMappings(mapper -> {
                 mapper.skip(TaxOrValue::setId);
                 mapper.skip(TaxOrValue::setEntityMetadata);
-
                 mapper.when(notNull).map(TaxOrValueRequestDTO::getType, TaxOrValue::setType);
                 mapper.when(notNull).map(TaxOrValueRequestDTO::getRange, TaxOrValue::setRange);
                 mapper.when(notNull).map(TaxOrValueRequestDTO::getRangeMinimumWage, TaxOrValue::setRangeMinimumWage);

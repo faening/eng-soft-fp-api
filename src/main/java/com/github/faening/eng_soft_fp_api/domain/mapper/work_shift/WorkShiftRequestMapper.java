@@ -33,7 +33,6 @@ public class WorkShiftRequestMapper extends AbstractMapper<WorkShift, WorkShiftR
             .addMappings(mapper -> {
                 mapper.skip(WorkShift::setId);
                 mapper.skip(WorkShift::setEntityMetadata);
-
                 mapper.when(notNull).map(WorkShiftRequestDTO::getDescription, WorkShift::setDescription);
                 mapper.when(notNull).map(WorkShiftRequestDTO::getStartOfWorkday, WorkShift::setStartOfWorkday);
                 mapper.when(notNull).map(WorkShiftRequestDTO::getStartOfBreak, WorkShift::setStartOfBreak);

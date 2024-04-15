@@ -39,7 +39,6 @@ public class DepartmentRequestMapper extends AbstractMapper<Department, Departme
             .addMappings(mapper -> {
                 mapper.skip(Department::setId);
                 mapper.skip(Department::setEntityMetadata);
-
                 mapper.when(notNull).map(DepartmentRequestDTO::getDescription, Department::setDescription);
                 mapper.map(DepartmentRequestDTO::getEnabled, Department::setEnabled);
                 mapper.using(managerIdToEmployeeConverter).map(DepartmentRequestDTO::getManagerId, Department::setManager);

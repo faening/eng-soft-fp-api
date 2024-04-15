@@ -43,7 +43,6 @@ public class AbsenceSheetRequestMapper extends AbstractMapper<AbsenceSheet, Abse
                 mapper.skip(AbsenceSheet::setId);
                 mapper.skip(AbsenceSheet::setEmployee);
                 mapper.skip(AbsenceSheet::setEntityMetadata);
-
                 mapper.when(notNull).using(employeeIdToEmployee).map(AbsenceSheetRequestDTO::getEmployeeId, AbsenceSheet::setEmployee);
                 mapper.when(notNull).map(AbsenceSheetRequestDTO::getType, AbsenceSheet::setType);
                 mapper.when(notNull).map(AbsenceSheetRequestDTO::getStartDate, AbsenceSheet::setStartDate);

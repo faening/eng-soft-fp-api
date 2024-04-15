@@ -8,8 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class CompanyRequestMapper extends AbstractMapper<Company, CompanyRequestDTO> {
@@ -26,7 +24,6 @@ public class CompanyRequestMapper extends AbstractMapper<Company, CompanyRequest
                 mapper.when(notNull).map(Company::getTradeName, CompanyRequestDTO::setTradeName);
                 mapper.when(notNull).map(Company::getPhone, CompanyRequestDTO::setPhone);
                 mapper.when(notNull).map(Company::getEmail, CompanyRequestDTO::setEmail);
-
                 mapper.when(notNull).map(src -> src.getAddress().getAddressStreet(), CompanyRequestDTO::setAddressStreet);
                 mapper.when(notNull).map(src -> src.getAddress().getAddressNumber(), CompanyRequestDTO::setAddressNumber);
                 mapper.when(notNull).map(src -> src.getAddress().getAddressNeighborhood(), CompanyRequestDTO::setAddressNeighborhood);
@@ -46,12 +43,10 @@ public class CompanyRequestMapper extends AbstractMapper<Company, CompanyRequest
                 mapper.skip(Company::setIe);
                 mapper.skip(Company::setOpeningDate);
                 mapper.skip(Company::setEntityMetadata);
-
                 mapper.when(notNull).map(CompanyRequestDTO::getCorporateName, Company::setCorporateName);
                 mapper.when(notNull).map(CompanyRequestDTO::getTradeName, Company::setTradeName);
                 mapper.when(notNull).map(CompanyRequestDTO::getPhone, Company::setPhone);
                 mapper.when(notNull).map(CompanyRequestDTO::getEmail, Company::setEmail);
-
                 mapper.when(notNull).<String>map(CompanyRequestDTO::getAddressStreet, (dest, v) -> dest.getAddress().setAddressStreet(v));
                 mapper.when(notNull).<String>map(CompanyRequestDTO::getAddressNumber, (dest, v) -> dest.getAddress().setAddressNumber(v));
                 mapper.when(notNull).<String>map(CompanyRequestDTO::getAddressComplement, (dest, v) -> dest.getAddress().setAddressComplement(v));

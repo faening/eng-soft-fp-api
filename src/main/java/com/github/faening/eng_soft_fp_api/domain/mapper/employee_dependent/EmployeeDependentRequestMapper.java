@@ -29,13 +29,11 @@ public class EmployeeDependentRequestMapper extends AbstractMapper<EmployeeDepen
         modelMapper.createTypeMap(EmployeeDependent.class, EmployeeDependentRequestDTO.class)
             .addMappings(mapper -> {
                 mapper.when(notNull).map(EmployeeDependent::getEmployee, EmployeeDependentRequestDTO::setEmployeeId);
-
                 mapper.when(notNull).map(src -> src.getPerson().getName(), EmployeeDependentRequestDTO::setName);
                 mapper.when(notNull).map(src -> src.getPerson().getRg(), EmployeeDependentRequestDTO::setRg);
                 mapper.when(notNull).map(src -> src.getPerson().getCpf(), EmployeeDependentRequestDTO::setCpf);
                 mapper.when(notNull).map(src -> src.getPerson().getBirthDate(), EmployeeDependentRequestDTO::setBirthDate);
                 mapper.when(notNull).map(src -> src.getPerson().getGender(), EmployeeDependentRequestDTO::setGender);
-
                 mapper.when(notNull).map(EmployeeDependent::getSpecialNeeds, EmployeeDependentRequestDTO::setSpecialNeeds);
                 mapper.when(notNull).map(EmployeeDependent::getFamilyAllowance, EmployeeDependentRequestDTO::setFamilyAllowance);
                 mapper.when(notNull).map(EmployeeDependent::getDaycareAllowance, EmployeeDependentRequestDTO::setDaycareAllowance);
@@ -50,15 +48,12 @@ public class EmployeeDependentRequestMapper extends AbstractMapper<EmployeeDepen
             .addMappings(mapper -> {
                 mapper.skip(EmployeeDependent::setId);
                 mapper.skip(EmployeeDependent::setEntityMetadata);
-
                 mapper.when(notNull).using(employeeIdToEmployeeConverter).map(EmployeeDependentRequestDTO::getEmployeeId, EmployeeDependent::setEmployee);
-
                 mapper.when(notNull).<String>map(EmployeeDependentRequestDTO::getName, (dest, v) -> dest.getPerson().setName(v));
                 mapper.when(notNull).<String>map(EmployeeDependentRequestDTO::getRg, (dest, v) -> dest.getPerson().setRg(v));
                 mapper.when(notNull).<String>map(EmployeeDependentRequestDTO::getCpf, (dest, v) -> dest.getPerson().setCpf(v));
                 mapper.when(notNull).<LocalDate>map(EmployeeDependentRequestDTO::getBirthDate, (dest, v) -> dest.getPerson().setBirthDate(v));
                 mapper.when(notNull).<Gender>map(EmployeeDependentRequestDTO::getGender, (dest, v) -> dest.getPerson().setGender(v));
-
                 mapper.when(notNull).map(EmployeeDependentRequestDTO::getSpecialNeeds, EmployeeDependent::setSpecialNeeds);
                 mapper.when(notNull).map(EmployeeDependentRequestDTO::getFamilyAllowance, EmployeeDependent::setFamilyAllowance);
                 mapper.when(notNull).map(EmployeeDependentRequestDTO::getDaycareAllowance, EmployeeDependent::setDaycareAllowance);

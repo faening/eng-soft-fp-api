@@ -35,7 +35,6 @@ public class JobResponseMapper extends AbstractMapper<Job, JobResponseDTO> {
                 mapper.when(notNull).map(Job::getUnhealthiness, JobResponseDTO::setUnhealthiness);
                 mapper.when(notNull).map(src -> src.getDepartment().getId(), JobResponseDTO::setDepartmentId);
                 mapper.when(notNull).map(Job::getEnabled, JobResponseDTO::setEnabled);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), JobResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), JobResponseDTO::setUpdatedAt);
             });
@@ -55,7 +54,6 @@ public class JobResponseMapper extends AbstractMapper<Job, JobResponseDTO> {
                 mapper.when(notNull).map(JobResponseDTO::getUnhealthiness, Job::setUnhealthiness);
                 mapper.when(notNull).using(departmentIdToDepartmentConverter).map(JobResponseDTO::getDepartmentId, Job::setDepartment);
                 mapper.when(notNull).map(JobResponseDTO::getEnabled, Job::setEnabled);
-
                 mapper.when(notNull).<LocalDateTime>map(JobResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(JobResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

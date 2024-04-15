@@ -25,7 +25,6 @@ public class DepartmentResponseMapper extends AbstractMapper<Department, Departm
                 mapper.when(notNull).map(Department::getDescription, DepartmentResponseDTO::setDescription);
                 mapper.when(notNull).map(Department::getEnabled, DepartmentResponseDTO::setEnabled);
                 mapper.when(notNull).map(Department::getManager, DepartmentResponseDTO::setManager);
-
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), DepartmentResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), DepartmentResponseDTO::setUpdatedAt);
             });
@@ -39,7 +38,6 @@ public class DepartmentResponseMapper extends AbstractMapper<Department, Departm
                 mapper.when(notNull).map(DepartmentResponseDTO::getDescription, Department::setDescription);
                 mapper.when(notNull).map(DepartmentResponseDTO::getEnabled, Department::setEnabled);
                 mapper.when(notNull).map(DepartmentResponseDTO::getManager, Department::setManager);
-
                 mapper.when(notNull).<LocalDateTime>map(DepartmentResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(DepartmentResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });
