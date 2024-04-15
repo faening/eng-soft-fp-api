@@ -27,7 +27,7 @@ public class PayrollService extends AbstractService<PayrollRequestDTO, PayrollRe
     private final EmployeeService employeeService;
     private final List<PayrollCalculation> payrollCalculations;
 
-    private final static String PAYROLL_DELETE_VALIDATION_MESSAGE = "payrollService.validation.delete";
+    private final static String VALIDATION_MESSAGE_DELETE = "payrollService.validation.delete";
 
     @Autowired
     public PayrollService(
@@ -78,7 +78,7 @@ public class PayrollService extends AbstractService<PayrollRequestDTO, PayrollRe
         if (payroll.getStatus() == PaymentStatus.PENDING) {
             repository.delete(payroll);
         } else {
-            throw new RuntimeException(PAYROLL_DELETE_VALIDATION_MESSAGE);
+            throw new RuntimeException(VALIDATION_MESSAGE_DELETE);
         }
     }
 

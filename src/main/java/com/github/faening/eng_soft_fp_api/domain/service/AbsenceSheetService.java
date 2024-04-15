@@ -25,10 +25,10 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
     private final AbsenceSheetResponseMapper responseMapper;
     private final EmployeeService employeeService;
 
-    private static final String ABSENCE_SHEET_EMPLOYEE_ID_VALIDATION_MESSAGE = "absenceSheetService.validation.employeeId";
-    private static final String ABSENCE_SHEET_TYPE_VALIDATION_MESSAGE = "absenceSheetService.validation.type";
-    private static final String ABSENCE_SHEET_START_DATE_VALIDATION_MESSAGE = "absenceSheetService.validation.startDate";
-    private static final String ABSENCE_SHEET_END_DATE_VALIDATION_MESSAGE = "absenceSheetService.validation.endDate";
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "absenceSheetService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_TYPE = "absenceSheetService.validation.type";
+    private static final String VALIDATION_MESSAGE_START_DATE = "absenceSheetService.validation.startDate";
+    private static final String VALIDATION_MESSAGE_END_DATE = "absenceSheetService.validation.endDate";
 
     @Autowired
     public AbsenceSheetService(
@@ -108,9 +108,7 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
     }
 
     private AbsenceSheet searchAbsenceSheetEntityById(Integer id) {
-        return repository.findById(id).orElseThrow(
-            () -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE)
-        );
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE));
     }
 
     private List<AbsenceSheet> searchAbsenceSheetsByEmployeeIdAndSpecs(
@@ -130,10 +128,10 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
     @Override
     protected void validate(AbsenceSheetRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_EMPLOYEE_ID_VALIDATION_MESSAGE));
-        if (request.getType() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_TYPE_VALIDATION_MESSAGE));
-        if (request.getStartDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_START_DATE_VALIDATION_MESSAGE));
-        if (request.getEndDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(ABSENCE_SHEET_END_DATE_VALIDATION_MESSAGE));
+        if (request.getEmployeeId() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_EMPLOYEE_ID));
+        if (request.getType() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_TYPE));
+        if (request.getStartDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_START_DATE));
+        if (request.getEndDate() == null) throw new ResourceNotFoundException(getLocalizedMessage(VALIDATION_MESSAGE_END_DATE));
         if (request.getStatus() == null) request.setStatus(ApprovalStatus.PENDING);
     }
 }

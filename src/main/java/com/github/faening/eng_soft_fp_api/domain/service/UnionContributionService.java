@@ -22,9 +22,9 @@ public class UnionContributionService extends AbstractService<UnionContributionR
     private final UnionContributionResponseMapper responseMapper;
     private final EmployeeService employeeService;
 
-    private static final String UC_EMPLOYEE_ID_VALIDATION_MESSAGE = "unionContributionService.validation.employeeId";
-    private static final String UC_RELEASE_YEAR_VALIDATION_MESSAGE = "unionContributionService.validation.releaseYear";
-    private static final String UC_OPTED_OUT_VALIDATION_MESSAGE = "unionContributionService.validation.optedOut";
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "unionContributionService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_RELEASE_YEAR = "unionContributionService.validation.releaseYear";
+    private static final String VALIDATION_MESSAGE_OPTED_OUT = "unionContributionService.validation.optedOut";
 
     @Autowired
     public UnionContributionService(
@@ -93,9 +93,9 @@ public class UnionContributionService extends AbstractService<UnionContributionR
     @Override
     protected void validate(UnionContributionRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new IllegalArgumentException(UC_EMPLOYEE_ID_VALIDATION_MESSAGE);
-        if (request.getReleaseYear() == null) throw new IllegalArgumentException(UC_RELEASE_YEAR_VALIDATION_MESSAGE);
-        if (request.getOptedOut() == null) throw new IllegalArgumentException(UC_OPTED_OUT_VALIDATION_MESSAGE);
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(VALIDATION_MESSAGE_EMPLOYEE_ID);
+        if (request.getReleaseYear() == null) throw new IllegalArgumentException(VALIDATION_MESSAGE_RELEASE_YEAR);
+        if (request.getOptedOut() == null) throw new IllegalArgumentException(VALIDATION_MESSAGE_OPTED_OUT);
         if (request.getPaymentStatus() == null) request.setPaymentStatus(PaymentStatus.PENDING);
     }
 }

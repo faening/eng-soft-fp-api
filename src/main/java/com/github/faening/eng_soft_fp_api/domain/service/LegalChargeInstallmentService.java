@@ -21,9 +21,9 @@ public class LegalChargeInstallmentService extends AbstractService<LegalChargeIn
     private final LegalChargeInstallmentResponseMapper responseMapper;
     private final LegalChargeService legalChargeService;
 
-    private static final String LEGAL_CHARGE_INSTALLMENT_NUMBER_VALIDATION_MESSAGE = "legalChargeInstallmentService.validation.installmentNumber";
-    private static final String LEGAL_CHARGE_INSTALLMENT_VALUE_VALIDATION_MESSAGE = "legalChargeInstallmentService.validation.installmentValue";
-    private static final String LEGAL_CHARGE_INSTALLMENT_MONTH_VALIDATION_MESSAGE = "legalChargeInstallmentService.validation.discountMonth";
+    private static final String VALIDATION_MESSAGE_INSTALLMENT_NUMBER = "legalChargeInstallmentService.validation.installmentNumber";
+    private static final String VALIDATION_MESSAGE_INSTALLMENT_VALUE = "legalChargeInstallmentService.validation.installmentValue";
+    private static final String VALIDATION_MESSAGE_INSTALLMENT_MONTH = "legalChargeInstallmentService.validation.discountMonth";
 
     @Autowired
     public LegalChargeInstallmentService(
@@ -104,9 +104,9 @@ public class LegalChargeInstallmentService extends AbstractService<LegalChargeIn
     @Override
     protected void validate(LegalChargeInstallmentRequestDTO request) {
         super.validate(request);
-        if (request.getInstallmentNumber() == null)  throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_INSTALLMENT_NUMBER_VALIDATION_MESSAGE));
-        if (request.getInstallmentValue() == null) throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_INSTALLMENT_VALUE_VALIDATION_MESSAGE));
-        if (request.getDiscountMonth() == null) throw new IllegalArgumentException(getLocalizedMessage(LEGAL_CHARGE_INSTALLMENT_MONTH_VALIDATION_MESSAGE));
+        if (request.getInstallmentNumber() == null)  throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_INSTALLMENT_NUMBER));
+        if (request.getInstallmentValue() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_INSTALLMENT_VALUE));
+        if (request.getDiscountMonth() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_INSTALLMENT_MONTH));
         if (request.getPaymentStatus() == null) request.setPaymentStatus(PaymentStatus.PENDING);
     }
 }

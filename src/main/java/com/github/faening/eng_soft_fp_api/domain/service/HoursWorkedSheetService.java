@@ -23,8 +23,8 @@ public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetReq
     private final HoursWorkedSheetResponseMapper responseMapper;
     private final EmployeeService employeeService;
 
-    private static final String HWS_EMPLOYEE_ID_VALIDATION_MESSAGE = "hoursWorkedSheetService.validation.employeeId";
-    private static final String HWS_DATE_VALIDATION_MESSAGE = "hoursWorkedSheetService.validation.date";
+    private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "hoursWorkedSheetService.validation.employeeId";
+    private static final String VALIDATION_MESSAGE_DATE = "hoursWorkedSheetService.validation.date";
 
     @Autowired
     public HoursWorkedSheetService(
@@ -101,7 +101,7 @@ public class HoursWorkedSheetService extends AbstractService<HoursWorkedSheetReq
     @Override
     protected void validate(HoursWorkedSheetRequestDTO request) {
         super.validate(request);
-        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(HWS_EMPLOYEE_ID_VALIDATION_MESSAGE));
-        if (request.getDate() == null) throw new IllegalArgumentException(getLocalizedMessage(HWS_DATE_VALIDATION_MESSAGE));
+        if (request.getEmployeeId() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_EMPLOYEE_ID));
+        if (request.getDate() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DATE));
     }
 }

@@ -22,9 +22,9 @@ public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
     private final JobResponseMapper responseMapper;
     private final TaxOrValueService taxOrValueService;
 
-    private static final String JOB_DESCRIPTION_VALIDATION_MESSAGE = "jobService.validation.description";
-    private static final String JOB_EXPERIENCE_LEVEL_VALIDATION_MESSAGE = "jobService.validation.experienceLevel";
-    private static final String JOB_DEPARTMENT_ID_VALIDATION_MESSAGE = "jobService.validation.departmentId";
+    private static final String VALIDATION_MESSAGE_DESCRIPTION = "jobService.validation.description";
+    private static final String VALIDATION_MESSAGE_EXPERIENCE_LEVEL = "jobService.validation.experienceLevel";
+    private static final String VALIDATION_MESSAGE_DEPARTMENT_ID = "jobService.validation.departmentId";
 
     @Autowired
     public JobService(
@@ -92,9 +92,9 @@ public class JobService extends AbstractService<JobRequestDTO, JobResponseDTO> {
     @Override
     protected void validate(JobRequestDTO request) {
         super.validate(request);
-        if (request.getDescription() == null || request.getDescription().isEmpty()) throw new IllegalArgumentException(getLocalizedMessage(JOB_DESCRIPTION_VALIDATION_MESSAGE));
-        if (request.getExperienceLevel() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_EXPERIENCE_LEVEL_VALIDATION_MESSAGE));
-        if (request.getDepartmentId() == null) throw new IllegalArgumentException(getLocalizedMessage(JOB_DEPARTMENT_ID_VALIDATION_MESSAGE));
+        if (request.getDescription() == null || request.getDescription().isEmpty()) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DESCRIPTION));
+        if (request.getExperienceLevel() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_EXPERIENCE_LEVEL));
+        if (request.getDepartmentId() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DEPARTMENT_ID));
         if (request.getDangerousness() == null) request.setDangerousness(false);
         if (request.getUnhealthiness() == null) request.setUnhealthiness(false);
         if (request.getEnabled() == null) request.setEnabled(true);

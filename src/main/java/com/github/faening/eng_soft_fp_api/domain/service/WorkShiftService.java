@@ -19,12 +19,12 @@ public class WorkShiftService extends AbstractService<WorkShiftRequestDTO, WorkS
     private final WorkShiftRequestMapper requestMapper;
     private final WorkShiftResponseMapper responseMapper;
 
-    private static final String WS_DESCRIPTION_VALIDATION_MESSAGE = "workShiftService.validation.description";
-    private static final String WS_START_OF_WORKDAY_VALIDATION_MESSAGE = "workShiftService.validation.startOfWorkday";
-    private static final String WS_START_OF_BREAK_VALIDATION_MESSAGE = "workShiftService.validation.startOfBreak";
-    private static final String WS_END_OF_BREAK_VALIDATION_MESSAGE = "workShiftService.validation.endOfBreak";
-    private static final String WS_END_OF_WORKDAY_VALIDATION_MESSAGE = "workShiftService.validation.endOfWorkday";
-    private static final String WS_NIGHT_SHIFT_ALLOWANCE_VALIDATION_MESSAGE = "workShiftService.validation.nightShiftAllowance";
+    private static final String VALIDATION_MESSAGE_DESCRIPTION = "workShiftService.validation.description";
+    private static final String VALIDATION_MESSAGE_START_OF_WORKDAY = "workShiftService.validation.startOfWorkday";
+    private static final String VALIDATION_MESSAGE_START_OF_BREAK = "workShiftService.validation.startOfBreak";
+    private static final String VALIDATION_MESSAGE_END_OF_BREAK = "workShiftService.validation.endOfBreak";
+    private static final String VALIDATION_MESSAGE_END_OF_WORKDAY = "workShiftService.validation.endOfWorkday";
+    private static final String VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE = "workShiftService.validation.nightShiftAllowance";
 
     @Autowired
     public WorkShiftService(
@@ -90,12 +90,12 @@ public class WorkShiftService extends AbstractService<WorkShiftRequestDTO, WorkS
     @Override
     protected void validate(WorkShiftRequestDTO request) {
         super.validate(request);
-        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_DESCRIPTION_VALIDATION_MESSAGE));
-        if (request.getStartOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_WORKDAY_VALIDATION_MESSAGE));
-        if (request.getStartOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_START_OF_BREAK_VALIDATION_MESSAGE));
-        if (request.getEndOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_BREAK_VALIDATION_MESSAGE));
-        if (request.getEndOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_END_OF_WORKDAY_VALIDATION_MESSAGE));
-        if (request.getNightShiftAllowance() == null) throw new IllegalArgumentException(getLocalizedMessage(WS_NIGHT_SHIFT_ALLOWANCE_VALIDATION_MESSAGE));
+        if (request.getDescription() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_DESCRIPTION));
+        if (request.getStartOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_START_OF_WORKDAY));
+        if (request.getStartOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_START_OF_BREAK));
+        if (request.getEndOfBreak() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_END_OF_BREAK));
+        if (request.getEndOfWorkday() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_END_OF_WORKDAY));
+        if (request.getNightShiftAllowance() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE));
         if (request.getEnabled() == null) request.setEnabled(true);
     }
 }
