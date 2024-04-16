@@ -22,6 +22,7 @@ public class WorkShiftRequestMapper extends AbstractMapper<WorkShift, WorkShiftR
                 mapper.when(notNull).map(WorkShift::getStartOfBreak, WorkShiftRequestDTO::setStartOfBreak);
                 mapper.when(notNull).map(WorkShift::getEndOfBreak, WorkShiftRequestDTO::setEndOfBreak);
                 mapper.when(notNull).map(WorkShift::getEndOfWorkday, WorkShiftRequestDTO::setEndOfWorkday);
+                mapper.when(notNull).map(WorkShift::getReducedShift, WorkShiftRequestDTO::setReducedShift);
                 mapper.when(notNull).map(WorkShift::getNightShiftAllowance, WorkShiftRequestDTO::setNightShiftAllowance);
                 mapper.when(notNull).map(WorkShift::getEnabled, WorkShiftRequestDTO::setEnabled);
             });
@@ -38,6 +39,7 @@ public class WorkShiftRequestMapper extends AbstractMapper<WorkShift, WorkShiftR
                 mapper.when(notNull).map(WorkShiftRequestDTO::getStartOfBreak, WorkShift::setStartOfBreak);
                 mapper.when(notNull).map(WorkShiftRequestDTO::getEndOfBreak, WorkShift::setEndOfBreak);
                 mapper.when(notNull).map(WorkShiftRequestDTO::getEndOfWorkday, WorkShift::setEndOfWorkday);
+                mapper.when(notNull).map(WorkShiftRequestDTO::getReducedShift, WorkShift::setReducedShift);
                 mapper.when(notNull).map(WorkShiftRequestDTO::getNightShiftAllowance, WorkShift::setNightShiftAllowance);
                 mapper.when(notNull).map(WorkShiftRequestDTO::getEnabled, WorkShift::setEnabled);
             });
