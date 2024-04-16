@@ -1,129 +1,102 @@
 package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.config.WorkingHoursConfig;
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
+import com.github.faening.eng_soft_fp_api.domain.calculation.generics.WorkedHoursCalculation;
+import com.github.faening.eng_soft_fp_api.domain.model.hours_worked_sheet.HoursWorkedSheetResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.service.HoursWorkedSheetService;
+import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
+import com.github.faening.eng_soft_fp_api.domain.service.WorkShiftService;
+import com.github.faening.eng_soft_fp_api.util.DateUtils;
+import com.github.faening.eng_soft_fp_api.util.EmployeeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-/*
- * Requisito: [RD002] Calcular Horas Extras Trabalhadas
- *
- * Descrição:
- * Esta classe é responsável por calcular as horas extras com acréscimo de 50% recebidas por um funcionário em um determinado mês.
- * ...
- *
- * Funcionamento:
- * O cálculo das horas extras com acréscimo de 50%, é feito com base nas horas registradas na tabela `hours_worked_sheet.overtime50` para o
- * funcionário no mês corrente. Para isso, é utilizado o serviço `HoursWorkedSheetService`, que permite buscar as horas trabalhadas
- * pelo `employee_id` e a `date`.
- *
- * ...
- *
- * Exemplos:
- * ...
- */
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 
-@SuppressWarnings("unused")
-public class CalculateOvertime50Percent implements PayrollCalculation {
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@Component
+public class CalculateOvertime50Percent extends WorkedHoursCalculation implements PayrollCalculation {
+    private final RubricService rubricService;
+    private final static Integer RUBRIC_CODE = 1003;
+    private final static BigDecimal OVERTIME_50_PERCENT_FACTOR = BigDecimal.valueOf(1.5);
+
+    @Autowired
+    public CalculateOvertime50Percent(
+        RubricService rubricService,
+        WorkShiftService workShiftService,
+        HoursWorkedSheetService hoursWorkedSheetService,
+        WorkingHoursConfig workingHoursConfig
+    ) {
+        super(workShiftService, hoursWorkedSheetService, workingHoursConfig);
+        this.rubricService = rubricService;
+    }
+
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        /*
-         * Dicas de codificação:
-         *
-         * Dica 1:
-         * Sempre crie uma branch separada para desenvolver uma funcionalidade. Isso permite que você trabalhe em um ambiente isolado e evita
-         * conflitos com o código de seus colegas.
-         *
-         * Outro ponto importante é que, a branch de origem sempre deve ser a `develop`.
-         *
-         * Lembre-se de seguir o padrão de nomenclatura de branches. Por exemplo: PRL-001, PRL-002, PRL-003, etc. Observe isso na respectiva
-         * tarefa do Trello.
-         *
-         *
-         *
-         * Dica 2:
-         * Sempre busque a separação de responsabilidades. Se você perceber que o método está fazendo mais de uma coisa, considere dividí-lo em
-         * métodos menores. Isso facilita a leitura e a manutenção do código. Por exemplo:
-         *
-         * public void calculate(CalculationParameters parameters) {
-         *   metodo1();
-         *   metodo2();
-         *   return ...
-         * }
-         *
-         *
-         *
-         * Dica 3:
-         * Evite aninhar if's. Se você perceber que isso está acontecendo, considere decompor o código ou criar métodos menores. Por exemplo:
-         *
-         * if (condicao1) {
-         *    if (condicao2) {
-         *      ...
-         *   }
-         * }
-         *
-         * Pode ser decomposto em:
-         *
-         * if (condicao1 && condicao2) {
-         *   ...
-         * }
-         *
-         * ou
-         *
-         * if (condicao1) {
-         *   metodo1();
-         * }
-         *
-         * if (condicao2) {
-         *   metodo2();
-         * }
-         *
-         *
-         *
-         * Dica 4:
-         * Evite duplicação de código. Se você perceber que um trecho de código está sendo repetido, considere reduzi-lo para evitar a duplicação.
-         * Por exemplo:
-         *
-         * if (condicao1) {
-         *   metodo1();
-         * }
-         *
-         * if (condicao2) {
-         *   metodo1();
-         * }
-         *
-         * Pode ser decomposto em:
-         *
-         * if (condicao1 || condicao2) {
-         *   metodo1();
-         * }
-         *
-         *
-         *
-         * Dica 5:
-         * Não se esqueça de tratar os casos de erro. Se algo der errado, retorne uma exceção. Sempre que possível, faça a verificação das
-         * condições de erro no início do método. Por exemplo:
-         *
-         * if (condicao1) {
-         *   if (condicao1 == null) throw new RuntimeException("Mensagem de erro");
-         *   ...
-         * }
-         *
-         *
-         * Dica 6:
-         * Não se esqueça de testar o seu código. Testes de unidade são uma ótima forma de garantir que o seu código está funcionando. Se você
-         * não sabe como fazer testes de unidade, procure aprender ou use o ChatGPT. Eles são muito importantes para garantir a qualidade do seu
-         * código.
-         *
-         *
-         * Dica 7:
-         * Atenção ao retorno do método calculate. Ele deve retornar um objeto do tipo PayrollItemRequestDTO.
-         *
-         *
-         *
-         * Dica 8:
-         * Por fim e não menos importante, ao terminar sua implementação, remova esses comentários e faça o commit e push do código.
-         * */
+        if (parameters != null) {
+            RubricResponseDTO rubric = getRubricByCode();
+            Integer workingHoursInMonth = getWorkingHoursInMonth(parameters);
+            List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(parameters);
+            Integer employeeTotalOvertime50 = getEmployeeTotalOvertime50InMin(hoursWorkedSheet);
+            BigDecimal employeeCalculatedOvertime50 = calculateEmployeeOvertime50InMin(parameters.getEmployee().getSalary(), workingHoursInMonth, employeeTotalOvertime50);
+
+            return new PayrollItemRequestDTO(
+                rubric,
+                null,
+                parameters.getEmployee().getSalary(),
+                employeeCalculatedOvertime50,
+                BigDecimal.valueOf(employeeTotalOvertime50)
+            );
+        }
         return null;
     }
 
+    /**
+     * Este método recupera uma rubrica pelo seu código.
+     *
+     * @return Um objeto RubricResponseDTO que representa a rubrica recuperada.
+     */
+    public RubricResponseDTO getRubricByCode() {
+        return rubricService.getByCode(RUBRIC_CODE);
+    }
+
+    /**
+     * Este método calcula o total de horas extras (com acréscimo de 50%) trabalhadas por um funcionário, convertendo o tempo para minutos.
+     *
+     * @param hoursWorkedSheet Uma lista de objetos HoursWorkedSheetResponseDTO que representam as horas trabalhadas pelo funcionário.
+     * @return O total de horas extras (com acréscimo de 50%) trabalhadas pelo funcionário em minutos.
+     */
+    protected Integer getEmployeeTotalOvertime50InMin(List<HoursWorkedSheetResponseDTO> hoursWorkedSheet) {
+        return hoursWorkedSheet
+            .stream()
+            .mapToInt(hours -> DateUtils.toMinutes(hours.getOvertime50()))
+            .sum();
+    }
+
+    /**
+     * Este método calcula o valor total das horas extras (com acréscimo de 50%) trabalhadas por um funcionário.
+     *
+     * @param employeeSalary Salário do funcionário.
+     * @param hoursWorkedPerMonthInMin Total de horas trabalhadas pelo funcionário no mês, em minutos.
+     * @param employeeTotalOvertime50InMin Total de horas extras (com acréscimo de 50%) trabalhadas pelo funcionário, em minutos.
+     * @return O valor total das horas extras (com acréscimo de 50%) trabalhadas pelo funcionário. Retorna zero se o funcionário não trabalhou horas extras.
+     */
+    protected BigDecimal calculateEmployeeOvertime50InMin(BigDecimal employeeSalary, int hoursWorkedPerMonthInMin, int employeeTotalOvertime50InMin) {
+        BigDecimal hourlyValueWorked = EmployeeUtils.calculateHourlyRate(employeeSalary, hoursWorkedPerMonthInMin);
+
+        // Calcula o valor da hora extra (com acréscimo de 50%), convertendo o valor para minutos
+        BigDecimal overtimeValueInMin = hourlyValueWorked
+            .multiply(OVERTIME_50_PERCENT_FACTOR)
+            .divide(BigDecimal.valueOf(60), 4, RoundingMode.HALF_UP);
+
+        return (employeeTotalOvertime50InMin > 0
+            ? overtimeValueInMin.multiply(BigDecimal.valueOf(employeeTotalOvertime50InMin))
+            : BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP);
+    }
 }
