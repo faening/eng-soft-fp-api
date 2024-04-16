@@ -7,7 +7,7 @@ VALUES
     (1000, "Horas Normais", "Salário, vencimento, soldo", "Corresponde ao salário básico contratual do empregado contratado de acordo com a CLT e o vencimento mensal do servidor público e do militar", "INCOME"),
     (1001, "Subsídio", "Subsídio", "Corresponde à remuneração paga na forma de subsídio", "INCOME"),
     (1002, "DSR", "Descanso semanal remunerado - DSR", "Valor correspondente a um dia de trabalho incidente sobre as verbas de natureza variável, tais como: horas extras, adicional noturno, produção, comissão, etc.", "INCOME"),
-    (1003, "Hora Extra 50%", "Horas extraordinárias", "Valor correspondente à hora extraordinária de trabalho, acrescido de percentual de no mínimo 50%", "INCOME"),
+    (1003, "Hora Extra", "Horas extraordinárias", "Valor correspondente à hora extraordinária de trabalho, acrescido de percentual de no mínimo 50%", "INCOME"),
     (1009, "Salário Família - Complemento", "Salário-família - Complemento", "Valor excedente ao do fixado pela previdência social para o salário-família", "INCOME"),
     (1011, "Sobreaviso", "Sobreaviso e prontidão", "Valor correspondente a um percentual da hora normal de trabalho", "INCOME"),
     (1020, "Férias", "Férias", "Valor correspondente à remuneração a que faz jus na época da concessão das férias e o adicional constitucional a que o trabalhador adquiriu direito, inclusive o adiantamento de férias, quando pagas antecipadamente – nessa opção deve ser classificado também o valor pago mensalmente ao trabalhador avulso e ao empregado com contrato de trabalho intermitente, a título de férias", "INCOME"),
