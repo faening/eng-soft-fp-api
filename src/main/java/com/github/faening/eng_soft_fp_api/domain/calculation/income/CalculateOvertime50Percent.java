@@ -3,10 +3,10 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 import com.github.faening.eng_soft_fp_api.config.WorkingHoursConfig;
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
+import com.github.faening.eng_soft_fp_api.domain.calculation.generics.WorkedHoursCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.hours_worked_sheet.HoursWorkedSheetResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.HoursWorkedSheetService;
 import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
 import com.github.faening.eng_soft_fp_api.domain.service.WorkShiftService;
@@ -17,31 +17,24 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDate;
 import java.util.List;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Component
-public class CalculateOvertime50Percent implements PayrollCalculation {
+public class CalculateOvertime50Percent extends WorkedHoursCalculation implements PayrollCalculation {
     private final RubricService rubricService;
-    private final HoursWorkedSheetService hoursWorkedSheetService;
-    private final WorkShiftService workShiftService;
-    private final WorkingHoursConfig workingHoursConfig;
-
     private final static Integer RUBRIC_CODE = 1003;
     private final static BigDecimal OVERTIME_50_PERCENT_FACTOR = BigDecimal.valueOf(1.5);
 
     @Autowired
     public CalculateOvertime50Percent(
         RubricService rubricService,
-        HoursWorkedSheetService hoursWorkedSheetService,
         WorkShiftService workShiftService,
+        HoursWorkedSheetService hoursWorkedSheetService,
         WorkingHoursConfig workingHoursConfig
     ) {
+        super(workShiftService, hoursWorkedSheetService, workingHoursConfig);
         this.rubricService = rubricService;
-        this.hoursWorkedSheetService = hoursWorkedSheetService;
-        this.workShiftService = workShiftService;
-        this.workingHoursConfig = workingHoursConfig;
     }
 
     @Override
@@ -49,7 +42,7 @@ public class CalculateOvertime50Percent implements PayrollCalculation {
         if (parameters != null) {
             RubricResponseDTO rubric = getRubricByCode();
             Integer workingHoursInMonth = getWorkingHoursInMonth(parameters);
-            List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheetByEmployeeIdAndDate(parameters);
+            List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(parameters);
             Integer employeeTotalOvertime50 = getEmployeeTotalOvertime50InMin(hoursWorkedSheet);
             BigDecimal employeeCalculatedOvertime50 = calculateEmployeeOvertime50InMin(parameters.getEmployee().getSalary(), workingHoursInMonth, employeeTotalOvertime50);
 
@@ -69,41 +62,8 @@ public class CalculateOvertime50Percent implements PayrollCalculation {
      *
      * @return Um objeto RubricResponseDTO que representa a rubrica recuperada.
      */
-    protected RubricResponseDTO getRubricByCode() {
+    public RubricResponseDTO getRubricByCode() {
         return rubricService.getByCode(RUBRIC_CODE);
-    }
-
-    /**
-     * Este método calcula o total de horas de trabalho em um mês para um determinado funcionário.
-     *
-     * @param parameters Parâmetros de cálculo que incluem detalhes do funcionário, do mês e ano de interesse.
-     * @return O total de horas de trabalho no mês. Retorna null se o turno de trabalho do funcionário não for encontrado.
-     */
-    protected Integer getWorkingHoursInMonth(CalculationParameters parameters) {
-        WorkShiftResponseDTO workShift = workShiftService.getById(parameters.getEmployee().getWorkShiftId());
-        if (workShift != null) {
-            int workingDaysInMonth = DateUtils.getWorkingDaysInMonth(parameters.getYear(), parameters.getMonth().getValue());
-            int reducedHours = workingHoursConfig.getReducedHours();
-            int fullTimeHours = workingHoursConfig.getFullTimeHours();
-
-            // Se o funcionário estiver em um turno reduzido, multiplica os dias úteis pelas horas reduzidas.
-            // Caso contrário, multiplica os dias úteis pelas horas de tempo integral.
-            return workShift.getReducedShift() ? reducedHours * workingDaysInMonth : fullTimeHours * workingDaysInMonth;
-        }
-        return null;
-    }
-
-    /**
-     * Este método recupera a folha de horas trabalhadas de um funcionário para um mês específico.
-     *
-     * @param parameters Parâmetros de cálculo que incluem detalhes do funcionário, do mês e ano de interesse.
-     * @return Uma lista de objetos HoursWorkedSheetResponseDTO que representam as horas trabalhadas pelo funcionário no mês especificado.
-     */
-    protected List<HoursWorkedSheetResponseDTO> getHoursWorkedSheetByEmployeeIdAndDate(CalculationParameters parameters) {
-        LocalDate[] startAndEndDate = DateUtils.getFirstAndLastDayOfMonth(parameters.getYear(), parameters.getMonth().getValue());
-        LocalDate startDate = startAndEndDate[0];
-        LocalDate endDate = startAndEndDate[1];
-        return hoursWorkedSheetService.getWorkedHoursByEmployeeIdAndDateRange(parameters.getEmployee().getId(), startDate, endDate);
     }
 
     /**
