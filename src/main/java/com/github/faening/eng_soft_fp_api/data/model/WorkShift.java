@@ -29,6 +29,9 @@ public class WorkShift implements Serializable {
     @Column(name = "end_of_workday", nullable = false)
     private LocalTime endOfWorkday;
 
+    @Column(name = "reduced_shift", nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean reducedShift;
+
     @Column(name = "night_shift_allowance", columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean nightShiftAllowance;
 
@@ -113,6 +116,14 @@ public class WorkShift implements Serializable {
 
     public void setEndOfWorkday(LocalTime endOfWorkday) {
         this.endOfWorkday = endOfWorkday;
+    }
+
+    public Boolean getReducedShift() {
+        return reducedShift;
+    }
+
+    public void setReducedShift(Boolean reducedShift) {
+        this.reducedShift = reducedShift;
     }
 
     public Boolean getNightShiftAllowance() {
