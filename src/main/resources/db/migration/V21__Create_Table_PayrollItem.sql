@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS payroll_item (
     tax_or_value_id INT,
     base_value DECIMAL(10, 2),
     calculated_value DECIMAL(10, 2) NOT NULL,
+    reference DECIMAL(10, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id_payroll_item),

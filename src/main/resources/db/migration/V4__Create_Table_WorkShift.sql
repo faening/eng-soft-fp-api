@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS work_shift (
     start_of_break TIME NOT NULL,
     end_of_break TIME NOT NULL,
     end_of_workday TIME NOT NULL,
+    reduced_shift BOOLEAN NOT NULL DEFAULT FALSE,
     night_shift_allowance BOOLEAN NOT NULL DEFAULT FALSE,
     enabled BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

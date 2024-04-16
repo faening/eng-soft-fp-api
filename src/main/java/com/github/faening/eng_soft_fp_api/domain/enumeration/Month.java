@@ -35,4 +35,8 @@ public enum Month {
     public static void setMessageSource(MessageSource messageSource) {
         Month.messageSource = messageSource;
     }
+
+    public int getValue() {
+        return this.ordinal() + 1;
+    }
 }

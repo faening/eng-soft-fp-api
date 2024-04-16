@@ -12,6 +12,7 @@ public class PayrollItemRequestDTO implements Serializable {
     private TaxOrValueResponseDTO taxOrValue;
     private BigDecimal baseValue;
     private BigDecimal calculatedValue;
+    private BigDecimal reference;
 
     public PayrollItemRequestDTO() {
     }
@@ -20,12 +21,14 @@ public class PayrollItemRequestDTO implements Serializable {
         RubricResponseDTO rubric,
         TaxOrValueResponseDTO taxOrValue,
         BigDecimal baseValue,
-        BigDecimal calculatedValue
+        BigDecimal calculatedValue,
+        BigDecimal reference
     ) {
         this.rubric = rubric;
         this.taxOrValue = taxOrValue;
         this.baseValue = baseValue;
         this.calculatedValue = calculatedValue;
+        this.reference = reference;
     }
 
     public RubricResponseDTO getRubric() {
@@ -60,6 +63,14 @@ public class PayrollItemRequestDTO implements Serializable {
         this.calculatedValue = calculatedValue;
     }
 
+    public BigDecimal getReference() {
+        return reference;
+    }
+
+    public void setReference(BigDecimal reference) {
+        this.reference = reference;
+    }
+
     @Override
     public String toString() {
         return "PayrollItemRequestDTO{" +
@@ -67,6 +78,7 @@ public class PayrollItemRequestDTO implements Serializable {
             ", taxOrValue=" + taxOrValue +
             ", baseValue=" + baseValue +
             ", calculatedValue=" + calculatedValue +
+            ", reference=" + reference +
             '}';
     }
 }

@@ -10,6 +10,7 @@ public class WorkShiftRequestDTO implements Serializable {
     private LocalTime startOfBreak;
     private LocalTime endOfBreak;
     private LocalTime endOfWorkday;
+    private Boolean reducedShift;
     private Boolean nightShiftAllowance;
     private Boolean enabled;
 
@@ -22,6 +23,7 @@ public class WorkShiftRequestDTO implements Serializable {
         LocalTime startOfBreak,
         LocalTime endOfBreak,
         LocalTime endOfWorkday,
+        Boolean reducedShift,
         Boolean nightShiftAllowance,
         Boolean enabled
     ) {
@@ -30,6 +32,7 @@ public class WorkShiftRequestDTO implements Serializable {
         this.startOfBreak = startOfBreak;
         this.endOfBreak = endOfBreak;
         this.endOfWorkday = endOfWorkday;
+        this.reducedShift = reducedShift;
         this.nightShiftAllowance = nightShiftAllowance;
         this.enabled = enabled;
     }
@@ -74,6 +77,14 @@ public class WorkShiftRequestDTO implements Serializable {
         this.endOfWorkday = endOfWorkday;
     }
 
+    public Boolean getReducedShift() {
+        return reducedShift;
+    }
+
+    public void setReducedShift(Boolean reducedShift) {
+        this.reducedShift = reducedShift;
+    }
+
     public Boolean getNightShiftAllowance() {
         return nightShiftAllowance;
     }
@@ -92,12 +103,13 @@ public class WorkShiftRequestDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "WorkShiftResponseDTO{" +
-            ", description='" + description + '\'' +
+        return "WorkShiftRequestDTO{" +
+            "description='" + description + '\'' +
             ", startOfWorkday=" + startOfWorkday +
             ", startOfBreak=" + startOfBreak +
             ", endOfBreak=" + endOfBreak +
             ", endOfWorkday=" + endOfWorkday +
+            ", reducedShift=" + reducedShift +
             ", nightShiftAllowance=" + nightShiftAllowance +
             ", enabled=" + enabled +
             '}';

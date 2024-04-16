@@ -21,6 +21,7 @@ public class PayrollItemRequestMapper extends AbstractMapper<PayrollItem, Payrol
                 mapper.when(notNull).map(PayrollItem::getTaxOrValue, PayrollItemRequestDTO::setTaxOrValue);
                 mapper.when(notNull).map(PayrollItem::getBaseValue, PayrollItemRequestDTO::setBaseValue);
                 mapper.when(notNull).map(PayrollItem::getCalculatedValue, PayrollItemRequestDTO::setCalculatedValue);
+                mapper.when(notNull).map(PayrollItem::getReference, PayrollItemRequestDTO::setReference);
             });
     }
 
@@ -34,7 +35,7 @@ public class PayrollItemRequestMapper extends AbstractMapper<PayrollItem, Payrol
                 mapper.when(notNull).map(PayrollItemRequestDTO::getRubric, PayrollItem::setRubric);
                 mapper.when(notNull).map(PayrollItemRequestDTO::getTaxOrValue, PayrollItem::setTaxOrValue);
                 mapper.when(notNull).map(PayrollItemRequestDTO::getBaseValue, PayrollItem::setBaseValue);
-                mapper.when(notNull).map(PayrollItemRequestDTO::getCalculatedValue, PayrollItem::setCalculatedValue);
+                mapper.when(notNull).map(PayrollItemRequestDTO::getReference, PayrollItem::setReference);
             });
     }
 }

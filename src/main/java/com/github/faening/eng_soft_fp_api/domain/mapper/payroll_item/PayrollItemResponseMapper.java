@@ -25,7 +25,7 @@ public class PayrollItemResponseMapper extends AbstractMapper<PayrollItem, Payro
                 mapper.when(notNull).map(PayrollItem::getTaxOrValue, PayrollItemResponseDTO::setTaxOrValue);
                 mapper.when(notNull).map(PayrollItem::getBaseValue, PayrollItemResponseDTO::setBaseValue);
                 mapper.when(notNull).map(PayrollItem::getCalculatedValue, PayrollItemResponseDTO::setCalculatedValue);
-                mapper.when(notNull).map(PayrollItem::getCalculatedValue, PayrollItemResponseDTO::setCalculatedValue);
+                mapper.when(notNull).map(PayrollItem::getReference, PayrollItemResponseDTO::setReference);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), PayrollItemResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), PayrollItemResponseDTO::setUpdatedAt);
             });
@@ -41,6 +41,7 @@ public class PayrollItemResponseMapper extends AbstractMapper<PayrollItem, Payro
                 mapper.when(notNull).map(PayrollItemResponseDTO::getTaxOrValue, PayrollItem::setTaxOrValue);
                 mapper.when(notNull).map(PayrollItemResponseDTO::getBaseValue, PayrollItem::setBaseValue);
                 mapper.when(notNull).map(PayrollItemResponseDTO::getCalculatedValue, PayrollItem::setCalculatedValue);
+                mapper.when(notNull).map(PayrollItemResponseDTO::getReference, PayrollItem::setReference);
                 mapper.when(notNull).<LocalDateTime>map(PayrollItemResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(PayrollItemResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));
             });

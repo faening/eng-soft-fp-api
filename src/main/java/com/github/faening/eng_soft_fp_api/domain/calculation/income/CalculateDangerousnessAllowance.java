@@ -44,7 +44,14 @@ public class CalculateDangerousnessAllowance implements PayrollCalculation {
                 RubricResponseDTO rubric = getRubricByCode();
                 TaxOrValueResponseDTO taxOrValue = getTaxOrValueByType();
                 BigDecimal calculatedValue = calculateDangerousnessAllowance(parameters.getEmployee(), taxOrValue);
-                return new PayrollItemRequestDTO(rubric, taxOrValue, parameters.getEmployee().getSalary(), calculatedValue);
+
+                return new PayrollItemRequestDTO(
+                    rubric,
+                    taxOrValue,
+                    parameters.getEmployee().getSalary(),
+                    calculatedValue,
+                    taxOrValue.getTaxPercentage()
+                );
             }
         }
         return null;

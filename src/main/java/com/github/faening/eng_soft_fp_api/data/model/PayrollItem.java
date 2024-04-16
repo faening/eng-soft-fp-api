@@ -15,11 +15,11 @@ public class PayrollItem implements Serializable {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "payroll_id", referencedColumnName = "id_payroll", nullable = false)
+    @JoinColumn(name = "payroll_id", nullable = false, referencedColumnName = "id_payroll")
     private Payroll payroll;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "rubric_id", referencedColumnName = "id_rubric", nullable = false)
+    @JoinColumn(name = "rubric_id",  nullable = false, referencedColumnName = "id_rubric")
     private Rubric rubric;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -31,6 +31,9 @@ public class PayrollItem implements Serializable {
 
     @Column(name = "calculated_value", nullable = false, precision = 10, scale = 2)
     private BigDecimal calculatedValue;
+
+    @Column(name = "reference", nullable = false, precision = 10, scale = 2)
+    private BigDecimal reference;
 
     @Embedded
     @AttributeOverrides({
@@ -49,6 +52,7 @@ public class PayrollItem implements Serializable {
         TaxOrValue taxOrValue,
         BigDecimal baseValue,
         BigDecimal calculatedValue,
+        BigDecimal reference,
         EntityMetadata entityMetadata
     ) {
         this.id = id;
@@ -57,6 +61,7 @@ public class PayrollItem implements Serializable {
         this.taxOrValue = taxOrValue;
         this.baseValue = baseValue;
         this.calculatedValue = calculatedValue;
+        this.reference = reference;
         this.entityMetadata = entityMetadata;
     }
 
@@ -106,6 +111,14 @@ public class PayrollItem implements Serializable {
 
     public void setCalculatedValue(BigDecimal calculatedValue) {
         this.calculatedValue = calculatedValue;
+    }
+
+    public BigDecimal getReference() {
+        return reference;
+    }
+
+    public void setReference(BigDecimal reference) {
+        this.reference = reference;
     }
 
     public EntityMetadata getEntityMetadata() {
