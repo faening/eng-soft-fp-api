@@ -15,6 +15,7 @@ public class PayrollItemResponseDTO implements Serializable {
     private TaxOrValueResponseDTO taxOrValue;
     private BigDecimal baseValue;
     private BigDecimal calculatedValue;
+    private BigDecimal reference;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -28,6 +29,7 @@ public class PayrollItemResponseDTO implements Serializable {
         TaxOrValueResponseDTO taxOrValue,
         BigDecimal baseValue,
         BigDecimal calculatedValue,
+        BigDecimal reference,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
     ) {
@@ -37,6 +39,7 @@ public class PayrollItemResponseDTO implements Serializable {
         this.taxOrValue = taxOrValue;
         this.baseValue = baseValue;
         this.calculatedValue = calculatedValue;
+        this.reference = reference;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -105,6 +108,14 @@ public class PayrollItemResponseDTO implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public BigDecimal getReference() {
+        return reference;
+    }
+
+    public void setReference(BigDecimal reference) {
+        this.reference = reference;
+    }
+
     @Override
     public String toString() {
         return "PayrollItemResponseDTO{" +
@@ -114,6 +125,7 @@ public class PayrollItemResponseDTO implements Serializable {
             ", taxOrValue=" + taxOrValue +
             ", baseValue=" + baseValue +
             ", calculatedValue=" + calculatedValue +
+            ", reference=" + reference +
             ", createdAt=" + createdAt +
             ", updatedAt=" + updatedAt +
             '}';
