@@ -17,12 +17,14 @@ import com.github.faening.eng_soft_fp_api.domain.service.TaxOrValueService;
 import com.github.faening.eng_soft_fp_api.domain.service.WorkShiftService;
 import com.github.faening.eng_soft_fp_api.util.EmployeeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
+@Component
 public class CalculateNightShiftAllowance extends WorkedHoursCalculation implements PayrollCalculation {
     private final RubricService rubricService;
     private final TaxOrValueService taxOrValueService;
