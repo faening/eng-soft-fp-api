@@ -101,10 +101,10 @@ public class CalculateUnhealthinessAllowance implements PayrollCalculation {
      * Retorna null se o percentual não for encontrado.
      */
     protected TaxOrValueResponseDTO getUnhealthinessAllowancePercentage(List<TaxOrValueResponseDTO> taxesOrValues, JobResponseDTO job) {
-        return taxesOrValues
-            .stream()
-            .filter(taxOrValue -> Objects.equals(taxOrValue.getRange(), job.getUnhealthiness()))
-            .findFirst()
+        return Optional.ofNullable(taxesOrValues)
+            .flatMap(list -> list.stream()
+                .filter(taxOrValue -> Objects.equals(taxOrValue.getRange(), Optional.ofNullable(job).map(JobResponseDTO::getUnhealthiness).orElse(null)))
+                .findFirst())
             .orElse(null);
     }
 

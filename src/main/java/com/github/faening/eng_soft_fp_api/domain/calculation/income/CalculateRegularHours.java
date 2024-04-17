@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Component
@@ -38,22 +39,23 @@ public class CalculateRegularHours extends WorkedHoursCalculation implements Pay
 
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        if (parameters != null) {
-            RubricResponseDTO rubric = getRubricByCode();
-            Integer workingHoursInMonth = getWorkingHoursInMonth(parameters);
-            List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(parameters);
-            Integer employeeTotalHours = getEmployeeTotalHours(hoursWorkedSheet);
-            BigDecimal employeeCalculatedSalary = calculateEmployeeSalary(parameters.getEmployee().getSalary(), workingHoursInMonth, employeeTotalHours);
+        return Optional.ofNullable(parameters)
+            .map(param -> {
+                RubricResponseDTO rubric = getRubricByCode();
+                Integer workingHoursInMonth = getWorkingHoursInMonth(param);
+                List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(param);
+                Integer employeeTotalHours = getEmployeeTotalHours(hoursWorkedSheet);
+                BigDecimal employeeCalculatedSalary = calculateEmployeeSalary(param.getEmployee().getSalary(), workingHoursInMonth, employeeTotalHours);
 
-            return new PayrollItemRequestDTO(
-                rubric,
-                null,
-                parameters.getEmployee().getSalary(),
-                employeeCalculatedSalary,
-                BigDecimal.valueOf(employeeTotalHours)
-            );
-        }
-        return null;
+                return new PayrollItemRequestDTO(
+                    rubric,
+                    null,
+                    param.getEmployee().getSalary(),
+                    employeeCalculatedSalary,
+                    BigDecimal.valueOf(employeeTotalHours)
+                );
+            })
+            .orElse(null);
     }
 
     /**
@@ -72,30 +74,32 @@ public class CalculateRegularHours extends WorkedHoursCalculation implements Pay
      * @return O total de horas regulares trabalhadas pelo funcionário.
      */
     protected Integer getEmployeeTotalHours(List<HoursWorkedSheetResponseDTO> hoursWorkedSheet) {
-        int totalMinutes = hoursWorkedSheet
-            .stream()
-            .mapToInt(hours -> DateUtils.toMinutes(hours.getRegularHours()))
-            .sum();
-        return totalMinutes / 60;
+        return Optional.ofNullable(hoursWorkedSheet)
+            .map(list -> list.stream()
+                .mapToInt(hours -> DateUtils.toMinutes(hours.getRegularHours()))
+                .sum() / 60)
+            .orElse(0);
     }
 
     /**
      * Este método calcula o salário de um funcionário com base nas horas trabalhadas.
      *
-     * @param salary Salário base do funcionário.
+     * @param employeeSalary Salário base do funcionário.
      * @param workingHoursInMonth Total de horas de trabalho em um mês.
      * @param employeeTotalHours Total de horas trabalhadas pelo funcionário.
-     * @return O salário calculado do funcionário. Se as horas trabalhadas pelo funcionário forem iguais às horas de trabalho em um mês, retorna o salário base. Caso contrário, calcula o valor da hora e multiplica pelas horas trabalhadas.
+     * @return O salário calculado do funcionário. Se as horas trabalhadas pelo funcionário forem iguais às horas de trabalho em um mês, retorna o salário base.
+     * Caso contrário, calcula o valor da hora e multiplica pelas horas trabalhadas.
      */
-    protected BigDecimal calculateEmployeeSalary(BigDecimal salary, int workingHoursInMonth, int employeeTotalHours) {
-        // Se as horas trabalhadas pelo funcionário forem iguais às horas de trabalho em um mês, retorna o salário base
-        if (Objects.equals(workingHoursInMonth, employeeTotalHours)) {
-            return salary;
-        } else {
-            // Calcula o valor da hora com base no salário e nas horas de trabalho em um mês
-            BigDecimal hourValue = EmployeeUtils.calculateHourlyRate(salary, workingHoursInMonth);
-            // Multiplica o valor da hora pelas horas trabalhadas pelo funcionário para obter o salário calculado
-            return hourValue.multiply(BigDecimal.valueOf(employeeTotalHours));
-        }
+    protected BigDecimal calculateEmployeeSalary(BigDecimal employeeSalary, int workingHoursInMonth, int employeeTotalHours) {
+        return Optional.ofNullable(employeeSalary)
+            .map(salary -> {
+                if (Objects.equals(workingHoursInMonth, employeeTotalHours)) {
+                    return salary;
+                } else {
+                    BigDecimal hourValue = EmployeeUtils.calculateHourlyRate(salary, workingHoursInMonth);
+                    return hourValue.multiply(BigDecimal.valueOf(employeeTotalHours));
+                }
+            })
+            .orElse(BigDecimal.ZERO);
     }
 }
