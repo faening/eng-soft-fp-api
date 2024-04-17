@@ -4,20 +4,19 @@ import com.github.faening.eng_soft_fp_api.config.WorkingHoursConfig;
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.calculation.generics.WorkedHoursCalculation;
-import com.github.faening.eng_soft_fp_api.domain.model.hours_worked_sheet.HoursWorkedSheetResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.HoursWorkedType;
+import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.HoursWorkedSheetService;
 import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
 import com.github.faening.eng_soft_fp_api.domain.service.WorkShiftService;
-import com.github.faening.eng_soft_fp_api.util.DateUtils;
 import com.github.faening.eng_soft_fp_api.util.EmployeeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -41,19 +40,17 @@ public class CalculateOvertime50Percent extends WorkedHoursCalculation implement
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
         return Optional.ofNullable(parameters)
+            .filter(params -> calculateTotalHoursInMin(parameters, HoursWorkedType.OVERTIME50).compareTo(BigDecimal.ZERO) > 0)
             .map(param -> {
                 RubricResponseDTO rubric = getRubricByCode();
-                Integer workingHoursInMonth = getWorkingHoursInMonth(param);
-                List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(param);
-                Integer employeeTotalOvertime50 = getEmployeeTotalOvertime50InMin(hoursWorkedSheet);
-                BigDecimal employeeCalculatedOvertime50 = calculateEmployeeOvertime50InMin(param.getEmployee().getSalary(), workingHoursInMonth, employeeTotalOvertime50);
+                BigDecimal employeeCalculatedOvertime50 = calculateEmployeeOvertime50InMin(parameters);
 
                 return new PayrollItemRequestDTO(
                     rubric,
                     null,
                     param.getEmployee().getSalary(),
                     employeeCalculatedOvertime50,
-                    BigDecimal.valueOf(employeeTotalOvertime50)
+                    calculateTotalHoursInMin(parameters, HoursWorkedType.OVERTIME50)
                 );
             })
             .orElse(null);
@@ -69,40 +66,25 @@ public class CalculateOvertime50Percent extends WorkedHoursCalculation implement
     }
 
     /**
-     * Este método calcula o total de horas extras (com acréscimo de 50%) trabalhadas por um funcionário, convertendo o tempo para minutos.
-     *
-     * @param hoursWorkedSheet Uma lista de objetos HoursWorkedSheetResponseDTO que representam as horas trabalhadas pelo funcionário.
-     * @return O total de horas extras (com acréscimo de 50%) trabalhadas pelo funcionário em minutos.
-     */
-    protected Integer getEmployeeTotalOvertime50InMin(List<HoursWorkedSheetResponseDTO> hoursWorkedSheet) {
-        return Optional.ofNullable(hoursWorkedSheet)
-            .map(list -> list.stream()
-                .mapToInt(hours -> DateUtils.toMinutes(hours.getOvertime50()))
-                .sum())
-            .orElse(0);
-    }
-
-    /**
      * Este método calcula o valor total das horas extras (com acréscimo de 50%) trabalhadas por um funcionário.
      *
-     * @param employeeSalary Salário do funcionário.
-     * @param hoursWorkedPerMonthInMin Total de horas trabalhadas pelo funcionário no mês, em minutos.
-     * @param employeeTotalOvertime50InMin Total de horas extras (com acréscimo de 50%) trabalhadas pelo funcionário, em minutos.
+     * @param parameters Parâmetros de cálculo que incluem detalhes do funcionário, do mês e ano de interesse.
      * @return O valor total das horas extras (com acréscimo de 50%) trabalhadas pelo funcionário. Retorna zero se o funcionário não trabalhou horas extras.
      */
-    protected BigDecimal calculateEmployeeOvertime50InMin(BigDecimal employeeSalary, int hoursWorkedPerMonthInMin, int employeeTotalOvertime50InMin) {
-        return Optional.ofNullable(employeeSalary)
+    protected BigDecimal calculateEmployeeOvertime50InMin(CalculationParameters parameters) {
+        return Optional.ofNullable(parameters)
+            .map(CalculationParameters::getEmployee)
+            .map(EmployeeSummaryDTO::getSalary)
             .map(salary -> {
-                BigDecimal hourlyValueWorked = EmployeeUtils.calculateHourlyRate(salary, hoursWorkedPerMonthInMin);
+                BigDecimal hourlyValueWorked = EmployeeUtils.calculateHourlyRate(salary, getWorkingHoursInMonth(parameters));
+                BigDecimal employeeTotalOvertime50InMin = calculateTotalHoursInMin(parameters, HoursWorkedType.OVERTIME50);
 
                 // Calcula o valor da hora extra (com acréscimo de 50%), convertendo o valor para minutos
                 BigDecimal overtimeValueInMin = hourlyValueWorked
                     .multiply(OVERTIME_50_PERCENT_FACTOR)
                     .divide(BigDecimal.valueOf(60), 4, RoundingMode.HALF_UP);
 
-                return (employeeTotalOvertime50InMin > 0
-                    ? overtimeValueInMin.multiply(BigDecimal.valueOf(employeeTotalOvertime50InMin))
-                    : BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP);
+                return overtimeValueInMin.multiply(employeeTotalOvertime50InMin).setScale(2, RoundingMode.HALF_UP);
             })
             .orElse(BigDecimal.ZERO);
     }
