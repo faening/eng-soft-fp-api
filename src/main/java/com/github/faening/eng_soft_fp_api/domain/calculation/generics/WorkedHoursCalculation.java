@@ -11,6 +11,8 @@ import com.github.faening.eng_soft_fp_api.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -94,11 +96,11 @@ public abstract class WorkedHoursCalculation {
      * @return O total de horas trabalhadas no mês. Retorna 0 se a folha de horas trabalhadas não for encontrada.
      */
     @SuppressWarnings("SameParameterValue")
-    protected Integer calculateTotalHoursInMin(CalculationParameters parameters, HoursWorkedType hoursWorkedType) {
+    protected BigDecimal calculateTotalHoursInMin(CalculationParameters parameters, HoursWorkedType hoursWorkedType) {
         List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(parameters);
         return Optional.ofNullable(hoursWorkedSheet)
             .map(list -> list.stream()
-                .mapToInt(hours -> {
+                .mapToDouble(hours -> {
                     return switch (hoursWorkedType) {
                         case REGULAR -> DateUtils.toMinutes(hours.getRegularHours());
                         case NEGATIVE -> DateUtils.toMinutes(hours.getNegativeHours());
@@ -109,6 +111,8 @@ public abstract class WorkedHoursCalculation {
                     };
                 })
                 .sum())
-            .orElse(0);
+            .map(BigDecimal::valueOf) // Convertendo o resultado para BigDecimal
+            .map(bigDecimal -> bigDecimal.setScale(2, RoundingMode.HALF_UP)) // Ajustando para duas casas decimais
+            .orElse(BigDecimal.ZERO);
     }
 }
