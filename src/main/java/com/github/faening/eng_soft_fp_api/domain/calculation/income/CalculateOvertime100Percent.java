@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Component
@@ -39,22 +40,23 @@ public class CalculateOvertime100Percent extends WorkedHoursCalculation implemen
 
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        if (parameters != null) {
-            RubricResponseDTO rubric = getRubricByCode();
-            Integer workingHoursInMonth = getWorkingHoursInMonth(parameters);
-            List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(parameters);
-            Integer employeeTotalOvertime100 = getEmployeeTotalOvertime100InMin(hoursWorkedSheet);
-            BigDecimal employeeCalculatedOvertime100 = calculateEmployeeOvertime100InMin(parameters.getEmployee().getSalary(), workingHoursInMonth, employeeTotalOvertime100);
+        return Optional.ofNullable(parameters)
+            .map(param -> {
+                RubricResponseDTO rubric = getRubricByCode();
+                Integer workingHoursInMonth = getWorkingHoursInMonth(param);
+                List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(param);
+                Integer employeeTotalOvertime100 = getEmployeeTotalOvertime100InMin(hoursWorkedSheet);
+                BigDecimal employeeCalculatedOvertime100 = calculateEmployeeOvertime100InMin(param.getEmployee().getSalary(), workingHoursInMonth, employeeTotalOvertime100);
 
-            return new PayrollItemRequestDTO(
-                rubric,
-                null,
-                parameters.getEmployee().getSalary(),
-                employeeCalculatedOvertime100,
-                BigDecimal.valueOf(employeeTotalOvertime100)
-            );
-        }
-        return null;
+                return new PayrollItemRequestDTO(
+                    rubric,
+                    null,
+                    param.getEmployee().getSalary(),
+                    employeeCalculatedOvertime100,
+                    BigDecimal.valueOf(employeeTotalOvertime100)
+                );
+            })
+            .orElse(null);
     }
 
     /**
@@ -73,10 +75,11 @@ public class CalculateOvertime100Percent extends WorkedHoursCalculation implemen
      * @return O total de horas extras (com acréscimo de 100%) trabalhadas pelo funcionário em minutos.
      */
     protected Integer getEmployeeTotalOvertime100InMin(List<HoursWorkedSheetResponseDTO> hoursWorkedSheet) {
-        return hoursWorkedSheet
-            .stream()
-            .mapToInt(hours -> DateUtils.toMinutes(hours.getOvertime100()))
-            .sum();
+        return Optional.ofNullable(hoursWorkedSheet)
+            .map(list -> list.stream()
+                .mapToInt(hours -> DateUtils.toMinutes(hours.getOvertime100()))
+                .sum())
+            .orElse(0);
     }
 
     /**
@@ -88,15 +91,19 @@ public class CalculateOvertime100Percent extends WorkedHoursCalculation implemen
      * @return O valor total das horas extras (com acréscimo de 100%) trabalhadas pelo funcionário. Retorna zero se o funcionário não trabalhou horas extras.
      */
     protected BigDecimal calculateEmployeeOvertime100InMin(BigDecimal employeeSalary, int hoursWorkedPerMonthInMin, int employeeTotalOvertime100InMin) {
-        BigDecimal hourlyValueWorked = EmployeeUtils.calculateHourlyRate(employeeSalary, hoursWorkedPerMonthInMin);
+        return Optional.ofNullable(employeeSalary)
+            .map(salary -> {
+                BigDecimal hourlyValueWorked = EmployeeUtils.calculateHourlyRate(salary, hoursWorkedPerMonthInMin);
 
-        // Calcula o valor da hora extra (com acréscimo de 100%), convertendo o valor para minutos
-        BigDecimal overtimeValueInMin = hourlyValueWorked
-            .multiply(OVERTIME_100_PERCENT_FACTOR)
-            .divide(BigDecimal.valueOf(60), 4, RoundingMode.HALF_UP);
+                // Calcula o valor da hora extra (com acréscimo de 100%), convertendo o valor para minutos
+                BigDecimal overtimeValueInMin = hourlyValueWorked
+                    .multiply(OVERTIME_100_PERCENT_FACTOR)
+                    .divide(BigDecimal.valueOf(60), 4, RoundingMode.HALF_UP);
 
-        return (employeeTotalOvertime100InMin > 0
-            ? overtimeValueInMin.multiply(BigDecimal.valueOf(employeeTotalOvertime100InMin))
-            : BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP);
+                return (employeeTotalOvertime100InMin > 0
+                    ? overtimeValueInMin.multiply(BigDecimal.valueOf(employeeTotalOvertime100InMin))
+                    : BigDecimal.ZERO).setScale(2, RoundingMode.HALF_UP);
+            })
+            .orElse(BigDecimal.ZERO);
     }
 }

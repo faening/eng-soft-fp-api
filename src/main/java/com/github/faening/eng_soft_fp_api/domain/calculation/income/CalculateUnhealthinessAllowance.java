@@ -2,128 +2,132 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
+import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.job.JobResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.tax_or_value.TaxOrValueResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.service.JobService;
+import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
+import com.github.faening.eng_soft_fp_api.domain.service.TaxOrValueService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-/*
- * Requisito: [RD005] Calcular Adicional por Insalubridade
- *
- * Descrição:
- * Esta classe é responsável por calcular o adicional por insalubridade recebido por um funcionário em um determinado mês.
- * O adicional por insalubridade é um benefício concedido ao trabalhador que realiza suas atividades em condições consideradas insalubres.
- *
- * Funcionamento:
- * Para realizar os cálculos, esta classe observa a propriedade `employee.job_id` e `job.unhealthiness`.
- * A propriedade `employee.job_id` é uma chave estrangeira para a tabela `job`, e a propriedade `job.unhealthiness` é um valor
- * inteiro que indica o grau de insalubridade, sendo: 0 = Não Insalubre, 1 = Mínimo, 2 = Médio e 3 = Máximo.
- * O adicional por insalubridade é calculado sobre o salário base do funcionário, portanto, é necessário observar a propriedade
- * `employee.base_salary`.
- * Além disos, as alíquotas de insalubridade são armazenadas na tabela `tax_or_value` com o `type`: `UNHEALTHINESS_ALLOWANCE`.
- *
- * Exemplos:
- * ...
- */
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@Component
 public class CalculateUnhealthinessAllowance implements PayrollCalculation {
-    /*
-     * Dicas de codificação:
-     *
-     * Dica 1:
-     * Sempre crie uma branch separada para desenvolver uma funcionalidade. Isso permite que você trabalhe em um ambiente isolado e evita
-     * conflitos com o código de seus colegas.
-     *
-     * Outro ponto importante é que, a branch de origem sempre deve ser a `develop`.
-     *
-     * Lembre-se de seguir o padrão de nomenclatura de branches. Por exemplo: PRL-001, PRL-002, PRL-003, etc. Observe isso na respectiva
-     * tarefa do Trello.
-     *
-     *
-     *
-     * Dica 2:
-     * Sempre busque a separação de responsabilidades. Se você perceber que o método está fazendo mais de uma coisa, considere dividí-lo em
-     * métodos menores. Isso facilita a leitura e a manutenção do código. Por exemplo:
-     *
-     * public void calculate(CalculationParameters parameters) {
-     *   metodo1();
-     *   metodo2();
-     *   return ...
-     * }
-     *
-     *
-     *
-     * Dica 3:
-     * Evite aninhar if's. Se você perceber que isso está acontecendo, considere decompor o código ou criar métodos menores. Por exemplo:
-     *
-     * if (condicao1) {
-     *    if (condicao2) {
-     *      ...
-     *   }
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 && condicao2) {
-     *   ...
-     * }
-     *
-     * ou
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo2();
-     * }
-     *
-     *
-     *
-     * Dica 4:
-     * Evite duplicação de código. Se você perceber que um trecho de código está sendo repetido, considere reduzi-lo para evitar a duplicação.
-     * Por exemplo:
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo1();
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 || condicao2) {
-     *   metodo1();
-     * }
-     *
-     *
-     *
-     * Dica 5:
-     * Não se esqueça de tratar os casos de erro. Se algo der errado, retorne uma exceção. Sempre que possível, faça a verificação das
-     * condições de erro no início do método. Por exemplo:
-     *
-     * if (condicao1) {
-     *   if (condicao1 == null) throw new RuntimeException("Mensagem de erro");
-     *   ...
-     * }
-     *
-     *
-     * Dica 6:
-     * Não se esqueça de testar o seu código. Testes de unidade são uma ótima forma de garantir que o seu código está funcionando. Se você
-     * não sabe como fazer testes de unidade, procure aprender ou use o ChatGPT. Eles são muito importantes para garantir a qualidade do seu
-     * código.
-     *
-     *
-     * Dica 7:
-     * Atenção ao retorno do método calculate. Ele deve retornar um objeto do tipo PayrollItemRequestDTO.
-     *
-     *
-     *
-     * Dica 8:
-     * Por fim e não menos importante, ao terminar sua implementação, remova esses comentários e faça o commit e push do código.
-     * */
+    private final RubricService rubricService;
+    private final JobService jobService;
+    private final TaxOrValueService taxOrValueService;
+    private final static Integer RUBRIC_CODE = 1202;
+
+    @Autowired
+    public CalculateUnhealthinessAllowance(
+        RubricService rubricService,
+        JobService jobService,
+        TaxOrValueService taxOrValueService
+    ) {
+        this.rubricService = rubricService;
+        this.jobService = jobService;
+        this.taxOrValueService = taxOrValueService;
+    }
+
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        return null;
+        return Optional.ofNullable(parameters)
+            .map(CalculationParameters::getEmployee)
+            .map(EmployeeSummaryDTO::getJobId)
+            .map(this::getJobByEmployeeJobId)
+            .filter(job -> job.getUnhealthiness() != null)
+            .map(job -> {
+                RubricResponseDTO rubric = getRubricByCode();
+                List<TaxOrValueResponseDTO> taxesOrValues = getTaxesOrValuesByType();
+                TaxOrValueResponseDTO unhealthinessAllowancePercentage = getUnhealthinessAllowancePercentage(taxesOrValues, job);
+                BigDecimal calculatedValue = calculateUnhealthinessAllowance(unhealthinessAllowancePercentage);
+
+                return new PayrollItemRequestDTO(
+                    rubric,
+                    unhealthinessAllowancePercentage,
+                    getMinimumWage(),
+                    calculatedValue,
+                    unhealthinessAllowancePercentage.getTaxPercentage()
+                );
+            })
+            .orElse(null);
+    }
+
+    /**
+     * Este método recupera uma rubrica pelo seu código.
+     *
+     * @return Um objeto RubricResponseDTO que representa a rubrica recuperada.
+     */
+    public RubricResponseDTO getRubricByCode() {
+        return rubricService.getByCode(RUBRIC_CODE);
+    }
+
+    /**
+     * Este método recupera um trabalho pelo seu ID.
+     *
+     * @param jobId O ID do trabalho do funcionário.
+     * @return Um objeto JobResponseDTO que representa o trabalho recuperado. Retorna null se o trabalho não for encontrado.
+     */
+    protected JobResponseDTO getJobByEmployeeJobId(Integer jobId) {
+        return jobService.getById(jobId);
+    }
+
+    /**
+     * Este método recupera uma lista de impostos ou valores pelo seu tipo.
+     *
+     * @return Uma lista de objetos do tipo TaxOrValueResponseDTO que representam os percentuais de adicional por insalubridade.
+     * Retorna null se o imposto ou valor não for encontrado.
+     */
+    protected List<TaxOrValueResponseDTO> getTaxesOrValuesByType() {
+        return taxOrValueService.getByType(TaxOrValueType.UNHEALTHINESS_ALLOWANCE);
+    }
+
+    /**
+     * Este método recupera o percentual de adicional por insalubridade aplicável ao trabalho do funcionário.
+     *
+     * @param taxesOrValues Uma lista de objetos TaxOrValueResponseDTO que representam os percentuais de adicional por insalubridade.
+     * @param job           Um objeto JobResponseDTO que representa o trabalho do funcionário.
+     * @return Um objeto TaxOrValueResponseDTO que representa o percentual de adicional por insalubridade aplicável ao trabalho do funcionário.
+     * Retorna null se o percentual não for encontrado.
+     */
+    protected TaxOrValueResponseDTO getUnhealthinessAllowancePercentage(List<TaxOrValueResponseDTO> taxesOrValues, JobResponseDTO job) {
+        return Optional.ofNullable(taxesOrValues)
+            .flatMap(list -> list.stream()
+                .filter(taxOrValue -> Objects.equals(taxOrValue.getRange(), Optional.ofNullable(job).map(JobResponseDTO::getUnhealthiness).orElse(null)))
+                .findFirst())
+            .orElse(null);
+    }
+
+    /**
+     * Este método calcula o adicional por insalubridade com base no percentual aplicável e no salário mínimo nacional.
+     *
+     * @param taxOrValue Um objeto TaxOrValueResponseDTO que representa o percentual de adicional por insalubridade.
+     * @return O valor calculado do adicional por insalubridade. Se o percentual não for fornecido, retorna 0.
+     */
+    protected BigDecimal calculateUnhealthinessAllowance(TaxOrValueResponseDTO taxOrValue) {
+        return Optional.ofNullable(taxOrValue)
+            .map(tax -> tax.getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP))
+            .orElse(BigDecimal.ZERO)
+            .multiply(getMinimumWage())
+            .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Este método recupera o salário mínimo nacional.
+     *
+     * @return Um BigDecimal que representa o salário mínimo nacional.
+     */
+    protected BigDecimal getMinimumWage() {
+        return taxOrValueService.getByType(TaxOrValueType.MINIMUM_WAGE).get(0).getFixedValue();
     }
 }

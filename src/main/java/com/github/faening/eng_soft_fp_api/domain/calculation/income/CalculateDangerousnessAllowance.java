@@ -15,32 +15,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Component
 public class CalculateDangerousnessAllowance implements PayrollCalculation {
+    private final RubricService rubricService;
     private final JobService jobService;
     private final TaxOrValueService taxOrValueService;
-    private final RubricService rubricService;
     private final static Integer RUBRIC_CODE = 1203;
 
     @Autowired
     public CalculateDangerousnessAllowance(
+        RubricService rubricService,
         JobService jobService,
-        TaxOrValueService taxOrValueService,
-        RubricService rubricService
+        TaxOrValueService taxOrValueService
     ) {
+        this.rubricService = rubricService;
         this.jobService = jobService;
         this.taxOrValueService = taxOrValueService;
-        this.rubricService = rubricService;
     }
 
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        if (parameters != null) {
-            JobResponseDTO job = getJobByEmployeeJobId(parameters.getEmployee().getJobId());
-
-            if (job != null && job.getDangerousness()) {
+        return Optional.ofNullable(parameters)
+            .map(CalculationParameters::getEmployee)
+            .map(EmployeeSummaryDTO::getJobId)
+            .map(this::getJobByEmployeeJobId)
+            .filter(job -> job.getDangerousness() != null && job.getDangerousness())
+            .map(job -> {
                 RubricResponseDTO rubric = getRubricByCode();
                 TaxOrValueResponseDTO taxOrValue = getTaxOrValueByType();
                 BigDecimal calculatedValue = calculateDangerousnessAllowance(parameters.getEmployee(), taxOrValue);
@@ -52,9 +56,8 @@ public class CalculateDangerousnessAllowance implements PayrollCalculation {
                     calculatedValue,
                     taxOrValue.getTaxPercentage()
                 );
-            }
-        }
-        return null;
+            })
+            .orElse(null);
     }
 
     /**
@@ -92,10 +95,12 @@ public class CalculateDangerousnessAllowance implements PayrollCalculation {
      * @param taxOrValue Um objeto TaxOrValueResponseDTO que representa o imposto ou valor.
      * @return O valor calculado da periculosidade do salário do funcionário.
      */
-    @SuppressWarnings("BigDecimalMethodWithoutRoundingCalled")
     protected BigDecimal calculateDangerousnessAllowance(EmployeeSummaryDTO employee, TaxOrValueResponseDTO taxOrValue) {
-        BigDecimal salary = employee.getSalary();
-        BigDecimal taxPercentage = taxOrValue.getTaxPercentage().divide(BigDecimal.valueOf(100));
-        return salary.multiply(taxPercentage);
+        return Optional.ofNullable(employee)
+            .map(EmployeeSummaryDTO::getSalary)
+            .flatMap(salary -> Optional.ofNullable(taxOrValue)
+                .map(tax -> tax.getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP))
+                .map(salary::multiply))
+            .orElse(BigDecimal.ZERO);
     }
 }
