@@ -84,7 +84,7 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
      * @param endDate a data de término do período
      * @return o valor total das vendas
      */
-    public BigDecimal getTotalSalesAmountInDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
+    public BigDecimal getTotalSalesAmountByEmployeeIdAndDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
         return getSalesByEmployeeIdAndDateRange(employeeId, startDate, endDate)
             .stream()
             .map(SaleResponseDTO::getAmount)

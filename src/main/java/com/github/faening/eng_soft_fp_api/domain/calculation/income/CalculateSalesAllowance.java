@@ -70,7 +70,7 @@ public class CalculateSalesAllowance implements PayrollCalculation {
                 LocalDate[] startAndEndDate = DateUtils.getFirstAndLastDayOfMonth(params.getYear(), params.getMonth().getValue());
                 LocalDate startDate = startAndEndDate[0];
                 LocalDate endDate = startAndEndDate[1];
-                return saleService.getTotalSalesAmountInDateRange(params.getEmployee().getId(), startDate, endDate);
+                return saleService.getTotalSalesAmountByEmployeeIdAndDateRange(params.getEmployee().getId(), startDate, endDate);
             })
             .orElse(BigDecimal.ZERO);
     }
