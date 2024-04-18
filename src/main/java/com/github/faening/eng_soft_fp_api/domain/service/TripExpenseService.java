@@ -12,10 +12,12 @@ import com.github.faening.eng_soft_fp_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class TripExpenseService extends AbstractService<TripExpenseRequestDTO, TripExpenseResponseDTO> {
     private final TripExpenseRepository repository;
@@ -46,7 +48,7 @@ public class TripExpenseService extends AbstractService<TripExpenseRequestDTO, T
             .findAll()
             .stream()
             .map(tripExpense -> responseMapper.toDTO(tripExpense, TripExpenseResponseDTO.class))
-            .collect(java.util.stream.Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -58,6 +60,46 @@ public class TripExpenseService extends AbstractService<TripExpenseRequestDTO, T
         return searchTripExpenseEntityById(id);
     }
 
+    /**
+     * Este método recupera todas as despesas de viagem de um funcionário em um intervalo de datas.
+     *
+     * @param employeeId O ID do funcionário.
+     * @param startDate A data de início do intervalo.
+     * @param endDate A data de término do intervalo.
+     * @return Uma lista de objetos TripExpenseResponseDTO que representam as despesas de viagem recuperadas.
+     */
+    public List<TripExpenseResponseDTO> getByEmployeeIdAndDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
+        Employee employee = employeeService.getEntityById(employeeId);
+        return repository
+            .findByEmployeeAndDateBetween(employee, startDate, endDate)
+            .stream()
+            .map(tripExpense -> responseMapper.toDTO(tripExpense, TripExpenseResponseDTO.class))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Este método recupera o valor total das despesas de viagem de um funcionário em um intervalo de datas.
+     *
+     * @param employeeId O ID do funcionário.
+     * @param startDate A data de início do intervalo.
+     * @param endDate A data de término do intervalo.
+     * @return O valor total das despesas de viagem recuperadas.
+     */
+    public BigDecimal getTotalTripExpenseAmountByEmployeeIdAndDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
+        return getByEmployeeIdAndDateRange(employeeId, startDate, endDate)
+            .stream()
+            .filter(tripExpense -> tripExpense.getStatus().equals(ApprovalStatus.APPROVED))
+            .map(TripExpenseResponseDTO::getAmount)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    /**
+     * Este método recupera as despesas de viagem de um funcionário em uma data específica.
+     *
+     * @param employeeId O ID do funcionário.
+     * @param date A data de interesse.
+     * @return Um objeto TripExpenseResponseDTO que representa a despesa de viagem recuperada.
+     */
     public TripExpenseResponseDTO getByEmployeeIdAndDate(Integer employeeId, LocalDate date) {
         Employee employee = employeeService.getEntityById(employeeId);
         TripExpense tripExpense = repository.findByEmployeeAndDate(employee, date);
