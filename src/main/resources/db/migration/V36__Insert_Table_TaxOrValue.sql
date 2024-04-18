@@ -15,13 +15,13 @@ VALUES
     ('MEAL_ALLOWANCE', NULL, NULL, NULL, 25.00, NULL, 'Valor diário do vale alimentação ou refeição'),
 
     -- Comissão de Vendas
-    ('SALES_ALLOWANCE', 1, 0.00, 5000.00, NULL, 1.00, 'Percentual de comissão para vendas abaixo de R$ 5.000.00'),
-    ('SALES_ALLOWANCE', 2, 5000.01, 20000.00, NULL, 2.00, 'Percentual de comissão para vendas entre R$ 5.000.00 até R$ 20.000,00'),
-    ('SALES_ALLOWANCE', 3, 20000.01, 40000.00, NULL, 3.00, 'Percentual de comissão para vendas entre R$ 20.000,01 até R$ 40.000,00'),
-    ('SALES_ALLOWANCE', 4, 40000.01, 60000.00, NULL, 4.00, 'Percentual de comissão para vendas entre R$ 40.000,01 até R$ 60.000,00'),
-    ('SALES_ALLOWANCE', 5, 60000.01, 80000.00, NULL, 5.00, 'Percentual de comissão para vendas entre R$ 60.000,01 até R$ 80.000,00'),
-    ('SALES_ALLOWANCE', 6, 80000.01, 100000.00, NULL, 6.00, 'Percentual de comissão para vendas entre R$ 80.000,01 até R$ 100.000,00'),
-    ('SALES_ALLOWANCE', 7, 100000.01, 999999.99, NULL, 7.00, 'Percentual de comissão para vendas acima de R$ 100.000,00'),
+    ('SALES_ALLOWANCE', 1, 0.00, 5000.00, NULL, 0.5, 'Percentual de comissão para vendas abaixo de R$ 5.000.00'),
+    ('SALES_ALLOWANCE', 2, 5000.01, 20000.00, NULL, 1.00, 'Percentual de comissão para vendas entre R$ 5.000.00 até R$ 20.000,00'),
+    ('SALES_ALLOWANCE', 3, 20000.01, 40000.00, NULL, 1.50, 'Percentual de comissão para vendas entre R$ 20.000,01 até R$ 40.000,00'),
+    ('SALES_ALLOWANCE', 4, 40000.01, 60000.00, NULL, 2.00, 'Percentual de comissão para vendas entre R$ 40.000,01 até R$ 60.000,00'),
+    ('SALES_ALLOWANCE', 5, 60000.01, 80000.00, NULL, 2.50, 'Percentual de comissão para vendas entre R$ 60.000,01 até R$ 80.000,00'),
+    ('SALES_ALLOWANCE', 6, 80000.01, 100000.00, NULL, 3.00, 'Percentual de comissão para vendas entre R$ 80.000,01 até R$ 100.000,00'),
+    ('SALES_ALLOWANCE', 7, 100000.01, 999999.99, NULL, 3.50, 'Percentual de comissão para vendas acima de R$ 100.000,00'),
 
     -- Adicional Noturno
     ('NIGHT_SHIFT_ALLOWANCE', NULL, NULL, NULL, NULL, 20.00, 'Percentual de adicional noturno'),

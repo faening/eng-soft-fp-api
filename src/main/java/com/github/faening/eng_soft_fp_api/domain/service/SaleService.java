@@ -11,11 +11,12 @@ import com.github.faening.eng_soft_fp_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO> {
     private final SaleRepository repository;
@@ -58,6 +59,14 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
         return searchSaleById(id);
     }
 
+    /**
+     * Este método recupera as vendas de um funcionário em um determinado período.
+     *
+     * @param employeeId o identificador do funcionário
+     * @param startDate a data de início do período
+     * @param endDate a data de término do período
+     * @return uma lista de vendas
+     */
     public List<SaleResponseDTO> getSalesByEmployeeIdAndDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
         Employee employee = employeeService.getEntityById(employeeId);
         return repository
@@ -65,6 +74,21 @@ public class SaleService extends AbstractService<SaleRequestDTO, SaleResponseDTO
             .stream()
             .map(sales -> responseMapper.toDTO(sales, SaleResponseDTO.class))
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Este método recupera o valor total das vendas de um funcionário em um determinado período.
+     *
+     * @param employeeId o identificador do funcionário
+     * @param startDate a data de início do período
+     * @param endDate a data de término do período
+     * @return o valor total das vendas
+     */
+    public BigDecimal getTotalSalesAmountInDateRange(Integer employeeId, LocalDate startDate, LocalDate endDate) {
+        return getSalesByEmployeeIdAndDateRange(employeeId, startDate, endDate)
+            .stream()
+            .map(SaleResponseDTO::getAmount)
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
