@@ -2,6 +2,7 @@ package com.github.faening.eng_soft_fp_api.domain.service;
 
 import com.github.faening.eng_soft_fp_api.data.model.Employee;
 import com.github.faening.eng_soft_fp_api.data.repository.EmployeeRepository;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.Gender;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
 import com.github.faening.eng_soft_fp_api.domain.mapper.employee.EmployeeRequestMapper;
 import com.github.faening.eng_soft_fp_api.domain.mapper.employee.EmployeeResponseMapper;
@@ -115,7 +116,10 @@ public class EmployeeService extends AbstractService<EmployeeRequestDTO, Employe
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ID_VALIDATION_MESSAGE));
     }
 
-    @Override
+    public long getEmployeeCountByGender(Gender gender) {
+        return repository.countByGender(gender);
+    }
+                                         @Override
     protected void validate(EmployeeRequestDTO request) {
         super.validate(request);
         if (request.getName() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_NAME));
