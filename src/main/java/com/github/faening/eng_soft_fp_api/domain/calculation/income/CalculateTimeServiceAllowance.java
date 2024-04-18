@@ -2,10 +2,8 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
-import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.tax_or_value.TaxOrValueResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
 import com.github.faening.eng_soft_fp_api.domain.service.TaxOrValueService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +41,10 @@ public class CalculateTimeServiceAllowance implements PayrollCalculation {
             .filter(employee -> employee.getTimeServiceAllowance() || LocalDate.now().getYear() - employee.getAdmissionDate().getYear() >= 10)
             .map(employee -> new PayrollItemRequestDTO(
                 getRubricByCode(),
-                getTaxOrValueByType(),
+                taxOrValueService.getTimeServiceAllowance(),
                 employee.getSalary(),
                 calculateTimeServiceAllowance(parameters),
-                getTaxOrValueByType().getTaxPercentage()
+                taxOrValueService.getTimeServiceAllowance().getTaxPercentage()
             ))
             .orElse(null);
     }
@@ -61,15 +59,6 @@ public class CalculateTimeServiceAllowance implements PayrollCalculation {
     }
 
     /**
-     * Este método recupera o primeiro imposto ou valor pelo seu tipo.
-     *
-     * @return Um objeto TaxOrValueResponseDTO que representa o imposto ou valor recuperado. Retorna null se o imposto ou valor não for encontrado.
-     */
-    protected TaxOrValueResponseDTO getTaxOrValueByType() {
-        return taxOrValueService.getByType(TaxOrValueType.TIME_SERVICE_ALLOWANCE).get(0);
-    }
-
-    /**
      * Este método calcula o adicional de tempo de serviço.
      *
      * @param parameters Os parâmetros de cálculo.
@@ -79,9 +68,12 @@ public class CalculateTimeServiceAllowance implements PayrollCalculation {
         return Optional.ofNullable(parameters)
             .map(CalculationParameters::getEmployee)
             .map(employee -> {
-                BigDecimal TimeServiceAllowancePercent = getTaxOrValueByType().getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-                return employee.getSalary().multiply(TimeServiceAllowancePercent).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal TimeServiceAllowancePercent = taxOrValueService
+                    .getTimeServiceAllowance().getTaxPercentage()
+                    .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                return employee.getSalary().multiply(TimeServiceAllowancePercent);
             })
+            .map(value -> value.setScale(2, RoundingMode.HALF_UP))
             .orElse(BigDecimal.ZERO);
     }
 }
