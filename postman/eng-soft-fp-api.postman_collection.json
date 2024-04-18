@@ -1,0 +1,2234 @@
+{
+	"info": {
+		"_postman_id": "d8c2ca4e-da30-4749-9f7c-6af170747954",
+		"name": "eng-soft-fp-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7391085",
+		"_collection_link": "https://interstellar-equinox-385744.postman.co/workspace/Team-Workspace~30f2540a-cef5-4b4a-8109-67add5d13fdf/collection/7391085-d8c2ca4e-da30-4749-9f7c-6af170747954?action=share&source=collection_link&creator=7391085"
+	},
+	"item": [
+		{
+			"name": "Greeting",
+			"item": [
+				{
+					"name": "Greeting",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "name",
+								"value": "Arthur",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_base_url}}/v1/greeting",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"greeting"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Companies / :Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/companies",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Companies / :Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"corporateName\": \"New CorporateName\",\r\n    \"tradeName\": \"New TradeName\",    \r\n    \"phone\": \"4429690456\",\r\n    \"email\": \"newmail@sac.com.br\",\r\n    \"addressStreet\": \"Rua Romão Paulo II\",\r\n    \"addressNumber\": \"316\",\r\n    \"addressComplement\": \"n/a\",\r\n    \"addressCity\": \"Cascavel\",\r\n    \"addressUF\": \"PR\",\r\n    \"addressZipCode\": \"85805110\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/companies/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"companies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF001\\] Manter Empresa"
+		},
+		{
+			"name": "Department",
+			"item": [
+				{
+					"name": "Departments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/departments",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Departments / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/departments/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Departments",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"new Department 21\",\r\n    \"enabled\": true,\r\n    \"managerId\": 5\r\n}\r\n\r\n// {\r\n//     \"description\": \"new Department 21\",\r\n//     \"managerId\": 5\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/departments",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"departments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Departments / : id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"new Description to department 22\",\r\n    \"enabled\": true,\r\n    \"managerId\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/departments/22",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"22"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Departments / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"new Description to department 22\",\r\n    \"enabled\": true,\r\n    \"managerId\": 8\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/departments/21",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"departments",
+								"21"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF002\\] Manter Departamentos"
+		},
+		{
+			"name": "Job",
+			"item": [
+				{
+					"name": "Jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/jobs",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/jobs/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"New Job\",\r\n    \"experienceLevel\": \"TRAINEE\",\r\n    \"baseSalary\": 1100.00,\r\n    \"dangerousness\": false,\r\n    \"unhealthiness\": false,\r\n    \"departmentId\": 1,\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/jobs",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Update Job\",\r\n    \"experienceLevel\": \"TRAINEE\",\r\n    \"baseSalary\": 1200.00,\r\n    \"dangerousness\": false,\r\n    \"unhealthiness\": false,\r\n    \"departmentId\": 1,\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/jobs/93",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"jobs",
+								"93"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jobs / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/jobs/93",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"jobs",
+								"93"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF004\\] Manter Cargos"
+		},
+		{
+			"name": "Work Shifts",
+			"item": [
+				{
+					"name": "Work Shifts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/work-shifts",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"work-shifts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Work Shifts / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/work-shifts/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"work-shifts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Work Shifts",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Turno Z (8H)\",\r\n    \"startOfWorkday\": \"04:00:00\",\r\n    \"startOfBreak\": \"08:00:00\",\r\n    \"endOfBreak\": \"10:00:00\",\r\n    \"endOfWorkday\": \"14:00:00\",\r\n    \"nightShiftAllowance\": false,\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/work-shifts",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"work-shifts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Work Shifts / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Turno ZA (8H)\",\r\n    \"startOfWorkday\": \"03:00:00\",\r\n    \"startOfBreak\": \"05:00:00\",\r\n    \"endOfBreak\": \"12:00:00\",\r\n    \"endOfWorkday\": \"14:00:00\",\r\n    \"nightShiftAllowance\": false,\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/work-shifts/8",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"work-shifts",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Work Shifts / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/work-shifts/8",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"work-shifts",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF008\\] Manter Jornadas de Trabalho"
+		},
+		{
+			"name": "Hours Worked Sheet",
+			"item": [
+				{
+					"name": "Hours Worked Sheet",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/hours-worked-sheets",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"hours-worked-sheets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hours Worked Sheet / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/hours-worked-sheets/10",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"hours-worked-sheets",
+								"10"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hours Worked Sheet / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/hours-worked-sheets/employee?employeeId=1&startDate=2024-03-01&endDate=2024-03-31",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"hours-worked-sheets",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "1"
+								},
+								{
+									"key": "startDate",
+									"value": "2024-03-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-03-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hours Worked Sheet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 1,\r\n    \"date\": \"2024-05-01\",\r\n    \"regularHours\": \"08:00:00\",\r\n    \"negativeHours\": \"00:00:00\",\r\n    \"overtime50\": \"00:00:00\",\r\n    \"overtime100\": \"00:00:00\",\r\n    \"timeBank\": \"00:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/hours-worked-sheets",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"hours-worked-sheets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hours Worked Sheet / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 1,\r\n    \"date\": \"2024-05-01\",\r\n    \"regularHours\": \"08:00:00\",\r\n    \"negativeHours\": \"00:00:00\",\r\n    \"overtime50\": \"00:30:00\",\r\n    \"overtime100\": \"00:30:00\",\r\n    \"timeBank\": \"00:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/hours-worked-sheets/2581",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"hours-worked-sheets",
+								"2581"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hours Worked Sheet / :id Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/hours-worked-sheets/2581",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"hours-worked-sheets",
+								"2581"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF013\\] Manter Horas Trabalhadas, Horas Extra e Banco de Horas"
+		},
+		{
+			"name": "Sale",
+			"item": [
+				{
+					"name": "Sales",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/sales",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sales / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/sales/20",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"sales",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sales / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/sales/employee?employeeId=17&startDate=2024-03-01&endDate=2024-03-31",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"sales",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "17"
+								},
+								{
+									"key": "startDate",
+									"value": "2024-03-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-03-31"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sales",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 17,\r\n    \"date\": \"2024-05-01\",\r\n    \"amount\": 500.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/sales",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sales / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 18,\r\n    \"date\": \"2024-05-01\",\r\n    \"amount\": 1500.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/sales/174",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"sales",
+								"174"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sales / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/sales/174",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"sales",
+								"174"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF006\\] Manter Eventos Financeiros (Rubricas)"
+		},
+		{
+			"name": "Absence Sheet",
+			"item": [
+				{
+					"name": "Absence Sheets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/absence-sheets",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"absence-sheets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Absence Sheets / : id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/absence-sheets/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"absence-sheets",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Absence Sheets / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/absence-sheets/1?employeeId=46&type=DAY_OFF&startDate=2024-03-22T00:00:00&endDate=2024-03-22T23:59:00",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"absence-sheets",
+								"1"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "46"
+								},
+								{
+									"key": "type",
+									"value": "DAY_OFF"
+								},
+								{
+									"key": "startDate",
+									"value": "2024-03-22T00:00:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-03-22T23:59:00"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Absence Sheets",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 46,\r\n    \"type\": \"DAY_OFF\",\r\n    \"startDate\": \"2023-03-21T21:00:00\",\r\n    \"endDate\": \"2024-03-21T21:00:00\",\r\n    \"observation\": \"DAY OFF\",\r\n    \"status\": \"PENDING\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/absence-sheets",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"absence-sheets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Absence Sheets / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 46,\r\n    \"type\": \"DAY_OFF\",\r\n    \"startDate\": \"2023-03-21T21:00:00\",\r\n    \"endDate\": \"2024-03-21T21:00:00\",\r\n    \"observation\": \"DAY OFF\",\r\n    \"status\": \"APPROVED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/absence-sheets/5",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"absence-sheets",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Absence Sheets / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/absence-sheets/5",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"absence-sheets",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe \\[RF011\\] Manter Faltas ou Ausências"
+		},
+		{
+			"name": "Benefit Voucher",
+			"item": [
+				{
+					"name": "Benefit Voucher",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/benefit-vouchers",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"benefit-vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Benefit Voucher / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/benefit-vouchers/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"benefit-vouchers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Benefit Voucher / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/benefit-vouchers/employee?employeeId=1&benefitType=MEAL",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"benefit-vouchers",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "1"
+								},
+								{
+									"key": "releaseDate",
+									"value": "2024-03-01",
+									"disabled": true
+								},
+								{
+									"key": "benefitType",
+									"value": "MEAL"
+								},
+								{
+									"key": "paymentStatus",
+									"value": "APPROVED",
+									"disabled": true
+								},
+								{
+									"key": "payrollDeductible",
+									"value": "false",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Benefit Voucher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 1,\r\n    \"paidValue\": 525.0,\r\n    \"releaseDate\": \"2024-03-01\",\r\n    \"description\": \"VA Ref. Março 2024\",\r\n    \"benefitType\": \"MEAL\",\r\n    \"paymentStatus\": \"APPROVED\",\r\n    \"payrollDeductible\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/benefit-vouchers",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"benefit-vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Benefit Voucher / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 1,\r\n    \"paidValue\": 525.0,\r\n    \"releaseDate\": \"2024-03-01\",\r\n    \"description\": \"VA Ref. Março 2024\",\r\n    \"benefitType\": \"MEAL\",\r\n    \"paymentStatus\": \"APPROVED\",\r\n    \"payrollDeductible\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/benefit-vouchers/133",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"benefit-vouchers",
+								"133"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Benefit Voucher / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/benefit-vouchers/133",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"benefit-vouchers",
+								"133"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "Employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/employees",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employees / Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/employees/summary",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employees",
+								"summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employees / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/employees/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employees",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employees / Summary / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/employees/summary/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employees",
+								"summary",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employees",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Mário Sebastião Drumond\",\r\n    \"rg\": \"338989754\",\r\n    \"cpf\": \"23644737568\",\r\n    \"birthDate\": \"1992-08-05\",\r\n    \"gender\": \"MALE\",\r\n    \"addressStreet\": \"Rua Motorista José Evangelista\",\r\n    \"addressNumber\": \"100\",\r\n    \"addressNeighborhood\": \"Memorare\",\r\n    \"addressComplement\": \"\",\r\n    \"addressCity\": \"Cascavel\",\r\n    \"addressUF\": \"PR\",\r\n    \"addressZipCode\": \"85780000\",\r\n    \"phone\": \"86995768223\",\r\n    \"email\": \"mario_sebastiao_drumond@domain.com\",\r\n    \"admissionDate\": \"2024-03-01\",\r\n    \"timeServiceAllowance\": false,\r\n    \"departmentId\": 1,\r\n    \"jobId\": 7,\r\n    \"workShiftId\": 2,\r\n    \"salary\": 2500.00,\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/employees",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employees",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Mário Sebastião Drumond\",\r\n    \"rg\": \"338989754\",\r\n    \"cpf\": \"23644737568\",\r\n    \"birthDate\": \"1992-08-05\",\r\n    \"gender\": \"MALE\",\r\n    \"addressStreet\": \"Rua Motorista José Evangelista\",\r\n    \"addressNumber\": \"100\",\r\n    \"addressNeighborhood\": \"Memorare\",\r\n    \"addressComplement\": \"\",\r\n    \"addressCity\": \"Cascavel\",\r\n    \"addressUF\": \"PR\",\r\n    \"addressZipCode\": \"85780000\",\r\n    \"phone\": \"86995768223\",\r\n    \"email\": \"mario_sebastiao_drumond@domain.com\",\r\n    \"admissionDate\": \"2024-03-01\",\r\n    \"timeServiceAllowance\": false,\r\n    \"departmentId\": 1,\r\n    \"jobId\": 7,\r\n    \"workShiftId\": 2,\r\n    \"salary\": 2500.00,\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/employees/61",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employees",
+								"61"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employees",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/employees/61",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employees",
+								"61"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF009\\] Manter Funcionários"
+		},
+		{
+			"name": "Employee Dependent",
+			"item": [
+				{
+					"name": "Employee Dependents",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/employee-dependents",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employee-dependents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Dependents / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/employee-dependents/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employee-dependents",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Dependents",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 8,\r\n    \"name\": \"Miguel Lucas Novaes\",\r\n    \"rg\": \"385644565\",\r\n    \"cpf\": \"12460465980\",\r\n    \"birthDate\": \"2015-08-27\",\r\n    \"gender\": \"MALE\",\r\n    \"specialNeeds\": true,\r\n    \"familyAllowance\": true,\r\n    \"daycareAllowance\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/employee-dependents",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employee-dependents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Dependents / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 8,\r\n    \"name\": \"Novo Nome\",\r\n    \"rg\": \"385644565\",\r\n    \"cpf\": \"12460465980\",\r\n    \"birthDate\": \"2015-08-27\",\r\n    \"gender\": \"MALE\",\r\n    \"specialNeeds\": true,\r\n    \"familyAllowance\": true,\r\n    \"daycareAllowance\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/employee-dependents/7",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"employee-dependents",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Dependents / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 8,\r\n    \"name\": \"Novo Nome\",\r\n    \"rg\": \"385644565\",\r\n    \"cpf\": \"12460465980\",\r\n    \"birthDate\": \"2015-08-27\",\r\n    \"gender\": \"MALE\",\r\n    \"specialNeeds\": true,\r\n    \"familyAllowance\": true,\r\n    \"daycareAllowance\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/{{api_base_version}}/employee-dependents",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"{{api_base_version}}",
+								"employee-dependents"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payroll",
+			"item": [
+				{
+					"name": "Payroll / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/payroll/employee?employeeId=1&month=MARCH&year=2024",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"payroll",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "1"
+								},
+								{
+									"key": "month",
+									"value": "MARCH"
+								},
+								{
+									"key": "year",
+									"value": "2024"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payroll / Calculate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/payroll/calculate?employeeId=1&month=MARCH&year=2024",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"payroll",
+								"calculate"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "1"
+								},
+								{
+									"key": "month",
+									"value": "MARCH"
+								},
+								{
+									"key": "year",
+									"value": "2024"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rubrics",
+			"item": [
+				{
+					"name": "Rubrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/rubrics",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"rubrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rubrics / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/rubrics/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"rubrics",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rubrics",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": 1028,\r\n    \"name\": \"Registo Novo\",\r\n    \"kind\": \"Salário, vencimento, soldo\",\r\n    \"description\": \"Corresponde ao salário básico contratual do empregado contratado de acordo com a CLT e o vencimento mensal do servidor público e do militar\",\r\n    \"type\": \"INCOME\",\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/rubrics",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"rubrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rubrics / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": 1015,\r\n    \"name\": \"Registo Novo 2\",\r\n    \"kind\": \"Salário, vencimento, soldo\",\r\n    \"description\": \"Corresponde ao salário básico contratual do empregado contratado de acordo com a CLT e o vencimento mensal do servidor público e do militar\",\r\n    \"type\": \"INCOME\",\r\n    \"enabled\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/rubrics/130",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"rubrics",
+								"130"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rubrics / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/rubrics/130",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"rubrics",
+								"130"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tax Or Value",
+			"item": [
+				{
+					"name": "Tax Or Value",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/tax-or-values",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"tax-or-values"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tax Or Value / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/tax-or-values/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"tax-or-values",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tax Or Value / type / :type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/tax-or-values/type/IRRF",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"tax-or-values",
+								"type",
+								"IRRF"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tax Or Value",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"MINIMUM_WAGE\",\r\n    \"range\": null,\r\n    \"rangeMinimumWage\": null,\r\n    \"rangeMaximumWage\": null,\r\n    \"fixedValue\": 3250.00,\r\n    \"taxPercentage\": null,\r\n    \"description\": \"Valor do salário mínimo vigente no Brasil atualmente\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/tax-or-values",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"tax-or-values"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tax Or Value / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\": \"MINIMUM_WAGE\",\r\n    \"range\": null,\r\n    \"rangeMinimumWage\": null,\r\n    \"rangeMaximumWage\": null,\r\n    \"fixedValue\": 1920.00,\r\n    \"taxPercentage\": null,\r\n    \"description\": \"Valor do salário mínimo vigente no Brasil atualmente\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/tax-or-values/31",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"tax-or-values",
+								"31"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tax Or Value / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/tax-or-values/31",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"tax-or-values",
+								"31"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Observe o \\[RF007\\] Manter Alíquotas de Impostos e Tributos"
+		},
+		{
+			"name": "Loan",
+			"item": [
+				{
+					"name": "Loans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/loans",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"loans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loans / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/loans/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"loans",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loans / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/loans/employee?employeeId=44",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"loans",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "44"
+								},
+								{
+									"key": "requestDate",
+									"value": "2024-03-21",
+									"disabled": true
+								},
+								{
+									"key": "approvalDate",
+									"value": "2024-03-19",
+									"disabled": true
+								},
+								{
+									"key": "companyPaymentDate",
+									"value": "2024-03-20",
+									"disabled": true
+								},
+								{
+									"key": "paymentStatus",
+									"value": "PAID",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loans",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 38,\r\n    \"loanAmountValue\": 1000.00,\r\n    \"installmentQuantity\": 2,\r\n    \"requestDate\": \"2024-03-18\",\r\n    \"approvalDate\": \"2024-03-19\",\r\n    \"companyPaymentDate\": \"2024-03-20\",\r\n    \"paymentStatus\": \"PENDING\",\r\n    \"installments\": [\r\n        {\r\n            \"installmentNumber\": 1,\r\n            \"installmentValue\": 500.00,\r\n            \"discountMonth\": \"MAY\",\r\n            \"paymentStatus\": null\r\n        },\r\n        {\r\n            \"installmentNumber\": 2,\r\n            \"installmentValue\": 500.00,\r\n            \"discountMonth\": \"JUNE\",\r\n            \"paymentStatus\": null\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/loans",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"loans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loans / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/loans/11",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"loans",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Legal Charges",
+			"item": [
+				{
+					"name": "Legal Charges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/legal-charges",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"legal-charges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Legal Charges / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/legal-charges/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"legal-charges",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Legal Charges / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/legal-charges/employee?employeeId=25&releaseDate=2024-01-15",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"legal-charges",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "25"
+								},
+								{
+									"key": "legalChargeAmount",
+									"value": "5000.0",
+									"disabled": true
+								},
+								{
+									"key": "percentage",
+									"value": "10.0",
+									"disabled": true
+								},
+								{
+									"key": "releaseDate",
+									"value": "2024-01-15"
+								},
+								{
+									"key": "isRecurring",
+									"value": "true",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Legal Charges",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 38,\r\n    \"loanAmountValue\": 1000.00,\r\n    \"installmentQuantity\": 2,\r\n    \"requestDate\": \"2024-03-18\",\r\n    \"approvalDate\": \"2024-03-19\",\r\n    \"companyPaymentDate\": \"2024-03-20\",\r\n    \"paymentStatus\": \"PENDING\",\r\n    \"installments\": [\r\n        {\r\n            \"installmentNumber\": 1,\r\n            \"installmentValue\": 500.00,\r\n            \"discountMonth\": \"MAY\",\r\n            \"paymentStatus\": null\r\n        },\r\n        {\r\n            \"installmentNumber\": 2,\r\n            \"installmentValue\": 500.00,\r\n            \"discountMonth\": \"JUNE\",\r\n            \"paymentStatus\": null\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/legal-charges",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"legal-charges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Legal Charges / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/legal-charges/11",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"legal-charges",
+								"11"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Union Contribution",
+			"item": [
+				{
+					"name": "Union Contribution",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/union-contributions",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"union-contributions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Union Contribution / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/union-contributions",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"union-contributions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Union Contribution / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/union-contributions/employee?employeeId=1&releaseYear=2024",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"union-contributions",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "1"
+								},
+								{
+									"key": "releaseYear",
+									"value": "2024"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Union Contribution",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 1,\r\n    \"releaseYear\": 2025,\r\n    \"optedOut\": true,\r\n    \"paymentStatus\": \"PENDING\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/union-contributions",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"union-contributions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Union Contribution / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 1,\r\n    \"releaseYear\": 2025,\r\n    \"optedOut\": true,\r\n    \"paymentStatus\": \"PAID\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/union-contributions/61",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"union-contributions",
+								"61"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Union Contribution / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/union-contributions/61",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"union-contributions",
+								"61"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trip Expenses",
+			"item": [
+				{
+					"name": "Trip Expenses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/trip-expenses",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"trip-expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trip Expenses / :id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/trip-expenses/1",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"trip-expenses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trip Expenses / Employee",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/trip-expenses/employee?employeeId=17&date=2024-03-01",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"trip-expenses",
+								"employee"
+							],
+							"query": [
+								{
+									"key": "employeeId",
+									"value": "17"
+								},
+								{
+									"key": "date",
+									"value": "2024-03-01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trip Expenses",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 21,\r\n    \"date\": \"2024-03-01\",\r\n    \"amount\": 150.00,\r\n    \"status\": \"APPROVED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/trip-expenses",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"trip-expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trip Expenses / :id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employeeId\": 21,\r\n    \"date\": \"2024-03-01\",\r\n    \"amount\": 300.00,\r\n    \"status\": \"APPROVED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/v1/trip-expenses/27",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"trip-expenses",
+								"27"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trip Expenses / :id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/v1/trip-expenses/27",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"v1",
+								"trip-expenses",
+								"27"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
