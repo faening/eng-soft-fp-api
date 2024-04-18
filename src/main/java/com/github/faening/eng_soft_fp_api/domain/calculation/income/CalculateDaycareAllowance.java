@@ -1,130 +1,112 @@
 package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
+import com.github.faening.eng_soft_fp_api.config.WorkingHoursConfig;
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
+import com.github.faening.eng_soft_fp_api.domain.calculation.generics.WorkedHoursCalculation;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.Gender;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.HoursWorkedType;
+import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.employee_dependent.EmployeeDependentResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.service.*;
+import org.springframework.stereotype.Component;
 
-/*
- * Requisito: [RD008] Calcular Adicional Creche / Babá
- *
- * Descrição:
- * Esta classe é responsável por calcular o adicional créche ou babá recebido por uma funcionária em um determinado mês.
- * Empresas que possuam mais de 30 colaboradoras com mais de 16 anos, têm a obrigação de oferecer um espaço físico para que as mães deixem
- * seus filhos com idade entre 0 a 6 meses, enquanto elas trabalham. Caso esse espaço não seja ofertado pela empresa, ela passa a ser
- * obrigada a das auxílio-creche/babá a mulher até que o bebê tenha 6 meses de idade.
- *
- * Funcionamento:
- * Para realizar os cálculos, esta classe observa as propriedades `employee_dependent.daycare_allowance` e `employee_dependent.birth_date`.
- * O adicional de creche/babá é um valor aplicado sobre o dia de trabalho da funcionária no mês. O valor é armazenado na tabela
- * `tax_or_value` com o `type`: `DAYCARE_ALLOWANCE`.
- * Observe que um funcionário pode ter mais de um dependente e o adicional para creche / babá deve ser calculado para cada dependente.
- * O valor total do adicional de creche / babá é a soma dos valores calculados para cada dependente.
- *
- * Exemplos:
- * ...
- */
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Optional;
 
-@SuppressWarnings("unused")
-public class CalculateDaycareAllowance implements PayrollCalculation {
-    /*
-     * Dicas de codificação:
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@Component
+public class CalculateDaycareAllowance extends WorkedHoursCalculation implements PayrollCalculation {
+    private final RubricService rubricService;
+    private final TaxOrValueService taxOrValueService;
+    private final EmployeeService employeeService;
+    private final EmployeeDependentService employeeDependentService;
+    private final static Integer RUBRIC_CODE = 1406;
+
+    public CalculateDaycareAllowance(
+        RubricService rubricService,
+        TaxOrValueService taxOrValueService,
+        EmployeeService employeeService,
+        EmployeeDependentService employeeDependentService,
+        WorkShiftService workShiftService,
+        HoursWorkedSheetService hoursWorkedSheetService,
+        WorkingHoursConfig workingHoursConfig
+    ) {
+        super(workShiftService, hoursWorkedSheetService, workingHoursConfig);
+        this.rubricService = rubricService;
+        this.taxOrValueService = taxOrValueService;
+        this.employeeService = employeeService;
+        this.employeeDependentService = employeeDependentService;
+    }
+
+    /**
+     * Este método calcula o auxílio creche de um funcionário com base no valor fixo do auxílio creche e no total de horas trabalhadas.
+     * Este calculo é feito somente se o número de funcionárias mulheres for maior que 30 e se o funcionário tiver dependentes com direito ao auxílio creche.
      *
-     * Dica 1:
-     * Sempre crie uma branch separada para desenvolver uma funcionalidade. Isso permite que você trabalhe em um ambiente isolado e evita
-     * conflitos com o código de seus colegas.
-     *
-     * Outro ponto importante é que, a branch de origem sempre deve ser a `develop`.
-     *
-     * Lembre-se de seguir o padrão de nomenclatura de branches. Por exemplo: PRL-001, PRL-002, PRL-003, etc. Observe isso na respectiva
-     * tarefa do Trello.
-     *
-     *
-     *
-     * Dica 2:
-     * Sempre busque a separação de responsabilidades. Se você perceber que o método está fazendo mais de uma coisa, considere dividí-lo em
-     * métodos menores. Isso facilita a leitura e a manutenção do código. Por exemplo:
-     *
-     * public void calculate(CalculationParameters parameters) {
-     *   metodo1();
-     *   metodo2();
-     *   return ...
-     * }
-     *
-     *
-     *
-     * Dica 3:
-     * Evite aninhar if's. Se você perceber que isso está acontecendo, considere decompor o código ou criar métodos menores. Por exemplo:
-     *
-     * if (condicao1) {
-     *    if (condicao2) {
-     *      ...
-     *   }
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 && condicao2) {
-     *   ...
-     * }
-     *
-     * ou
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo2();
-     * }
-     *
-     *
-     *
-     * Dica 4:
-     * Evite duplicação de código. Se você perceber que um trecho de código está sendo repetido, considere reduzi-lo para evitar a duplicação.
-     * Por exemplo:
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo1();
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 || condicao2) {
-     *   metodo1();
-     * }
-     *
-     *
-     *
-     * Dica 5:
-     * Não se esqueça de tratar os casos de erro. Se algo der errado, retorne uma exceção. Sempre que possível, faça a verificação das
-     * condições de erro no início do método. Por exemplo:
-     *
-     * if (condicao1) {
-     *   if (condicao1 == null) throw new RuntimeException("Mensagem de erro");
-     *   ...
-     * }
-     *
-     *
-     * Dica 6:
-     * Não se esqueça de testar o seu código. Testes de unidade são uma ótima forma de garantir que o seu código está funcionando. Se você
-     * não sabe como fazer testes de unidade, procure aprender ou use o ChatGPT. Eles são muito importantes para garantir a qualidade do seu
-     * código.
-     *
-     *
-     * Dica 7:
-     * Atenção ao retorno do método calculate. Ele deve retornar um objeto do tipo PayrollItemRequestDTO.
-     *
-     *
-     *
-     * Dica 8:
-     * Por fim e não menos importante, ao terminar sua implementação, remova esses comentários e faça o commit e push do código.
-     * */
+     * @param parameters Parâmetros de cálculo que incluem detalhes do funcionário, do mês e ano de interesse.
+     * @return O valor calculado do auxílio creche do funcionário.
+     */
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        return null;
+        return Optional.ofNullable(parameters)
+            .filter(empService -> employeeService.getEmployeeCountByGender(Gender.FEMALE) >= 30)
+            .filter(param -> getDependentsByEmployeeWithDaycareAllowance(param.getEmployee()) > 0)
+            .map(param -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                taxOrValueService.getDaycareAllowance(),
+                calculateTotalHoursInMin(parameters, HoursWorkedType.REGULAR)
+                    .setScale(0, RoundingMode.HALF_UP)
+                    .divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP),
+                calculateDaycareAllowance(parameters),
+                taxOrValueService.getDaycareAllowance().getFixedValue()
+            ))
+            .orElse(null);
+    }
+
+    /**
+     * Este método recupera uma rubrica pelo seu código.
+     *
+     * @return Um objeto RubricResponseDTO que representa a rubrica recuperada.
+     */
+    public RubricResponseDTO getRubricByCode() {
+        return rubricService.getByCode(RUBRIC_CODE);
+    }
+
+    /**
+     * Este método recupera a quantidade de dependentes de um funcionário que possuem direito ao auxílio créche.
+     *
+     * @param employee O funcionário que terá a quantidade de dependentes com direito ao auxílio família recuperada.
+     * @return A quantidade de dependentes do funcionário que possuem direito ao auxílio família.
+     */
+    protected Integer getDependentsByEmployeeWithDaycareAllowance(EmployeeSummaryDTO employee) {
+        long count = employeeDependentService.getByEmployeeId(employee.getId())
+            .stream()
+            .filter(EmployeeDependentResponseDTO::getDaycareAllowance)
+            .count();
+        return Math.toIntExact(count);
+    }
+
+    /**
+    * Este método calcula o auxílio creche de um funcionário com base no valor fixo do auxílio creche e no total de horas trabalhadas.
+     *
+    * @param parameters Parâmetros de cálculo que incluem detalhes do funcionário, do mês e ano de interesse.
+    * @return O valor calculado do auxílio creche do funcionário.
+    */
+    protected BigDecimal calculateDaycareAllowance(CalculationParameters parameters) {
+        return Optional.ofNullable(parameters)
+            .map(params -> {
+                // Calcula o valor do auxílio creche por hora
+                BigDecimal allowanceValuePerDay = taxOrValueService
+                    .getDaycareAllowance().getFixedValue()
+                    .divide(BigDecimal.valueOf(8), 3, RoundingMode.HALF_UP);
+                // Calcula o total de horas trabalhadas pelo funcionário
+                BigDecimal employeeTotalHours = calculateTotalHoursInMin(params, HoursWorkedType.REGULAR).divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
+                return employeeTotalHours.multiply(allowanceValuePerDay);
+            })
+            .map(value -> value.setScale(2, RoundingMode.HALF_UP))
+            .orElse(BigDecimal.ZERO);
     }
 }
