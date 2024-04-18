@@ -30,7 +30,7 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
     private static final String VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE = "taxOrValueService.validation.NightShiftAllowance";
     private static final String VALIDATION_MESSAGE_TIME_SERVICE_ALLOWANCE = "taxOrValueService.validation.TimeServiceAllowance";
     private static final String VALIDATION_MESSAGE_DAYCARE_ALLOWANCE = "taxOrValueService.validation.DaycareAllowance";
-
+    private static final String VALIDATION_MESSAGE_SALES_ALLOWANCE = "taxOrValueService.validation.SalesAllowance";
 
     @Autowired
     public TaxOrValueService(
@@ -181,6 +181,33 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
             .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
             .findFirst()
             .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_DAYCARE_ALLOWANCE));
+    }
+
+    /**
+     * Este método recupera uma lista de objetos que representam os percentuais de comissão sobre vendas.
+     *
+     * @return Uma lista de objetos TaxOrValueResponseDTO que representam os percentuais de comissão sobre vendas.
+     */
+    public List<TaxOrValueResponseDTO> getSalesAllowanceList() {
+        return repository
+            .findByType(TaxOrValueType.SALES_ALLOWANCE)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Este método recupera o objeto que representa o percentual de comissão sobre vendas.
+     * @param saleAmount O valor da venda.
+     * @return O objeto TaxOrValueResponseDTO que representa o percentual de comissão sobre vendas.
+     */
+    public TaxOrValueResponseDTO getSalesAllowanceBySaleRange(BigDecimal saleAmount) {
+        return getSalesAllowanceList()
+            .stream()
+            .filter(taxOrValue -> taxOrValue.getRangeMinimumWage().compareTo(saleAmount) <= 0
+                               && taxOrValue.getRangeMaximumWage().compareTo(saleAmount) >= 0)
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_SALES_ALLOWANCE));
     }
 
     @Override
