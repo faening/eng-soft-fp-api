@@ -139,10 +139,13 @@ public class CalculateNightShiftAllowance extends WorkedHoursCalculation impleme
                 // Calcula o valor da hora do funcionário
                 BigDecimal employeeHourlyRate = EmployeeUtils.calculateHourlyRate(salary, getWorkingHoursInMonth(parameters));
                 // Calcula o percentual do adicional noturno
-                BigDecimal NightShiftAllowancePercentage = taxOrValueService.getNightShiftAllowance().getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                BigDecimal NightShiftAllowancePercentage = taxOrValueService
+                    .getNightShiftAllowance().getTaxPercentage()
+                    .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
                 // Calcula o adicional noturno por hora de trabalho (valor da hora * percentual do adicional noturno)
                 return employeeHourlyRate.multiply(NightShiftAllowancePercentage);
             })
+            .map(value -> value.setScale(2, RoundingMode.HALF_UP))
             .orElse(BigDecimal.ZERO);
     }
 }

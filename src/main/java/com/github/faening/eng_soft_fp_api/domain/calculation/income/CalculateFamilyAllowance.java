@@ -83,7 +83,9 @@ public class CalculateFamilyAllowance implements PayrollCalculation {
         return Optional.ofNullable(employee)
             .map(emp -> {
                 BigDecimal minimumWageValue = taxOrValueService.getMinimumWage();
-                BigDecimal allowancePercentage = taxOrValueService.getFamilyAllowance().getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                BigDecimal allowancePercentage = taxOrValueService
+                    .getFamilyAllowance().getTaxPercentage()
+                    .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
                 return minimumWageValue
                     .multiply(BigDecimal.valueOf(getDependentsByEmployeeWithFamilyAllowance(emp)))
                     .multiply(allowancePercentage);
