@@ -29,6 +29,7 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
     private static final String VALIDATION_MESSAGE_FAMILY_ALLOWANCE = "taxOrValueService.validation.FamilyAllowance";
     private static final String VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE = "taxOrValueService.validation.NightShiftAllowance";
     private static final String VALIDATION_MESSAGE_TIME_SERVICE_ALLOWANCE = "taxOrValueService.validation.TimeServiceAllowance";
+    private static final String VALIDATION_MESSAGE_DAYCARE_ALLOWANCE = "taxOrValueService.validation.DaycareAllowance";
 
 
     @Autowired
@@ -166,6 +167,20 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
             .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
             .findFirst()
             .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_TIME_SERVICE_ALLOWANCE));
+    }
+
+    /**
+     * Este método recupera o objeto que representa o valor do adicional de creche.
+     *
+     * @return O objeto TaxOrValueResponseDTO que representa o valor do adicional de creche.
+     */
+    public TaxOrValueResponseDTO getDaycareAllowance() {
+        return repository
+            .findByType(TaxOrValueType.DAYCARE_ALLOWANCE)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_DAYCARE_ALLOWANCE));
     }
 
     @Override
