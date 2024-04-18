@@ -11,9 +11,10 @@ import com.github.faening.eng_soft_fp_api.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Service
 public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, TaxOrValueResponseDTO> {
     private final TaxOrValueRepository repository;
@@ -22,6 +23,12 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
 
     private static final String VALIDATION_MESSAGE_TYPE = "taxOrValueService.validation.type";
     private static final String VALIDATION_MESSAGE_DESCRIPTION = "taxOrValueService.validation.description";
+    private static final String VALIDATION_MESSAGE_MINIMUM_WAGE = "taxOrValueService.validation.minimumWage";
+    private static final String VALIDATION_MESSAGE_DANGEROUSNESS_ALLOWANCE = "taxOrValueService.validation.DangerousnessAllowance";
+    private static final String VALIDATION_MESSAGE_UNHEALTHINESS_ALLOWANCE = "taxOrValueService.validation.UnhealthinessAllowance";
+    private static final String VALIDATION_MESSAGE_FAMILY_ALLOWANCE = "taxOrValueService.validation.FamilyAllowance";
+    private static final String VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE = "taxOrValueService.validation.NightShiftAllowance";
+
 
     @Autowired
     public TaxOrValueService(
@@ -61,6 +68,88 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
             .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
             .collect(java.util.stream.Collectors.toList()
             );
+    }
+
+    /**
+     * Este método recupera o valor do salário mínimo.
+     *
+     * @return O valor do salário mínimo.
+     */
+    public BigDecimal getMinimumWage() {
+        return repository
+            .findByType(TaxOrValueType.MINIMUM_WAGE)
+            .stream()
+            .map(TaxOrValue::getFixedValue)
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_MINIMUM_WAGE));
+    }
+
+    /**
+     * Este método recupera objeto que representa o valor do adicional de periculosidade.
+     *
+     * @return O objeto TaxOrValueResponseDTO que representa o valor do adicional de periculosidade.
+     */
+    public TaxOrValueResponseDTO getDangerousnessAllowance() {
+        return repository
+            .findByType(TaxOrValueType.DANGEROUSNESS_ALLOWANCE)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_DANGEROUSNESS_ALLOWANCE));
+    }
+
+    /**
+     * Este método recupera uma lista de objetos que representam os percentuais de adicional por insalubridade.
+     *
+     * @return O objeto TaxOrValueResponseDTO que representa o percentual de adicional por insalubridade.
+     */
+    public List<TaxOrValueResponseDTO> getUnhealthinessAllowanceList() {
+        return repository
+            .findByType(TaxOrValueType.UNHEALTHINESS_ALLOWANCE)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Este método recupera o objeto que representa o  percentual de adicional por insalubridade.
+     *
+     * @param rangeId O ID do percentual de adicional por insalubridade.
+     * @return Retorna o objeto TaxOrValueResponseDTO que representa o percentual de adicional por insalubridade.
+     */
+    public TaxOrValueResponseDTO getUnhealthinessAllowanceByRangeId(Integer rangeId) {
+        return getUnhealthinessAllowanceList()
+            .stream()
+            .filter(taxOrValue -> taxOrValue.getRange().equals(rangeId))
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_UNHEALTHINESS_ALLOWANCE));
+    }
+
+    /**
+     * Este método recupera o objeto que representa o percemtual do salário família.
+     *
+     * @return O objeto TaxOrValueResponseDTO que representa o valor do adicional noturno.
+     */
+    public TaxOrValueResponseDTO getFamilyAllowance() {
+        return repository
+            .findByType(TaxOrValueType.FAMILY_ALLOWANCE)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_FAMILY_ALLOWANCE));
+    }
+
+    /**
+     * Este método recupera o objeto que representa o percentual de adicional noturno.
+     * @return O objeto TaxOrValueResponseDTO que representa o percentual do adicional noturno.
+     */
+    public TaxOrValueResponseDTO getNightShiftAllowance() {
+        return repository
+            .findByType(TaxOrValueType.NIGHT_SHIFT_ALLOWANCE)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE));
     }
 
     @Override
