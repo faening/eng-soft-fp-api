@@ -3,124 +3,69 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
+import com.github.faening.eng_soft_fp_api.domain.service.TripExpenseService;
+import com.github.faening.eng_soft_fp_api.util.DateUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-/*
- * Requisito: [RD010] Calcular Adicional para Viagens
- *
- * Descrição:
- * Esta classe é responsável por calcular o adicional para viagens recebido por um funcionário em um determinado mês.
- *
- * Funcionamento:
- * Para realizar os cálculos, esta classe observa a tabela `trip_expense`. Basicamente, o adicional para viagens é calculado com base
- * no valor total das despesas de viagem de um funcionário em um determinado mês. O valor total das despesas de viagem é a soma de todas
- * as despesas de viagem registradas na tabela `trip_expense` para um funcionário em um determinado mês.
- * Observe a propriedade status. Se o status for `APPROVED`, o valor total das despesas de viagem é considerado para o cálculo.
- *
- * Exemplos:
- * ...
- */
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Optional;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@Component
 public class CalculateTripExpenseAllowance implements PayrollCalculation {
-    /*
-     * Dicas de codificação:
-     *
-     * Dica 1:
-     * Sempre crie uma branch separada para desenvolver uma funcionalidade. Isso permite que você trabalhe em um ambiente isolado e evita
-     * conflitos com o código de seus colegas.
-     *
-     * Outro ponto importante é que, a branch de origem sempre deve ser a `develop`.
-     *
-     * Lembre-se de seguir o padrão de nomenclatura de branches. Por exemplo: PRL-001, PRL-002, PRL-003, etc. Observe isso na respectiva
-     * tarefa do Trello.
-     *
-     *
-     *
-     * Dica 2:
-     * Sempre busque a separação de responsabilidades. Se você perceber que o método está fazendo mais de uma coisa, considere dividí-lo em
-     * métodos menores. Isso facilita a leitura e a manutenção do código. Por exemplo:
-     *
-     * public void calculate(CalculationParameters parameters) {
-     *   metodo1();
-     *   metodo2();
-     *   return ...
-     * }
-     *
-     *
-     *
-     * Dica 3:
-     * Evite aninhar if's. Se você perceber que isso está acontecendo, considere decompor o código ou criar métodos menores. Por exemplo:
-     *
-     * if (condicao1) {
-     *    if (condicao2) {
-     *      ...
-     *   }
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 && condicao2) {
-     *   ...
-     * }
-     *
-     * ou
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo2();
-     * }
-     *
-     *
-     *
-     * Dica 4:
-     * Evite duplicação de código. Se você perceber que um trecho de código está sendo repetido, considere reduzi-lo para evitar a duplicação.
-     * Por exemplo:
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo1();
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 || condicao2) {
-     *   metodo1();
-     * }
-     *
-     *
-     *
-     * Dica 5:
-     * Não se esqueça de tratar os casos de erro. Se algo der errado, retorne uma exceção. Sempre que possível, faça a verificação das
-     * condições de erro no início do método. Por exemplo:
-     *
-     * if (condicao1) {
-     *   if (condicao1 == null) throw new RuntimeException("Mensagem de erro");
-     *   ...
-     * }
-     *
-     *
-     * Dica 6:
-     * Não se esqueça de testar o seu código. Testes de unidade são uma ótima forma de garantir que o seu código está funcionando. Se você
-     * não sabe como fazer testes de unidade, procure aprender ou use o ChatGPT. Eles são muito importantes para garantir a qualidade do seu
-     * código.
-     *
-     *
-     * Dica 7:
-     * Atenção ao retorno do método calculate. Ele deve retornar um objeto do tipo PayrollItemRequestDTO.
-     *
-     *
-     *
-     * Dica 8:
-     * Por fim e não menos importante, ao terminar sua implementação, remova esses comentários e faça o commit e push do código.
-     * */
+    private final RubricService rubricService;
+    private final TripExpenseService tripExpenseService;
+    private final static Integer RUBRIC_CODE = 1621;
+
+    @Autowired
+    public CalculateTripExpenseAllowance(
+        RubricService rubricService,
+        TripExpenseService tripExpenseService
+    ) {
+        this.rubricService = rubricService;
+        this.tripExpenseService = tripExpenseService;
+    }
+
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        return null;
+        return Optional.ofNullable(parameters)
+            .map(params -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                null,
+                getTripExpenseAmount(parameters),
+                getTripExpenseAmount(parameters),
+                getTripExpenseAmount(parameters)
+            ))
+            .orElse(null);
+    }
+
+    /**
+     * Este método recupera uma rubrica pelo seu código.
+     *
+     * @return Um objeto RubricResponseDTO que representa a rubrica recuperada.
+     */
+    public RubricResponseDTO getRubricByCode() {
+        return rubricService.getByCode(RUBRIC_CODE);
+    }
+
+    /**
+     * Este método recupera o valor total das despesas de viagem de um funcionário em um mês.
+     *
+     * @param parameters Parâmetros de cálculo que incluem detalhes do funcionário, do mês e ano de interesse.
+     * @return O valor total das despesas de viagem realizadas pelo funcionário no mês.
+     */
+    protected BigDecimal getTripExpenseAmount(CalculationParameters parameters) {
+        return Optional.ofNullable(parameters)
+            .map(params -> {
+                LocalDate[] startAndEndDate = DateUtils.getFirstAndLastDayOfMonth(params.getYear(), params.getMonth().getValue());
+                LocalDate startDate = startAndEndDate[0];
+                LocalDate endDate = startAndEndDate[1];
+                return tripExpenseService.getTotalTripExpenseAmountByEmployeeIdAndDateRange(params.getEmployee().getId(), startDate, endDate);
+            })
+            .orElse(BigDecimal.ZERO);
     }
 }
