@@ -28,6 +28,7 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
     private static final String VALIDATION_MESSAGE_UNHEALTHINESS_ALLOWANCE = "taxOrValueService.validation.UnhealthinessAllowance";
     private static final String VALIDATION_MESSAGE_FAMILY_ALLOWANCE = "taxOrValueService.validation.FamilyAllowance";
     private static final String VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE = "taxOrValueService.validation.NightShiftAllowance";
+    private static final String VALIDATION_MESSAGE_TIME_SERVICE_ALLOWANCE = "taxOrValueService.validation.TimeServiceAllowance";
 
 
     @Autowired
@@ -141,6 +142,7 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
 
     /**
      * Este método recupera o objeto que representa o percentual de adicional noturno.
+     *
      * @return O objeto TaxOrValueResponseDTO que representa o percentual do adicional noturno.
      */
     public TaxOrValueResponseDTO getNightShiftAllowance() {
@@ -150,6 +152,20 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
             .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
             .findFirst()
             .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_NIGHT_SHIFT_ALLOWANCE));
+    }
+
+    /**
+     * Este método recupera o objeto que representa o percentual do adicional por tempo de serviço.
+     *
+     * @return O objeto TaxOrValueResponseDTO que representa o percentual do adicional por tempo de serviço.
+     */
+    public TaxOrValueResponseDTO getTimeServiceAllowance() {
+        return repository
+            .findByType(TaxOrValueType.TIME_SERVICE_ALLOWANCE)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_TIME_SERVICE_ALLOWANCE));
     }
 
     @Override
