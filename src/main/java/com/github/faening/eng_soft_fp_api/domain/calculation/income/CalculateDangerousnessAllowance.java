@@ -2,12 +2,10 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
-import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
 import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.job.JobResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.tax_or_value.TaxOrValueResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.JobService;
 import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
 import com.github.faening.eng_soft_fp_api.domain.service.TaxOrValueService;
@@ -44,19 +42,13 @@ public class CalculateDangerousnessAllowance implements PayrollCalculation {
             .map(EmployeeSummaryDTO::getJobId)
             .map(this::getJobByEmployeeJobId)
             .filter(job -> job.getDangerousness() != null && job.getDangerousness())
-            .map(job -> {
-                RubricResponseDTO rubric = getRubricByCode();
-                TaxOrValueResponseDTO taxOrValue = getTaxOrValueByType();
-                BigDecimal calculatedValue = calculateDangerousnessAllowance(parameters.getEmployee(), taxOrValue);
-
-                return new PayrollItemRequestDTO(
-                    rubric,
-                    taxOrValue,
-                    parameters.getEmployee().getSalary(),
-                    calculatedValue,
-                    taxOrValue.getTaxPercentage()
-                );
-            })
+            .map(job -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                taxOrValueService.getDangerousnessAllowance(),
+                parameters.getEmployee().getSalary(),
+                calculateDangerousnessAllowance(parameters.getEmployee()),
+                taxOrValueService.getDangerousnessAllowance().getTaxPercentage()
+            ))
             .orElse(null);
     }
 
@@ -80,27 +72,18 @@ public class CalculateDangerousnessAllowance implements PayrollCalculation {
     }
 
     /**
-     * Este método recupera o primeiro imposto ou valor pelo seu tipo.
-     *
-     * @return Um objeto TaxOrValueResponseDTO que representa o imposto ou valor recuperado. Retorna null se o imposto ou valor não for encontrado.
-     */
-    protected TaxOrValueResponseDTO getTaxOrValueByType() {
-        return taxOrValueService.getByType(TaxOrValueType.DANGEROUSNESS_ALLOWANCE).get(0);
-    }
-
-    /**
      * Este método calcula a periculosidade do salário de um funcionário.
      *
      * @param employee Um objeto EmployeeSummaryDTO que representa o funcionário.
-     * @param taxOrValue Um objeto TaxOrValueResponseDTO que representa o imposto ou valor.
      * @return O valor calculado da periculosidade do salário do funcionário.
      */
-    protected BigDecimal calculateDangerousnessAllowance(EmployeeSummaryDTO employee, TaxOrValueResponseDTO taxOrValue) {
+    protected BigDecimal calculateDangerousnessAllowance(EmployeeSummaryDTO employee) {
         return Optional.ofNullable(employee)
             .map(EmployeeSummaryDTO::getSalary)
-            .flatMap(salary -> Optional.ofNullable(taxOrValue)
-                .map(tax -> tax.getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP))
-                .map(salary::multiply))
+            .flatMap(salary -> Optional.ofNullable(taxOrValueService.getDangerousnessAllowance().getTaxPercentage())
+            .map(salary::multiply))
+            .map(value -> value.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP))
+            .map(value -> value.setScale(2, RoundingMode.HALF_UP))
             .orElse(BigDecimal.ZERO);
     }
 }

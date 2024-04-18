@@ -5,11 +5,9 @@ import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParamete
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.calculation.generics.NightShiftCalculation;
 import com.github.faening.eng_soft_fp_api.domain.calculation.generics.WorkedHoursCalculation;
-import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
 import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.tax_or_value.TaxOrValueResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.work_shift.WorkShiftResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.HoursWorkedSheetService;
 import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
@@ -52,19 +50,13 @@ public class CalculateNightShiftAllowance extends WorkedHoursCalculation impleme
             .map(EmployeeSummaryDTO::getWorkShiftId)
             .map(this::getWorkShiftByEmployeeWorkShiftId)
             .filter(WorkShiftResponseDTO::getNightShiftAllowance)
-            .map(workShift -> {
-                RubricResponseDTO rubric = getRubricByCode();
-                TaxOrValueResponseDTO taxOrValue = getTaxOrValueByType();
-                BigDecimal calculatedValue = calculateNightShiftAllowance(parameters, workShift);
-
-                return new PayrollItemRequestDTO(
-                    rubric,
-                    taxOrValue,
-                    parameters.getEmployee().getSalary(),
-                    calculatedValue,
-                    BigDecimal.valueOf((long) getNumberOfHoursWorkedAtNight(workShift) * getWorkingDaysInMonth(parameters))
-                );
-            })
+            .map(workShift -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                taxOrValueService.getNightShiftAllowance(),
+                parameters.getEmployee().getSalary(),
+                calculateNightShiftAllowance(parameters, workShift),
+                BigDecimal.valueOf((long) getNumberOfHoursWorkedAtNight(workShift) * getWorkingDaysInMonth(parameters))
+            ))
             .orElse(null);
     }
 
@@ -85,15 +77,6 @@ public class CalculateNightShiftAllowance extends WorkedHoursCalculation impleme
      */
     protected WorkShiftResponseDTO getWorkShiftByEmployeeWorkShiftId(Integer workShiftId) {
         return workShiftService.getById(workShiftId);
-    }
-
-    /**
-     * Este método recupera o primeiro imposto ou valor pelo seu tipo.
-     *
-     * @return Um objeto TaxOrValueResponseDTO que representa o imposto ou valor recuperado. Retorna null se o imposto ou valor não for encontrado.
-     */
-    protected TaxOrValueResponseDTO getTaxOrValueByType() {
-        return taxOrValueService.getByType(TaxOrValueType.NIGHT_SHIFT_ALLOWANCE).get(0);
     }
 
     /**
@@ -156,7 +139,7 @@ public class CalculateNightShiftAllowance extends WorkedHoursCalculation impleme
                 // Calcula o valor da hora do funcionário
                 BigDecimal employeeHourlyRate = EmployeeUtils.calculateHourlyRate(salary, getWorkingHoursInMonth(parameters));
                 // Calcula o percentual do adicional noturno
-                BigDecimal NightShiftAllowancePercentage = getTaxOrValueByType().getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                BigDecimal NightShiftAllowancePercentage = taxOrValueService.getNightShiftAllowance().getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
                 // Calcula o adicional noturno por hora de trabalho (valor da hora * percentual do adicional noturno)
                 return employeeHourlyRate.multiply(NightShiftAllowancePercentage);
             })

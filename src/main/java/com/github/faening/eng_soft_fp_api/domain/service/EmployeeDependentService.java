@@ -1,5 +1,6 @@
 package com.github.faening.eng_soft_fp_api.domain.service;
 
+import com.github.faening.eng_soft_fp_api.data.model.Employee;
 import com.github.faening.eng_soft_fp_api.data.model.EmployeeDependent;
 import com.github.faening.eng_soft_fp_api.data.repository.EmployeeDependentRepository;
 import com.github.faening.eng_soft_fp_api.domain.mapper.employee_dependent.EmployeeDependentRequestMapper;
@@ -18,6 +19,7 @@ public class EmployeeDependentService extends AbstractService<EmployeeDependentR
     private final EmployeeDependentRepository repository;
     private final EmployeeDependentRequestMapper requestMapper;
     private final EmployeeDependentResponseMapper responseMapper;
+    private final EmployeeService employeeService;
 
     private static final String VALIDATION_MESSAGE_EMPLOYEE_ID = "employeeDependentService.validation.employeeId";
     private static final String VALIDATION_MESSAGE_NAME = "employeeDependentService.validation.name";
@@ -30,11 +32,13 @@ public class EmployeeDependentService extends AbstractService<EmployeeDependentR
     public EmployeeDependentService(
         EmployeeDependentRepository repository,
         EmployeeDependentRequestMapper requestMapper,
-        EmployeeDependentResponseMapper responseMapper
+        EmployeeDependentResponseMapper responseMapper,
+        EmployeeService employeeService
     ) {
         this.repository = repository;
         this.requestMapper = requestMapper;
         this.responseMapper = responseMapper;
+        this.employeeService = employeeService;
     }
 
     @Override
@@ -55,6 +59,16 @@ public class EmployeeDependentService extends AbstractService<EmployeeDependentR
     public EmployeeDependent getEntityById(Integer id) {
         validate(id);
         return searchEmployeeDependentEntityById(id);
+    }
+
+    public List<EmployeeDependentResponseDTO> getByEmployeeId(Integer employeeId) {
+        validate(employeeId);
+        Employee employee = employeeService.getEntityById(employeeId);
+        return repository
+            .findByEmployee(employee)
+            .stream()
+            .map(employeeDependent -> responseMapper.toDTO(employeeDependent, EmployeeDependentResponseDTO.class))
+            .toList();
     }
 
     @Override

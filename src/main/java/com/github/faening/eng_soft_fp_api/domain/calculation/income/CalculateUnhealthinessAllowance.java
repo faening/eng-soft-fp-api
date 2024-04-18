@@ -2,7 +2,6 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
-import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
 import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.job.JobResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
@@ -16,8 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -47,18 +44,15 @@ public class CalculateUnhealthinessAllowance implements PayrollCalculation {
             .map(this::getJobByEmployeeJobId)
             .filter(job -> job.getUnhealthiness() != null)
             .map(job -> {
-                RubricResponseDTO rubric = getRubricByCode();
-                List<TaxOrValueResponseDTO> taxesOrValues = getTaxesOrValuesByType();
-                TaxOrValueResponseDTO unhealthinessAllowancePercentage = getUnhealthinessAllowancePercentage(taxesOrValues, job);
-                BigDecimal calculatedValue = calculateUnhealthinessAllowance(unhealthinessAllowancePercentage);
+                TaxOrValueResponseDTO allowancePercentage = taxOrValueService.getUnhealthinessAllowanceByRangeId(job.getUnhealthiness());
+                BigDecimal calculatedValue = calculateUnhealthinessAllowance(allowancePercentage);
 
                 return new PayrollItemRequestDTO(
-                    rubric,
-                    unhealthinessAllowancePercentage,
-                    getMinimumWage(),
+                    getRubricByCode(),
+                    allowancePercentage,
+                    taxOrValueService.getMinimumWage(),
                     calculatedValue,
-                    unhealthinessAllowancePercentage.getTaxPercentage()
-                );
+                    allowancePercentage.getTaxPercentage());
             })
             .orElse(null);
     }
@@ -83,32 +77,6 @@ public class CalculateUnhealthinessAllowance implements PayrollCalculation {
     }
 
     /**
-     * Este método recupera uma lista de impostos ou valores pelo seu tipo.
-     *
-     * @return Uma lista de objetos do tipo TaxOrValueResponseDTO que representam os percentuais de adicional por insalubridade.
-     * Retorna null se o imposto ou valor não for encontrado.
-     */
-    protected List<TaxOrValueResponseDTO> getTaxesOrValuesByType() {
-        return taxOrValueService.getByType(TaxOrValueType.UNHEALTHINESS_ALLOWANCE);
-    }
-
-    /**
-     * Este método recupera o percentual de adicional por insalubridade aplicável ao trabalho do funcionário.
-     *
-     * @param taxesOrValues Uma lista de objetos TaxOrValueResponseDTO que representam os percentuais de adicional por insalubridade.
-     * @param job           Um objeto JobResponseDTO que representa o trabalho do funcionário.
-     * @return Um objeto TaxOrValueResponseDTO que representa o percentual de adicional por insalubridade aplicável ao trabalho do funcionário.
-     * Retorna null se o percentual não for encontrado.
-     */
-    protected TaxOrValueResponseDTO getUnhealthinessAllowancePercentage(List<TaxOrValueResponseDTO> taxesOrValues, JobResponseDTO job) {
-        return Optional.ofNullable(taxesOrValues)
-            .flatMap(list -> list.stream()
-                .filter(taxOrValue -> Objects.equals(taxOrValue.getRange(), Optional.ofNullable(job).map(JobResponseDTO::getUnhealthiness).orElse(null)))
-                .findFirst())
-            .orElse(null);
-    }
-
-    /**
      * Este método calcula o adicional por insalubridade com base no percentual aplicável e no salário mínimo nacional.
      *
      * @param taxOrValue Um objeto TaxOrValueResponseDTO que representa o percentual de adicional por insalubridade.
@@ -118,16 +86,7 @@ public class CalculateUnhealthinessAllowance implements PayrollCalculation {
         return Optional.ofNullable(taxOrValue)
             .map(tax -> tax.getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP))
             .orElse(BigDecimal.ZERO)
-            .multiply(getMinimumWage())
+            .multiply(taxOrValueService.getMinimumWage())
             .setScale(2, RoundingMode.HALF_UP);
-    }
-
-    /**
-     * Este método recupera o salário mínimo nacional.
-     *
-     * @return Um BigDecimal que representa o salário mínimo nacional.
-     */
-    protected BigDecimal getMinimumWage() {
-        return taxOrValueService.getByType(TaxOrValueType.MINIMUM_WAGE).get(0).getFixedValue();
     }
 }

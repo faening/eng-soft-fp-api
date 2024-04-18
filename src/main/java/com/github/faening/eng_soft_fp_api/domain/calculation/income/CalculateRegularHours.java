@@ -6,7 +6,6 @@ import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.calculation.generics.WorkedHoursCalculation;
 import com.github.faening.eng_soft_fp_api.domain.enumeration.HoursWorkedType;
 import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.hours_worked_sheet.HoursWorkedSheetResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.HoursWorkedSheetService;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
@@ -41,20 +39,13 @@ public class CalculateRegularHours extends WorkedHoursCalculation implements Pay
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
         return Optional.ofNullable(parameters)
-            .map(param -> {
-                RubricResponseDTO rubric = getRubricByCode();
-                Integer workingHoursInMonth = getWorkingHoursInMonth(param);
-                List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(param);
-                BigDecimal employeeCalculatedSalary = calculateEmployeeSalary(parameters);
-
-                return new PayrollItemRequestDTO(
-                    rubric,
-                    null,
-                    param.getEmployee().getSalary(),
-                    employeeCalculatedSalary,
-                    getEmployeeTotalHours(parameters)
-                );
-            })
+            .map(param -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                null,
+                param.getEmployee().getSalary(),
+                calculateEmployeeSalary(parameters),
+                getEmployeeTotalHours(parameters)
+            ))
             .orElse(null);
     }
 

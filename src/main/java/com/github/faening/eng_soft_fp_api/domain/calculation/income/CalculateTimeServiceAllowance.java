@@ -41,19 +41,13 @@ public class CalculateTimeServiceAllowance implements PayrollCalculation {
         return Optional.ofNullable(parameters)
             .map(CalculationParameters::getEmployee)
             .filter(employee -> employee.getTimeServiceAllowance() || LocalDate.now().getYear() - employee.getAdmissionDate().getYear() >= 10)
-            .map(employee -> {
-                RubricResponseDTO rubric = getRubricByCode();
-                TaxOrValueResponseDTO taxOrValue = getTaxOrValueByType();
-                BigDecimal calculatedValue = calculateTimeServiceAllowance(parameters);
-
-                return new PayrollItemRequestDTO(
-                    rubric,
-                    taxOrValue,
-                    employee.getSalary(),
-                    calculatedValue,
-                    taxOrValue.getTaxPercentage()
-                );
-            })
+            .map(employee -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                getTaxOrValueByType(),
+                employee.getSalary(),
+                calculateTimeServiceAllowance(parameters),
+                getTaxOrValueByType().getTaxPercentage()
+            ))
             .orElse(null);
     }
 
