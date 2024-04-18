@@ -100,18 +100,17 @@ public abstract class WorkedHoursCalculation {
         List<HoursWorkedSheetResponseDTO> hoursWorkedSheet = getHoursWorkedSheet(parameters);
         return Optional.ofNullable(hoursWorkedSheet)
             .map(list -> list.stream()
-                .mapToDouble(hours -> {
+                .map(hours -> {
                     return switch (hoursWorkedType) {
-                        case REGULAR -> DateUtils.toMinutes(hours.getRegularHours());
-                        case NEGATIVE -> DateUtils.toMinutes(hours.getNegativeHours());
-                        case OVERTIME50 -> DateUtils.toMinutes(hours.getOvertime50());
-                        case OVERTIME100 -> DateUtils.toMinutes(hours.getOvertime100());
-                        case TIME_BANK -> DateUtils.toMinutes(hours.getTimeBank());
-                        default -> 0;
+                        case REGULAR -> BigDecimal.valueOf(DateUtils.toMinutes(hours.getRegularHours()));
+                        case NEGATIVE -> BigDecimal.valueOf(DateUtils.toMinutes(hours.getNegativeHours()));
+                        case OVERTIME50 -> BigDecimal.valueOf(DateUtils.toMinutes(hours.getOvertime50()));
+                        case OVERTIME100 -> BigDecimal.valueOf(DateUtils.toMinutes(hours.getOvertime100()));
+                        case TIME_BANK -> BigDecimal.valueOf(DateUtils.toMinutes(hours.getTimeBank()));
+                        default -> BigDecimal.ZERO;
                     };
                 })
-                .sum())
-            .map(BigDecimal::valueOf) // Convertendo o resultado para BigDecimal
+                .reduce(BigDecimal.ZERO, BigDecimal::add)) // Soma os valores como BigDecimal
             .map(bigDecimal -> bigDecimal.setScale(2, RoundingMode.HALF_UP)) // Ajustando para duas casas decimais
             .orElse(BigDecimal.ZERO);
     }
