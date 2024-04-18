@@ -28,7 +28,8 @@ public class LoanResponseMapper extends AbstractMapper<Loan, LoanResponseDTO> {
                 mapper.when(notNull).map(Loan::getRequestDate, LoanResponseDTO::setRequestDate);
                 mapper.when(notNull).map(Loan::getApprovalDate, LoanResponseDTO::setApprovalDate);
                 mapper.when(notNull).map(Loan::getCompanyPaymentDate, LoanResponseDTO::setCompanyPaymentDate);
-                mapper.when(notNull).map(Loan::getPaymentStatus, LoanResponseDTO::setPaymentStatus);
+                mapper.when(notNull).map(Loan::getCompanyPaymentStatus, LoanResponseDTO::setCompanyPaymentStatus);
+                mapper.when(notNull).map(Loan::getEmployeePaymentStatus, LoanResponseDTO::setEmployeePaymentStatus);
                 mapper.when(notNull).map(Loan::getInstallments, LoanResponseDTO::setInstallments);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getCreatedAt(), LoanResponseDTO::setCreatedAt);
                 mapper.when(notNull).map(src -> src.getEntityMetadata().getUpdatedAt(), LoanResponseDTO::setUpdatedAt);
@@ -46,7 +47,8 @@ public class LoanResponseMapper extends AbstractMapper<Loan, LoanResponseDTO> {
                 mapper.when(notNull).map(LoanResponseDTO::getRequestDate, Loan::setRequestDate);
                 mapper.when(notNull).map(LoanResponseDTO::getApprovalDate, Loan::setApprovalDate);
                 mapper.when(notNull).map(LoanResponseDTO::getCompanyPaymentDate, Loan::setCompanyPaymentDate);
-                mapper.when(notNull).map(LoanResponseDTO::getPaymentStatus, Loan::setPaymentStatus);
+                mapper.when(notNull).map(LoanResponseDTO::getCompanyPaymentStatus, Loan::setCompanyPaymentStatus);
+                mapper.when(notNull).map(LoanResponseDTO::getEmployeePaymentStatus, Loan::setEmployeePaymentStatus);
                 mapper.when(notNull).map(LoanResponseDTO::getInstallments, Loan::setInstallments);
                 mapper.when(notNull).<LocalDateTime>map(LoanResponseDTO::getCreatedAt, (dest, v) -> dest.getEntityMetadata().setCreatedAt(v));
                 mapper.when(notNull).<LocalDateTime>map(LoanResponseDTO::getUpdatedAt, (dest, v) -> dest.getEntityMetadata().setUpdatedAt(v));

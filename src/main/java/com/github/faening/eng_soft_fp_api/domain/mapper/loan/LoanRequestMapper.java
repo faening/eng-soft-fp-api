@@ -31,7 +31,8 @@ public class LoanRequestMapper extends AbstractMapper<Loan, LoanRequestDTO> {
                 mapper.when(notNull).map(Loan::getRequestDate, LoanRequestDTO::setRequestDate);
                 mapper.when(notNull).map(Loan::getApprovalDate, LoanRequestDTO::setApprovalDate);
                 mapper.when(notNull).map(Loan::getCompanyPaymentDate, LoanRequestDTO::setCompanyPaymentDate);
-                mapper.when(notNull).map(Loan::getPaymentStatus, LoanRequestDTO::setPaymentStatus);
+                mapper.when(notNull).map(Loan::getCompanyPaymentStatus, LoanRequestDTO::setCompanyPaymentStatus);
+                mapper.when(notNull).map(Loan::getEmployeePaymentStatus, LoanRequestDTO::setEmployeePaymentStatus);
                 mapper.when(notNull).map(Loan::getInstallments, LoanRequestDTO::setInstallments);
             });
     }
@@ -50,7 +51,8 @@ public class LoanRequestMapper extends AbstractMapper<Loan, LoanRequestDTO> {
                 mapper.when(notNull).map(LoanRequestDTO::getRequestDate, Loan::setRequestDate);
                 mapper.when(notNull).map(LoanRequestDTO::getApprovalDate, Loan::setApprovalDate);
                 mapper.when(notNull).map(LoanRequestDTO::getCompanyPaymentDate, Loan::setCompanyPaymentDate);
-                mapper.when(notNull).map(LoanRequestDTO::getPaymentStatus, Loan::setPaymentStatus);
+                mapper.when(notNull).map(LoanRequestDTO::getCompanyPaymentStatus, Loan::setCompanyPaymentStatus);
+                mapper.when(notNull).map(LoanRequestDTO::getEmployeePaymentStatus, Loan::setEmployeePaymentStatus);
                 mapper.when(notNull).map(LoanRequestDTO::getInstallments, Loan::setInstallments);
             });
     }

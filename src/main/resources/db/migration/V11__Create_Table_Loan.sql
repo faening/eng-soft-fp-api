@@ -13,6 +13,13 @@ CREATE TABLE IF NOT EXISTS loan (
         'DENIED',
         'PAID',
         'CANCELED') NOT NULL DEFAULT 'PENDING',
+    employee_payment_status ENUM(
+        'PENDING',
+        'RELEASED',
+        'APPROVED',
+        'DENIED',
+        'PAID',
+        'CANCELED') NOT NULL DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id_loan),

@@ -66,9 +66,10 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
         LocalDate requestDate,
         LocalDate approvalDate,
         LocalDate companyPaymentDate,
-        PaymentStatus paymentStatus
+        PaymentStatus companyPaymentStatus,
+        PaymentStatus employeePaymentStatus
     ) {
-        return searchLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, paymentStatus)
+        return searchLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, companyPaymentStatus, employeePaymentStatus)
             .stream()
             .map(loan -> responseMapper.toDTO(loan, LoanResponseDTO.class))
             .toList();
@@ -79,9 +80,10 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
         LocalDate requestDate,
         LocalDate approvalDate,
         LocalDate companyPaymentDate,
-        PaymentStatus paymentStatus
+        PaymentStatus companyPaymentStatus,
+        PaymentStatus employeePaymentStatus
     ) {
-        return searchLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, paymentStatus);
+        return searchLoanByEmployeeIdAndSpecs(employeeId, requestDate, approvalDate, companyPaymentDate, companyPaymentStatus, employeePaymentStatus);
     }
 
     @Override
@@ -114,10 +116,11 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
         LocalDate requestDate,
         LocalDate approvalDate,
         LocalDate companyPaymentDate,
-        PaymentStatus paymentStatus
+        PaymentStatus companyPaymentStatus,
+        PaymentStatus employeePaymentStatus
     ) {
         Employee employee = employeeService.getEntityById(employeeId);
-        LoanSpecification spec = new LoanSpecification(employee, requestDate, approvalDate, companyPaymentDate, paymentStatus);
+        LoanSpecification spec = new LoanSpecification(employee, requestDate, approvalDate, companyPaymentDate, companyPaymentStatus, employeePaymentStatus);
         return repository
             .findAll(spec)
             .stream()
@@ -131,6 +134,7 @@ public class LoanService extends AbstractService<LoanRequestDTO, LoanResponseDTO
         if (request.getLoanAmountValue() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_AMOUNT_VALUE));
         if (request.getInstallmentQuantity() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_INSTALLMENT_QUANTITY));
         if (request.getRequestDate() == null) throw new IllegalArgumentException(getLocalizedMessage(VALIDATION_MESSAGE_REQUEST_DATE));
-        if (request.getPaymentStatus() == null) request.setPaymentStatus(PaymentStatus.PENDING);
+        if (request.getCompanyPaymentStatus() == null) request.setCompanyPaymentStatus(PaymentStatus.PENDING);
+        if (request.getEmployeePaymentStatus() == null) request.setEmployeePaymentStatus(PaymentStatus.RELEASED);
     }
 }

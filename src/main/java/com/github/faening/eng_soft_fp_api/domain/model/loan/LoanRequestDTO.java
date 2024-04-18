@@ -16,7 +16,8 @@ public class LoanRequestDTO implements Serializable {
     private LocalDate requestDate;
     private LocalDate approvalDate;
     private LocalDate companyPaymentDate;
-    private PaymentStatus paymentStatus;
+    private PaymentStatus companyPaymentStatus;
+    private PaymentStatus employeePaymentStatus;
     private List<LoanInstallmentRequestDTO> installments;
 
     public LoanRequestDTO() {
@@ -29,7 +30,8 @@ public class LoanRequestDTO implements Serializable {
         LocalDate requestDate,
         LocalDate approvalDate,
         LocalDate companyPaymentDate,
-        PaymentStatus paymentStatus,
+        PaymentStatus companyPaymentStatus,
+        PaymentStatus employeePaymentStatus,
         List<LoanInstallmentRequestDTO> installments
     ) {
         this.employeeId = employeeId;
@@ -38,7 +40,8 @@ public class LoanRequestDTO implements Serializable {
         this.requestDate = requestDate;
         this.approvalDate = approvalDate;
         this.companyPaymentDate = companyPaymentDate;
-        this.paymentStatus = paymentStatus;
+        this.employeePaymentStatus = employeePaymentStatus;
+        this.companyPaymentStatus = companyPaymentStatus;
         this.installments = installments;
     }
 
@@ -90,12 +93,20 @@ public class LoanRequestDTO implements Serializable {
         this.companyPaymentDate = companyPaymentDate;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public PaymentStatus getCompanyPaymentStatus() {
+        return companyPaymentStatus;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setCompanyPaymentStatus(PaymentStatus companyPaymentStatus) {
+        this.companyPaymentStatus = companyPaymentStatus;
+    }
+
+    public PaymentStatus getEmployeePaymentStatus() {
+        return employeePaymentStatus;
+    }
+
+    public void setEmployeePaymentStatus(PaymentStatus employeePaymentStatus) {
+        this.employeePaymentStatus = employeePaymentStatus;
     }
 
     public List<LoanInstallmentRequestDTO> getInstallments() {
@@ -115,7 +126,8 @@ public class LoanRequestDTO implements Serializable {
             ", requestDate=" + requestDate +
             ", approvalDate=" + approvalDate +
             ", companyPaymentDate=" + companyPaymentDate +
-            ", paymentStatus=" + paymentStatus +
+            ", employeePaymentDate=" + employeePaymentStatus +
+            ", paymentStatus=" + companyPaymentStatus +
             ", installments=" + installments +
             '}';
     }

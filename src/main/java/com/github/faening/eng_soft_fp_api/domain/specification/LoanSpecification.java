@@ -17,20 +17,23 @@ public class LoanSpecification implements Specification<Loan> {
     private final LocalDate requestDate;
     private final LocalDate approvalDate;
     private final LocalDate companyPaymentDate;
-    private final PaymentStatus paymentStatus;
+    private final PaymentStatus companyPaymentStatus;
+    private final PaymentStatus employeePaymentStatus;
 
     public LoanSpecification(
         Employee employee,
         LocalDate requestDate,
         LocalDate approvalDate,
         LocalDate companyPaymentDate,
-        PaymentStatus paymentStatus
+        PaymentStatus companyPaymentStatus,
+        PaymentStatus employeePaymentStatus
     ) {
         this.employee = employee;
         this.requestDate = requestDate;
         this.approvalDate = approvalDate;
         this.companyPaymentDate = companyPaymentDate;
-        this.paymentStatus = paymentStatus;
+        this.companyPaymentStatus = companyPaymentStatus;
+        this.employeePaymentStatus = employeePaymentStatus;
     }
 
     @SuppressWarnings("NullableProblems")
@@ -50,8 +53,12 @@ public class LoanSpecification implements Specification<Loan> {
             predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("companyPaymentDate"), this.companyPaymentDate));
         }
 
-        if (paymentStatus != null) {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("paymentStatus"), this.paymentStatus));
+        if (companyPaymentStatus != null) {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("companyPaymentStatus"), this.companyPaymentStatus));
+        }
+
+        if (employeePaymentStatus != null) {
+            predicate = criteriaBuilder.and(predicate, criteriaBuilder.equal(root.get("employeePaymentStatus"), this.employeePaymentStatus));
         }
 
         return predicate;

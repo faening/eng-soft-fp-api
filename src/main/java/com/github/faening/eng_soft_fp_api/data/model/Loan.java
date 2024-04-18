@@ -38,7 +38,11 @@ public class Loan implements Serializable {
 
     @Column(name = "company_payment_status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private PaymentStatus companyPaymentStatus;
+
+    @Column(name = "employee_payment_status", nullable = false, columnDefinition = "DEFAULT 'PENDING'")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus employeePaymentStatus;
 
     @OneToMany(mappedBy = "loan", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<LoanInstallment> installments;
@@ -61,7 +65,8 @@ public class Loan implements Serializable {
         LocalDate requestDate,
         LocalDate approvalDate,
         LocalDate companyPaymentDate,
-        PaymentStatus paymentStatus,
+        PaymentStatus companyPaymentStatus,
+        PaymentStatus employeePaymentStatus,
         List<LoanInstallment> installments,
         EntityMetadata entityMetadata
     ) {
@@ -72,7 +77,8 @@ public class Loan implements Serializable {
         this.requestDate = requestDate;
         this.approvalDate = approvalDate;
         this.companyPaymentDate = companyPaymentDate;
-        this.paymentStatus = paymentStatus;
+        this.companyPaymentStatus = companyPaymentStatus;
+        this.employeePaymentStatus = employeePaymentStatus;
         this.installments = installments;
         this.entityMetadata = entityMetadata;
     }
@@ -133,12 +139,20 @@ public class Loan implements Serializable {
         this.companyPaymentDate = companyPaymentDate;
     }
 
-    public PaymentStatus getPaymentStatus() {
-        return paymentStatus;
+    public PaymentStatus getCompanyPaymentStatus() {
+        return companyPaymentStatus;
     }
 
-    public void setPaymentStatus(PaymentStatus paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setCompanyPaymentStatus(PaymentStatus companyPaymentStatus) {
+        this.companyPaymentStatus = companyPaymentStatus;
+    }
+
+    public PaymentStatus getEmployeePaymentStatus() {
+        return employeePaymentStatus;
+    }
+
+    public void setEmployeePaymentStatus(PaymentStatus employeePaymentStatus) {
+        this.employeePaymentStatus = employeePaymentStatus;
     }
 
     public List<LoanInstallment> getInstallments() {
