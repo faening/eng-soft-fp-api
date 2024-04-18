@@ -2,12 +2,10 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.income;
 
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
-import com.github.faening.eng_soft_fp_api.domain.enumeration.TaxOrValueType;
 import com.github.faening.eng_soft_fp_api.domain.model.employee.EmployeeSummaryDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.employee_dependent.EmployeeDependentResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
-import com.github.faening.eng_soft_fp_api.domain.model.tax_or_value.TaxOrValueResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.EmployeeDependentService;
 import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
 import com.github.faening.eng_soft_fp_api.domain.service.TaxOrValueService;
@@ -42,15 +40,13 @@ public class CalculateFamilyAllowance implements PayrollCalculation {
         return Optional.ofNullable(parameters)
             .map(CalculationParameters::getEmployee)
             .filter(employee -> getDependentsByEmployeeWithFamilyAllowance(employee) > 0)
-            .map(employee -> {
-                return new PayrollItemRequestDTO(
-                    getRubricByCode(),
-                    getTaxOrValueByType(),
-                    getMinimumWage().getFixedValue(),
-                    calculateFamilyAllowance(parameters.getEmployee()),
-                    BigDecimal.valueOf(getDependentsByEmployeeWithFamilyAllowance(parameters.getEmployee()))
-                );
-            })
+            .map(employee -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                taxOrValueService.getFamilyAllowance(),
+                taxOrValueService.getMinimumWage(),
+                calculateFamilyAllowance(parameters.getEmployee()),
+                BigDecimal.valueOf(getDependentsByEmployeeWithFamilyAllowance(parameters.getEmployee()))
+            ))
             .orElse(null);
     }
 
@@ -61,19 +57,6 @@ public class CalculateFamilyAllowance implements PayrollCalculation {
      */
     public RubricResponseDTO getRubricByCode() {
         return rubricService.getByCode(RUBRIC_CODE);
-    }
-
-    /**
-     * Este método recupera o primeiro imposto ou valor pelo seu tipo.
-     *
-     * @return Um objeto TaxOrValueResponseDTO que representa o imposto ou valor recuperado. Retorna null se o imposto ou valor não for encontrado.
-     */
-    protected TaxOrValueResponseDTO getTaxOrValueByType() {
-        return taxOrValueService.getByType(TaxOrValueType.FAMILY_ALLOWANCE).get(0);
-    }
-
-    protected TaxOrValueResponseDTO getMinimumWage() {
-        return taxOrValueService.getByType(TaxOrValueType.MINIMUM_WAGE).get(0);
     }
 
     /**
@@ -99,11 +82,11 @@ public class CalculateFamilyAllowance implements PayrollCalculation {
     protected BigDecimal calculateFamilyAllowance(EmployeeSummaryDTO employee) {
         return Optional.ofNullable(employee)
             .map(emp -> {
-                BigDecimal minimumWageValue = getMinimumWage().getFixedValue();
-                BigDecimal familyAllowancePercentage = getTaxOrValueByType().getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                BigDecimal minimumWageValue = taxOrValueService.getMinimumWage();
+                BigDecimal allowancePercentage = taxOrValueService.getFamilyAllowance().getTaxPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
                 return minimumWageValue
                     .multiply(BigDecimal.valueOf(getDependentsByEmployeeWithFamilyAllowance(emp)))
-                    .multiply(familyAllowancePercentage);
+                    .multiply(allowancePercentage);
             })
             .map(value -> value.setScale(2, RoundingMode.HALF_UP))
             .orElse(BigDecimal.ZERO);

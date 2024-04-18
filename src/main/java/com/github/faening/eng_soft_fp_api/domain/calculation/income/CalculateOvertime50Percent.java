@@ -41,18 +41,13 @@ public class CalculateOvertime50Percent extends WorkedHoursCalculation implement
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
         return Optional.ofNullable(parameters)
             .filter(params -> calculateTotalHoursInMin(parameters, HoursWorkedType.OVERTIME50).compareTo(BigDecimal.ZERO) > 0)
-            .map(param -> {
-                RubricResponseDTO rubric = getRubricByCode();
-                BigDecimal employeeCalculatedOvertime50 = calculateEmployeeOvertime50InMin(parameters);
-
-                return new PayrollItemRequestDTO(
-                    rubric,
-                    null,
-                    param.getEmployee().getSalary(),
-                    employeeCalculatedOvertime50,
-                    calculateTotalHoursInMin(parameters, HoursWorkedType.OVERTIME50)
-                );
-            })
+            .map(param -> new PayrollItemRequestDTO(
+                getRubricByCode(),
+                null,
+                param.getEmployee().getSalary(),
+                calculateEmployeeOvertime50InMin(parameters),
+                calculateTotalHoursInMin(parameters, HoursWorkedType.OVERTIME50)
+            ))
             .orElse(null);
     }
 

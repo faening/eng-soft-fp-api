@@ -157,15 +157,9 @@ public class CalculateDangerousnessAllowanceTest {
     }
 
     @Test
-    public void testGetTaxOrValueByType_WhenTaxOrValueExists_ReturnTaxOrValue() {
-        Mockito.when(taxOrValueService.getByType(TaxOrValueType.DANGEROUSNESS_ALLOWANCE)).thenReturn(taxOrValueList);
-        assertEquals(taxOrValue, calculateDangerousnessAllowance.getTaxOrValueByType());
-    }
-
-    @Test
     public void testCalculateDangerousnessAllowance_WhenEmployeeAndTaxOrValueExists_ReturnCalculatedValue() {
         BigDecimal expected = BigDecimal.valueOf(600.00).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal result = calculateDangerousnessAllowance.calculateDangerousnessAllowance(employee, taxOrValue);
+        BigDecimal result = calculateDangerousnessAllowance.calculateDangerousnessAllowance(employee);
         assertEquals(expected, result);
     }
 }
