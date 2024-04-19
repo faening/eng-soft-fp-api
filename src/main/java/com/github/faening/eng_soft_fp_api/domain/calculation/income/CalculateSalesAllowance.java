@@ -37,15 +37,16 @@ public class CalculateSalesAllowance implements PayrollCalculation {
 
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        return Optional.ofNullable(parameters)
-            .map(emp -> new PayrollItemRequestDTO(
-                getRubricByCode(),
-                taxOrValueService.getSalesAllowanceBySaleRange(getSalesAmount(parameters)),
-                getSalesAmount(parameters),
-                calculateSalesAllowance(parameters),
-                taxOrValueService.getSalesAllowanceBySaleRange(getSalesAmount(parameters)).getTaxPercentage()
-            ))
-            .orElse(null);
+        BigDecimal salesAllowance = calculateSalesAllowance(parameters);
+        return salesAllowance.compareTo(BigDecimal.ZERO) > 0
+            ? new PayrollItemRequestDTO(
+            getRubricByCode(),
+            taxOrValueService.getSalesAllowanceBySaleRange(getSalesAmount(parameters)),
+            getSalesAmount(parameters),
+            salesAllowance,
+            taxOrValueService.getSalesAllowanceBySaleRange(getSalesAmount(parameters)).getTaxPercentage()
+        )
+            : null;
     }
 
     /**
