@@ -210,6 +210,62 @@ public class TaxOrValueService extends AbstractService<TaxOrValueRequestDTO, Tax
             .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_SALES_ALLOWANCE));
     }
 
+    /**
+     * Este método recupera uma lista de objetos que representam os percentuais de INSS.
+     *
+     * @return Uma lista de objetos TaxOrValueResponseDTO que representam os percentuais de INSS.
+     */
+    public List<TaxOrValueResponseDTO> getInssPercentageList() {
+        return repository
+            .findByType(TaxOrValueType.INSS)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Este método recupera o objeto que representa o percentual de INSS.
+     *
+     * @param salary O salário do colaborador.
+     * @return O objeto TaxOrValueResponseDTO que representa o percentual de INSS.
+     */
+    public TaxOrValueResponseDTO getInssPercentageByRange(BigDecimal salary) {
+        return getInssPercentageList()
+            .stream()
+            .filter(taxOrValue -> taxOrValue.getRangeMinimumWage().compareTo(salary) <= 0
+                               && taxOrValue.getRangeMaximumWage().compareTo(salary) >= 0)
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_SALES_ALLOWANCE));
+    }
+
+    /**
+     * Este método recupera uma lista de objetos que representam os percentuais de IRRF.
+     *
+     * @return Uma lista de objetos TaxOrValueResponseDTO que representam os percentuais de IRRF.
+     */
+    public List<TaxOrValueResponseDTO> getIrrfPercentageList() {
+        return repository
+            .findByType(TaxOrValueType.IRRF)
+            .stream()
+            .map(taxOrValue -> responseMapper.toDTO(taxOrValue, TaxOrValueResponseDTO.class))
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    /**
+     * Este método recupera o objeto que representa o percentual de IRRF.
+     *
+     * @param salary O salário do colaborador.
+     * @return O objeto TaxOrValueResponseDTO que representa o percentual de IRRF.
+     */
+    public TaxOrValueResponseDTO getIrrfPercentageByRange(BigDecimal salary) {
+        return getIrrfPercentageList()
+            .stream()
+            .filter(taxOrValue -> taxOrValue.getRangeMinimumWage().compareTo(salary) <= 0
+                && taxOrValue.getRangeMaximumWage().compareTo(salary) >= 0)
+            .findFirst()
+            .orElseThrow(() -> new ResourceNotFoundException(VALIDATION_MESSAGE_SALES_ALLOWANCE));
+    }
+
     @Override
     public TaxOrValueResponseDTO create(TaxOrValueRequestDTO request) {
         validate(request);
