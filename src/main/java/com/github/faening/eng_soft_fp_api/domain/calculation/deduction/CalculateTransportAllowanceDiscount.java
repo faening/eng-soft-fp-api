@@ -3,6 +3,7 @@ package com.github.faening.eng_soft_fp_api.domain.calculation.deduction;
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
+import org.springframework.stereotype.Component;
 
 /*
  * Requisito: [RD018] Calcular Desconto Vale Transporte
@@ -21,7 +22,8 @@ import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemR
  * ...
  */
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SpellCheckingInspection"})
+@Component
 public class CalculateTransportAllowanceDiscount implements PayrollCalculation {
     /*
      * Dicas de codificação:

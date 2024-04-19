@@ -19,7 +19,7 @@ import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemR
  */
 
 @SuppressWarnings("unused")
-public class CalculateFGTSCollection implements PayrollCalculation {
+public class CalculateFGTSCollection {
     /*
      * Dicas de codificação:
      *
@@ -117,7 +117,6 @@ public class CalculateFGTSCollection implements PayrollCalculation {
      * Dica 8:
      * Por fim e não menos importante, ao terminar sua implementação, remova esses comentários e faça o commit e push do código.
      * */
-    @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
         return null;
     }
