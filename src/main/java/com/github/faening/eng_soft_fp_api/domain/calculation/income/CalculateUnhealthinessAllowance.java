@@ -42,7 +42,7 @@ public class CalculateUnhealthinessAllowance implements PayrollCalculation {
             .map(CalculationParameters::getEmployee)
             .map(EmployeeSummaryDTO::getJobId)
             .map(this::getJobByEmployeeJobId)
-            .filter(job -> job.getUnhealthiness() != null)
+            .filter(job -> job.getUnhealthiness() != null && job.getUnhealthiness() > 0)
             .map(job -> {
                 TaxOrValueResponseDTO allowancePercentage = taxOrValueService.getUnhealthinessAllowanceByRangeId(job.getUnhealthiness());
                 BigDecimal calculatedValue = calculateUnhealthinessAllowance(allowancePercentage);
