@@ -57,7 +57,10 @@ public class CalculateOvertime100Percent extends WorkedHoursCalculation implemen
      * @return Um objeto RubricResponseDTO que representa a rubrica recuperada.
      */
     public RubricResponseDTO getRubricByCode() {
-        return rubricService.getByCode(RUBRIC_CODE);
+        RubricResponseDTO rubric = rubricService.getByCode(RUBRIC_CODE);
+        rubric.setName("Horas Extras 100%");
+        rubric.setKind("Horas extraordinárias com 100% de Acréscimo");
+        return rubric;
     }
 
     /**
