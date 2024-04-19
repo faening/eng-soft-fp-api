@@ -32,15 +32,16 @@ public class CalculateTripExpenseAllowance implements PayrollCalculation {
 
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        return Optional.ofNullable(parameters)
-            .map(params -> new PayrollItemRequestDTO(
-                getRubricByCode(),
-                null,
-                getTripExpenseAmount(parameters),
-                getTripExpenseAmount(parameters),
-                getTripExpenseAmount(parameters)
-            ))
-            .orElse(null);
+        BigDecimal tripExpenseAmount = getTripExpenseAmount(parameters);
+        return tripExpenseAmount.compareTo(BigDecimal.ZERO) != 0
+            ? new PayrollItemRequestDTO(
+            getRubricByCode(),
+            null,
+            tripExpenseAmount,
+            tripExpenseAmount,
+            tripExpenseAmount
+        )
+            : null;
     }
 
     /**
