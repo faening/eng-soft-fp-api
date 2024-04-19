@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS job (
+    id_job INT NOT NULL AUTO_INCREMENT,
+    description VARCHAR(100) NOT NULL,
+    experience_level ENUM('TRAINEE', 'ENTRY_LEVEL', 'JUNIOR', 'MID_LEVEL', 'SENIOR', 'EXPERT') NOT NULL DEFAULT 'ENTRY_LEVEL',
+    base_salary DECIMAL(10, 2) NOT NULL,
+    dangerousness BOOLEAN NOT NULL DEFAULT FALSE,
+    unhealthiness TINYINT NOT NULL DEFAULT 0,
+    department_id INT NOT NULL,
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_job),
+    FOREIGN KEY (department_id) REFERENCES department(id_department)
+);
