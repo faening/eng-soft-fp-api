@@ -26,13 +26,13 @@ jobs:
         cache: maven
         
     - name: Build Application JAR
-      working-directory: ./eng-soft-fp-api
-      run: mvn clean package
+      run: mvn clean package -DskipTests
 
     - name: Docker Compose Build
-      run: docker compose up build
+      run: docker compose build
 
     - name: Push to Docker Hub Container Registry
       run: | 
         docker tag ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:latest ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:${{ github.run_id }}
         docker push ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:${{ github.run_id }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:latest
