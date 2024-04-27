@@ -33,6 +33,5 @@ jobs:
 
     - name: Push to Docker Hub Container Registry
       run: | 
-        docker tag ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:latest ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:${{ github.run_id }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:${{ github.run_id }}
+        docker tag ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:latest ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:latest
         docker push ${{ secrets.DOCKER_USERNAME }}/eng-soft-fp-api:latest
