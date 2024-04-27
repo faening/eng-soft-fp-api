@@ -1,0 +1,53 @@
+#file: noinspection SpellCheckingInspection
+
+version: '3.9'
+services:
+  db:
+    container_name: mysql
+    image: mysql:8.0.33
+    command: --default-authentication-plugin=mysql_native_password  # Don't use in production
+    restart: always
+    environment:
+      TZ: UTC
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: dockerpassword
+      MYSQL_DATABASE: esfpapidb
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3306
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+      - eng-soft-fp-api-network
+  api:
+    container_name: api
+    image: faening/eng_soft_fp_api
+    restart: always
+    build: .
+    working_dir: ${PWD}
+    environment:
+      TZ: UTC
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url": "jdbc:mysql://db:3306/esfpapidb?createDatabaseIfNotExist=true&useTimezone=true&serverTimezone=UTC&autoReconnect=true&useSSL=false",
+        "spring.datasource.username": "root",
+        "spring.datasource.password": "rootpassword",
+        "spring.jpa.hibernate.ddl-auto": "none",
+        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL8Dialect",
+        "spring.jpa.show-sql": "false"
+      }'
+    ports:
+      - "8080:8080"
+    command: /bin/bash -c "while ! nc -z db 3306; do sleep 1; done; mvn spring-boot:run"
+    depends_on:
+      - db
+    networks:
+      - eng-soft-fp-api-network
+networks:
+  eng-soft-fp-api-network:
+    driver: bridge
+volumes:
+  my-db:
