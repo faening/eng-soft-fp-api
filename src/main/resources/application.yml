@@ -27,3 +27,5 @@ server:
   port: 8080
   servlet:
     context-path: /api
+file:
+  upload-dir: /home/runner/work/eng-soft-fp-api/UploadDir
