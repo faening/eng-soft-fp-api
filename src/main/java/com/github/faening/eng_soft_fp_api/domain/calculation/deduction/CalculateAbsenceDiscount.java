@@ -1,131 +1,135 @@
 package com.github.faening.eng_soft_fp_api.domain.calculation.deduction;
 
+import com.github.faening.eng_soft_fp_api.config.WorkingHoursConfig;
 import com.github.faening.eng_soft_fp_api.domain.calculation.CalculationParameters;
 import com.github.faening.eng_soft_fp_api.domain.calculation.PayrollCalculation;
+import com.github.faening.eng_soft_fp_api.domain.calculation.generics.WorkedHoursCalculation;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.ApprovalStatus;
+import com.github.faening.eng_soft_fp_api.domain.model.absence_sheet.AbsenceSheetResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.payroll_item.PayrollItemRequestDTO;
+import com.github.faening.eng_soft_fp_api.domain.model.rubric.RubricResponseDTO;
+import com.github.faening.eng_soft_fp_api.domain.service.AbsenceSheetService;
+import com.github.faening.eng_soft_fp_api.domain.service.HoursWorkedSheetService;
+import com.github.faening.eng_soft_fp_api.domain.service.RubricService;
+import com.github.faening.eng_soft_fp_api.domain.service.WorkShiftService;
+import com.github.faening.eng_soft_fp_api.util.EmployeeUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/*
- * Requisito: [RD020] Calcular Desconto por Ausência
- *
- * Descrição:
- * Esta classe é responsável por calcular o desconto por faltas NÃO JUSTIFICADAS de um funcionário em um determinado mês.
- *
- *
- * Funcionamento:
- * Para realizar os cálculos, esta classe observa a tabela `absence_sheet`. Se o campo `type` for `ABSENCE_WITHOUT_JUSTIFICATION`, o
- * desconto é aplicado sobre o salário base do funcionário no mês.
- *
- * Observe que apenas faltas não justificadas e aprovadas devem ser descontadas.
- * O campo `type`, indica o tipo: ABSENCE_WITHOUT_JUSTIFICATION
- * O campo `status` APPROVED indica que o desconto deve ser feito.
- *
- * Exemplos:
- * ...
- */
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Component
-public class CalculateAbsenceDiscount implements PayrollCalculation {
-    /*
-     * Dicas de codificação:
-     *
-     * Dica 1:
-     * Sempre crie uma branch separada para desenvolver uma funcionalidade. Isso permite que você trabalhe em um ambiente isolado e evita
-     * conflitos com o código de seus colegas.
-     *
-     * Outro ponto importante é que, a branch de origem sempre deve ser a `develop`.
-     *
-     * Lembre-se de seguir o padrão de nomenclatura de branches. Por exemplo: PRL-001, PRL-002, PRL-003, etc. Observe isso na respectiva
-     * tarefa do Trello.
-     *
-     *
-     *
-     * Dica 2:
-     * Sempre busque a separação de responsabilidades. Se você perceber que o método está fazendo mais de uma coisa, considere dividí-lo em
-     * métodos menores. Isso facilita a leitura e a manutenção do código. Por exemplo:
-     *
-     * public void calculate(CalculationParameters parameters) {
-     *   metodo1();
-     *   metodo2();
-     *   return ...
-     * }
-     *
-     *
-     *
-     * Dica 3:
-     * Evite aninhar if's. Se você perceber que isso está acontecendo, considere decompor o código ou criar métodos menores. Por exemplo:
-     *
-     * if (condicao1) {
-     *    if (condicao2) {
-     *      ...
-     *   }
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 && condicao2) {
-     *   ...
-     * }
-     *
-     * ou
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo2();
-     * }
-     *
-     *
-     *
-     * Dica 4:
-     * Evite duplicação de código. Se você perceber que um trecho de código está sendo repetido, considere reduzi-lo para evitar a duplicação.
-     * Por exemplo:
-     *
-     * if (condicao1) {
-     *   metodo1();
-     * }
-     *
-     * if (condicao2) {
-     *   metodo1();
-     * }
-     *
-     * Pode ser decomposto em:
-     *
-     * if (condicao1 || condicao2) {
-     *   metodo1();
-     * }
-     *
-     *
-     *
-     * Dica 5:
-     * Não se esqueça de tratar os casos de erro. Se algo der errado, retorne uma exceção. Sempre que possível, faça a verificação das
-     * condições de erro no início do método. Por exemplo:
-     *
-     * if (condicao1) {
-     *   if (condicao1 == null) throw new RuntimeException("Mensagem de erro");
-     *   ...
-     * }
-     *
-     *
-     * Dica 6:
-     * Não se esqueça de testar o seu código. Testes de unidade são uma ótima forma de garantir que o seu código está funcionando. Se você
-     * não sabe como fazer testes de unidade, procure aprender ou use o ChatGPT. Eles são muito importantes para garantir a qualidade do seu
-     * código.
-     *
-     *
-     * Dica 7:
-     * Atenção ao retorno do método calculate. Ele deve retornar um objeto do tipo PayrollItemRequestDTO.
-     *
-     *
-     *
-     * Dica 8:
-     * Por fim e não menos importante, ao terminar sua implementação, remova esses comentários e faça o commit e push do código.
-     * */
+public class CalculateAbsenceDiscount extends WorkedHoursCalculation implements PayrollCalculation {
+    private final RubricService rubricService;
+    private final AbsenceSheetService absenceSheetService;
+    private final static Integer RUBRIC_CODE = 9207;
+
+    @Autowired
+    public CalculateAbsenceDiscount(
+            RubricService rubricService,
+            AbsenceSheetService absenceSheetService,
+            WorkShiftService workShiftService,
+            HoursWorkedSheetService hoursWorkedSheetService,
+            WorkingHoursConfig workingHoursConfig
+    ) {
+        super(workShiftService, hoursWorkedSheetService, workingHoursConfig);
+        this.rubricService = rubricService;
+        this.absenceSheetService = absenceSheetService;
+    }
+
     @Override
     public PayrollItemRequestDTO calculate(CalculationParameters parameters) {
-        return null;
+        return Optional.ofNullable(parameters)
+            .map(param -> {
+                List<AbsenceSheetResponseDTO> absenceSheets = getAbsenceWithoutJustification(param);
+
+                Duration absenceDuration = absenceSheets.stream()
+                    .filter(absenceSheet -> absenceSheet.getStatus().equals(ApprovalStatus.APPROVED))
+                    .map(this::calculateAbsenceDuration)
+                    .reduce(Duration::plus)
+                    .orElse(Duration.ZERO);
+
+                return new PayrollItemRequestDTO(
+                    getRubricByCode(),
+                    null,
+                    BigDecimal.valueOf(absenceDuration.toHours()).multiply(BigDecimal.valueOf(60)),
+                    calculateAbsenceDiscount(param),
+                    BigDecimal.ZERO
+                );
+            })
+            .orElse(null);
+    }
+
+    /**
+     * Este método recupera uma rubrica pelo seu código.
+     *
+     * @return Um objeto RubricResponseDTO que representa a rubrica recuperada.
+     */
+    protected RubricResponseDTO getRubricByCode() {
+        return rubricService.getByCode(RUBRIC_CODE);
+    }
+
+    /**
+     * Este método recupera as faltas sem justificativa de um funcionário em um mês e ano específicos.
+     *
+     * @param parameters Os parâmetros de cálculo.
+     * @return Uma lista de objetos AbsenceSheetResponseDTO que representam as faltas sem justificativa.
+     */
+    protected List<AbsenceSheetResponseDTO> getAbsenceWithoutJustification(CalculationParameters parameters) {
+        return absenceSheetService.getAbsenceWithoutJustification(
+            parameters.getEmployee().getId(),
+            parameters.getMonth().getValue(),
+            parameters.getYear()
+        );
+    }
+
+    /**
+     * Este método calcula a duração de uma ausência.
+     *
+     * @param absenceSheet A ausência.
+     * @return A duração da ausência em horas.
+     */
+    protected Duration calculateAbsenceDuration(AbsenceSheetResponseDTO absenceSheet) {
+        LocalDateTime startDateTime = absenceSheet.getStartDate();
+        LocalDateTime endDateTime = absenceSheet.getEndDate();
+        return Duration.between(startDateTime, endDateTime);
+    }
+
+    /**
+     * Este método calcula o desconto por ausência de um funcionário em um mês.
+     *
+     * @param parameters Os parâmetros de cálculo.
+     * @return O valor do desconto por ausência.
+     */
+    protected BigDecimal calculateAbsenceDiscount(CalculationParameters parameters) {
+        return Optional.ofNullable(parameters)
+            .map(param -> {
+                List<AbsenceSheetResponseDTO> absenceSheets = getAbsenceWithoutJustification(param);
+                return absenceSheets
+                    .stream()
+                    .map(absenceSheet -> {
+                        BigDecimal absenceDiscount = BigDecimal.ZERO;
+                        if (absenceSheet.getStatus().equals(ApprovalStatus.APPROVED)) {
+                            // Calcula a duração da ausência
+                            Duration absenceDuration = calculateAbsenceDuration(absenceSheet);
+                            // Calcula o valor da hora do funcionário
+                            BigDecimal employeeHourlyRate = EmployeeUtils.calculateHourlyRate(
+                                param.getEmployee().getSalary(),
+                                getWorkingHoursInMonth(parameters)
+                            );
+                            // Calcula o desconto de ausência
+                            long absenceHours = absenceDuration.toHours();
+                            absenceDiscount = BigDecimal.valueOf(absenceHours).multiply(employeeHourlyRate);
+                        }
+                        return absenceDiscount;
+                    })
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            })
+            .orElse(BigDecimal.ZERO);
     }
 }
