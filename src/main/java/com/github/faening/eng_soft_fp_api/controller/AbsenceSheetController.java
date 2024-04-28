@@ -1,6 +1,7 @@
 package com.github.faening.eng_soft_fp_api.controller;
 
 import com.github.faening.eng_soft_fp_api.domain.enumeration.AbsenceType;
+import com.github.faening.eng_soft_fp_api.domain.enumeration.Month;
 import com.github.faening.eng_soft_fp_api.domain.model.absence_sheet.AbsenceSheetRequestDTO;
 import com.github.faening.eng_soft_fp_api.domain.model.absence_sheet.AbsenceSheetResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.service.AbsenceSheetService;
@@ -29,10 +30,10 @@ public class AbsenceSheetController extends AbstractController<AbsenceSheetReque
     public ResponseEntity<List<AbsenceSheetResponseDTO>> getByEmployeeIdAndSpecs(
         @RequestParam Integer employeeId,
         @RequestParam AbsenceType type,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate
+        @RequestParam Month month,
+        @RequestParam Integer year
     ) {
-        List<AbsenceSheetResponseDTO> absenceSheets = service.getAbsenceSheetByEmployeeIdAndSpecs(employeeId, type, startDate, endDate);
+        List<AbsenceSheetResponseDTO> absenceSheets = service.getAbsenceSheetByEmployeeIdAndSpecs(employeeId, type, month.getValue(), year);
         return ResponseEntity.ok(absenceSheets);
     }
 }

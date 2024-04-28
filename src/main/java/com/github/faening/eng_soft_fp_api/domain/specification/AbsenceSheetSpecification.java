@@ -13,13 +13,17 @@ import java.time.LocalDateTime;
 
 @SuppressWarnings("unused")
 public class AbsenceSheetSpecification implements Specification<AbsenceSheet> {
-
     private final Employee employee;
     private final AbsenceType type;
     private final LocalDateTime startDate;
     private final LocalDateTime endDate;
 
-    public AbsenceSheetSpecification(Employee employee, AbsenceType type, LocalDateTime startDate, LocalDateTime endDate) {
+    public AbsenceSheetSpecification(
+        Employee employee,
+        AbsenceType type,
+        LocalDateTime startDate,
+        LocalDateTime endDate
+    ) {
         this.employee = employee;
         this.type = type;
         this.startDate = startDate;
@@ -36,7 +40,17 @@ public class AbsenceSheetSpecification implements Specification<AbsenceSheet> {
         }
 
         if (startDate != null && endDate != null) {
-            predicate = criteriaBuilder.and(predicate, criteriaBuilder.between(root.get("startDate"), this.startDate, this.endDate));
+            Predicate startDatePredicate = criteriaBuilder.and(
+                    criteriaBuilder.greaterThanOrEqualTo(root.get("startDate"), this.startDate),
+                    criteriaBuilder.lessThanOrEqualTo(root.get("startDate"), this.endDate)
+            );
+
+            Predicate endDatePredicate = criteriaBuilder.and(
+                    criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"), this.startDate),
+                    criteriaBuilder.lessThanOrEqualTo(root.get("endDate"), this.endDate)
+            );
+
+            predicate = criteriaBuilder.and(predicate, startDatePredicate, endDatePredicate);
         }
 
         return predicate;

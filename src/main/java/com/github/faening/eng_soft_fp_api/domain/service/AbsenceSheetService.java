@@ -11,9 +11,11 @@ import com.github.faening.eng_soft_fp_api.domain.model.absence_sheet.AbsenceShee
 import com.github.faening.eng_soft_fp_api.domain.model.absence_sheet.AbsenceSheetResponseDTO;
 import com.github.faening.eng_soft_fp_api.domain.specification.AbsenceSheetSpecification;
 import com.github.faening.eng_soft_fp_api.exception.ResourceNotFoundException;
+import com.github.faening.eng_soft_fp_api.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -66,10 +68,10 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
     public List<AbsenceSheetResponseDTO> getAbsenceSheetByEmployeeIdAndSpecs(
         Integer employeeId,
         AbsenceType type,
-        LocalDateTime startDate,
-        LocalDateTime endDate
+        Integer month,
+        Integer year
     ) {
-        return searchAbsenceSheetsByEmployeeIdAndSpecs(employeeId, type, startDate, endDate)
+        return searchAbsenceSheetsByEmployeeIdAndSpecs(employeeId, type, month, year)
             .stream()
             .map(absenceSheet -> responseMapper.toDTO(absenceSheet, AbsenceSheetResponseDTO.class))
             .toList();
@@ -78,10 +80,25 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
     public List<AbsenceSheet> getAbsenceSheetEntityByEmployeeIdAndSpecs(
         Integer employeeId,
         AbsenceType type,
-        LocalDateTime startDate,
-        LocalDateTime endDate
+        Integer month,
+        Integer year
     ) {
-       return searchAbsenceSheetsByEmployeeIdAndSpecs(employeeId, type, startDate, endDate);
+       return searchAbsenceSheetsByEmployeeIdAndSpecs(employeeId, type, month, year);
+    }
+
+    /**
+     * Este método recupera as faltas sem justificativa de um funcionário em um mês e ano específicos.
+     *
+     * @param employeeId O ID do funcionário.
+     * @param month O mês de interesse.
+     * @param year O ano de interesse.
+     * @return Uma lista de objetos AbsenceSheetResponseDTO que representam as faltas sem justificativa do funcionário no mês e ano especificados.
+     */
+    public List<AbsenceSheetResponseDTO> getAbsenceWithoutJustification(Integer employeeId, Integer month, Integer year) {
+        return searchAbsenceSheetsByEmployeeIdAndSpecs(employeeId, AbsenceType.ABSENCE_WITHOUT_JUSTIFICATION, month, year)
+            .stream()
+            .map(absenceSheet -> responseMapper.toDTO(absenceSheet, AbsenceSheetResponseDTO.class))
+            .toList();
     }
 
     @Override
@@ -114,11 +131,15 @@ public class AbsenceSheetService extends AbstractService<AbsenceSheetRequestDTO,
     private List<AbsenceSheet> searchAbsenceSheetsByEmployeeIdAndSpecs(
         Integer employeeId,
         AbsenceType type,
-        LocalDateTime startDate,
-        LocalDateTime endDate
+        Integer month,
+        Integer year
     ) {
         Employee employee = employeeService.getEntityById(employeeId);
-        AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDate, endDate);
+        LocalDate[] startAndEndDate = DateUtils.getFirstAndLastDayOfMonth(year, month);
+        LocalDateTime startDateTime = startAndEndDate[0].atStartOfDay();
+        LocalDateTime endDateTime = startAndEndDate[1].atTime(23, 59, 59);
+
+        AbsenceSheetSpecification spec = new AbsenceSheetSpecification(employee, type, startDateTime, endDateTime);
         return repository
             .findAll(spec)
             .stream()
